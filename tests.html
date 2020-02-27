@@ -11,18 +11,127 @@
      rel='stylesheet' 
      type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap" rel="stylesheet" />
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/timer.js"></script>
     <title></title>
   </head>
+  <style type="text/css">
+    body {
+    font-family: 'Roboto', sans-serif;
+    }
+    h1{
+      text-align: center;
+    }
+
+    .container_box{
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      flex-wrap: wrap;  
+    }
+
+    .question_box{
+      padding: 10px 20px 10px 20px;
+      text-align: justify;
+    }
+
+    .question_box p {
+      padding: 0px 30px 0px 30px;
+    }
+    .question_box li {
+      margin-bottom: 15px; 
+      padding-right: 30px;
+    }
+
+    .button_sumit{
+      font-family: inherit;
+      background-color: #004BB5;
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      margin: 0px 30% 0px 30%;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+  </style>
   <script type="text/javascript">
-   	
-   	fetch('https://api.myjson.com/bins/cptzs')
-	  .then(response => response.json())
-	  .then(json => console.log(json));
+    
+    var num_questions = 0;
+    var intervalID;
 
+    fetch('https://api.myjson.com/bins/cptzs')
+      .then(response => response.json())
+      .then(function (json) {
+        console.log(json)
+        
+        const questions = json['questions'];
+        let results = "<section class=\"title\"><h1>Test</h1></section>";
+        num_questions = questions.length;
+        questions.forEach((question,index) =>  {
+          const {id, content, options} = question;
+        results += `
+          <section class="question_box">
+              <p class="question_description">
+                ${index + 1}. ${content}
+              </p>
+            <ul>`
+        options.forEach((option) => {
+          results += `
+              <li><input type="radio" name="option ${index}" value="${option}">
+                ${option}
+              </li>       
+          `
+        });
+        results += '</ul></section>'          
+        });
+        document.getElementById('results').innerHTML = results;
+        document.getElementById('sendData').addEventListener('click', sendData);
+    });
 
+  function sendData(){
+    /*
+    json {
+      userID:
+      activity:
+      time_to_finish:
+      questions: [
+        {
+          questionID: ID
+          answer: 0-1-2-3
+        }
+      ]
+    }
+    */
+    for (var i = 0; i < num_questions;i++) {
+      console.log(document.querySelector('input[name="option '+i+'"]:checked').value)
+    }
+
+  }
+
+  var intervalID = setInterval(function(){
+      console.log('Hola');
+      $("#timer").text(function() {
+        var timer = showTime(5);
+        if (timer.localeCompare('02:00')==-1){
+          $("#timer").css("color", "red");
+        }
+        if (timer.localeCompare('end')==0) {
+          clearTimeout(intervalID);
+        }
+        return timer;
+      });
+
+    }, 1000);
   </script>
   <body>
-  
+    <form>
+      <p id="timer">00:00</p>
+      <section class="container_box" > 
+        <section id="results" ></section>
+        <input id="sendData" class="button_sumit" type="submit" value="Enviar">
+      </section>
+  </form>
   </body>
 </html>

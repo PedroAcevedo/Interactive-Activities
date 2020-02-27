@@ -14,15 +14,202 @@
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title></title>
   </head>
+  <style type="text/css">
+    .container{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .container section {
+      padding: 10px;
+      margin: 10px 0 10px 0;
+    }
+
+    .board{
+      order: 1;
+      min-width: 70%;
+      background-color: red;
+    }
+
+    .definitions{
+      order: 2;
+      min-width: 25%;
+      background-color: blue;
+    }
+
+    .wrapper {
+      display: grid;
+      grid-auto-rows: minmax(50px, auto);
+    }
+    * {box-sizing: border-box;}
+
+    .wrapper {
+      border: 2px solid #f76707;
+      border-radius: 5px;
+      background-color: #fff4e6;
+    }
+
+    .wrapper > div {
+      border: 2px solid #ffa94d;
+      text-align: center;
+      border-radius: 5px;
+      width: auto;
+      background-color: #ffd8a8;
+      padding: 0.5em;
+      color: #d9480f;
+    }
+
+
+    @media only screen and (max-width: 768px) {
+      /* For mobile phones: */
+      [class="board"] {
+        width: 100%;
+      }
+      [class="definitions"] {
+        width: 100%;
+      }
+    }
+
+  </style>
   <script type="text/javascript">
    	
-   	fetch('https://api.myjson.com/bins/cptzs')
+   	fetch('https://api.myjson.com/bins/kil8w')
 	  .then(response => response.json())
-	  .then(json => console.log(json));
+	  .then(function(json){
+      console.log(json);
+      const matches = json['matches'];
+      let result = '<ol>';
+      let maxlen = 0
+      console.log(typeof(matches))  
+      Object.entries(matches).forEach(([key, value],index) => {
+        result += `
+              <li>
+                ${value}
+              </li>       
+        ` 
+        if (key.length > maxlen) {
+          maxlen = key.length
+        }
+      });
+      console.log(maxlen);
+      result += '</ol>';
+      buildBoard(maxlen, Object.keys(matches))
+      document.getElementById('definitions').innerHTML = result;
+    });
 
+    function buildBoard(size, values){
+      var board = generateCrossWords(size,values)
+      var result = '<div class="wrapper" style="grid-template-columns: repeat('+size +', 1fr);">';
+      for (var i = 0; i < size; i++) {
+        for (var j = 0; j < size; j++) {
+          result += `
+          <div>
+           ${board[i][j]}
+          </div>      
+        ` 
+          ''
+        }
+      }
+      result += '</div>'
+      document.getElementById('result').innerHTML = result;
+    }
+
+    function generateCrossWords(size, values){
+      var board =  Array(size).fill('0').map((x) => Array(size).fill('0'))  
+      var words = values.sort(function(a,b){
+        if (a.length > b.length) {
+          return 1;
+        }
+        if (a.length < b.length) {
+            return -1;
+        }
+          // a must be equal to b
+        return 0;
+      });
+      let visited = false;
+      let orientation = Math.round(Math.random());
+      wordO = {
+        0 : [], //Horizontal
+        1 : [] //Vertical
+      }
+      wlocation = {}
+      used = {}
+      let actualword = words.pop();
+      while(words.length > 0){
+        orientation = (orientation == 0)? 1 : 0;
+        if (!visited) {
+          wordO[orientation].push(actualword);
+          row = (orientation == 0)? Math.ceil(Math.random() * size) : 0;
+          column = (orientation == 1)? Math.ceil(Math.random() * size) : 0;
+          for (var i = column; i < actualword.length ; i++) {
+              if (orientation == 1) {
+                board[i][column] = actualword.substring(i,i+1)
+              }else{
+                board[row][i] = actualword.substring(i,i+1)
+              }
+          }
+          wlocation[actualword] = [row, column];
+          used[actualword] = Array(actualword.length).fill(false);
+          visited = true;
+        }else{
+          wordO[orientation].push(actualword);
+          op = findPair(wordO[(orientation==0)? 1: 0], actualword, wlocation, used, orientation, size);
+          if (Object.keys(op).length != 0) {
+            lop = Object.keys(op).length-1;
+            w = (lop == 1)? 0 : Math.ceil(Math.random() * lop);
+            choice = Math.floor(Math.random() * (op[w].length-1));
+            row = (orientation == 0)? wlocation[Object.keys(wlocation)[w]][0] + (op[w][choice][0][1]): wlocation[Object.keys(wlocation)[w]][0] - (actualword.length - op[w][choice][0][0]);
+            column = (orientation == 0)? wlocation[Object.keys(wlocation)[w]][0] - (actualword.length - op[w][choice][0][1]): wlocation[Object.keys(wlocation)[w]][1] + (op[w][choice][0][1]);
+            for (var i = 0; i < actualword.length ; i++) {
+                if (orientation == 1) {
+                  board[i][column] = actualword.substring(i,i+1)
+                }else{
+                  console.log(row)
+                  board[row][i] = actualword.substring(i,i+1)
+                }
+            }
+            wlocation[actualword] = [row, column];
+            used[actualword] = Array(actualword.length).fill(false);
+            }
+        }
+        actualword = words.pop();
+      }
+      return board
+    }
+
+    function findPair ( wordso, w, wloc, use, dir, n){
+      listpair = {}
+      console.log(wordso)     
+      wordso.forEach((word, index) =>{
+        var o = (dir == 0)? wloc[word][1] : wloc[word][0];
+        for (var i = 0; i < word.length; i++) {
+          for (var j = 0; j < w.length; j++) {
+            var char = w.substring(j,j+1);
+            if (char == word.substring(i,i+1) && !use[word][i]){
+              if (((w.length) - (j+1)) < (n-o) && j < o) {
+                if (listpair[index] == undefined) {
+                  listpair[index] = [ [j, i] ]; 
+                }else{
+                  listpair[index].push([ [j, i] ]); 
+                }
+              }
+            }
+          }  
+        }
+      });
+      return listpair;
+    }
 
   </script>
   <body>
-  
+    <section class="container">
+      <section id='result' class="board">
+        <div id='result'></div>
+      </section>
+      <section id="definitions">
+      </section>
+    </section>
   </body>
 </html>
