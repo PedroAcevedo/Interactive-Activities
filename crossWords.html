@@ -41,22 +41,20 @@
 
     .wrapper {
       display: grid;
-      grid-auto-rows: minmax(50px, auto);
+      grid-auto-rows: minmax(10px, auto);
     }
     * {box-sizing: border-box;}
 
     .wrapper {
-      border: 2px solid #f76707;
-      border-radius: 5px;
+      border: solid #f76707;
       background-color: #fff4e6;
     }
 
     .wrapper > div {
       border: 2px solid #ffa94d;
       text-align: center;
-      border-radius: 5px;
       width: auto;
-      background-color: #ffd8a8;
+      background-color: white;
       padding: 0.5em;
       color: #d9480f;
     }
@@ -95,7 +93,7 @@
       });
       console.log(maxlen);
       result += '</ol>';
-      buildBoard(maxlen, Object.keys(matches))
+      buildBoard(maxlen*2, Object.keys(matches))
       document.getElementById('definitions').innerHTML = result;
     });
 
@@ -117,7 +115,8 @@
     }
 
     function generateCrossWords(size, values){
-      var board =  Array(size).fill('0').map((x) => Array(size).fill('0'))  
+      var board =  Array(size).fill('0').map((x) => Array(size).fill('0'));
+      var visited = Array(size).fill('0').map((x) => Array(size).fill(false));  
       var words = values.sort(function(a,b){
         if (a.length > b.length) {
           return 1;
@@ -128,78 +127,92 @@
           // a must be equal to b
         return 0;
       });
-      let visited = false;
-      let orientation = Math.round(Math.random());
+      orientation =  Math.round(Math.random());
+      start = false;
+      actualword = words.pop();
+      wloc = {};
       wordO = {
         0 : [], //Horizontal
         1 : [] //Vertical
       }
-      wlocation = {}
-      used = {}
-      let actualword = words.pop();
       while(words.length > 0){
         orientation = (orientation == 0)? 1 : 0;
-        if (!visited) {
+        if (!start) {
           wordO[orientation].push(actualword);
-          row = (orientation == 0)? Math.ceil(Math.random() * size) : 0;
-          column = (orientation == 1)? Math.ceil(Math.random() * size) : 0;
-          for (var i = column; i < actualword.length ; i++) {
+          row = (orientation == 0)? Math.floor(Math.random() * (size/2 - 4)) + 4 : 0;
+          column = (orientation == 1)? Math.floor(Math.random() * (size/2 - 4)) + 4 : 0;
+          for (var i = 0; i < actualword.length ; i++) {
               if (orientation == 1) {
                 board[i][column] = actualword.substring(i,i+1)
+                visited[i][column] = true;
               }else{
                 board[row][i] = actualword.substring(i,i+1)
+                visited[row][i] = true;
               }
           }
-          wlocation[actualword] = [row, column];
-          used[actualword] = Array(actualword.length).fill(false);
-          visited = true;
+          wloc[actualword] = [row, column, orientation];
+          start = true;
         }else{
+          console.log(actualword)
+          ppair = findPair(wordO[(orientation == 0)? 1 : 0], actualword, wloc, visited, size);
+          select = Math.ceil(Math.random() * (ppair.length-1));
+          row = ppair[select][0];
+          column = ppair[select][1];
+          for (var i = 0; i < actualword.length; i++) {
+              if (orientation == 1) {
+                board[row+i][column] = actualword.substring(i,i+1)
+                visited[row+i][column] = true;
+              }else{
+                board[row][column+i] = actualword.substring(i,i+1)
+                visited[row][column+i] = true;
+              }
+          }
+          wloc[actualword] = [row, column, orientation];
           wordO[orientation].push(actualword);
-          op = findPair(wordO[(orientation==0)? 1: 0], actualword, wlocation, used, orientation, size);
-          if (Object.keys(op).length != 0) {
-            lop = Object.keys(op).length-1;
-            w = (lop == 1)? 0 : Math.ceil(Math.random() * lop);
-            choice = Math.floor(Math.random() * (op[w].length-1));
-            row = (orientation == 0)? wlocation[Object.keys(wlocation)[w]][0] + (op[w][choice][0][1]): wlocation[Object.keys(wlocation)[w]][0] - (actualword.length - op[w][choice][0][0]);
-            column = (orientation == 0)? wlocation[Object.keys(wlocation)[w]][0] - (actualword.length - op[w][choice][0][1]): wlocation[Object.keys(wlocation)[w]][1] + (op[w][choice][0][1]);
-            for (var i = 0; i < actualword.length ; i++) {
-                if (orientation == 1) {
-                  board[i][column] = actualword.substring(i,i+1)
-                }else{
-                  console.log(row)
-                  board[row][i] = actualword.substring(i,i+1)
-                }
-            }
-            wlocation[actualword] = [row, column];
-            used[actualword] = Array(actualword.length).fill(false);
-            }
+
         }
         actualword = words.pop();
       }
       return board
     }
 
-    function findPair ( wordso, w, wloc, use, dir, n){
-      listpair = {}
-      console.log(wordso)     
-      wordso.forEach((word, index) =>{
-        var o = (dir == 0)? wloc[word][1] : wloc[word][0];
-        for (var i = 0; i < word.length; i++) {
-          for (var j = 0; j < w.length; j++) {
-            var char = w.substring(j,j+1);
-            if (char == word.substring(i,i+1) && !use[word][i]){
-              if (((w.length) - (j+1)) < (n-o) && j < o) {
-                if (listpair[index] == undefined) {
-                  listpair[index] = [ [j, i] ]; 
-                }else{
-                  listpair[index].push([ [j, i] ]); 
+    function findPair (wo, actual, loc, v, n){
+      pair = [];
+      wo.forEach((word) =>{
+            for (var j = 0; j < actual.length; j++) {
+              for (var i = 0; i < word.length; i++) {
+                if (word.substring(i,i+1) == actual.substring(j,j+1)) {
+                  o = loc[word][2];
+                  rc = loc[word][(o == 1)? 1 : 0];
+                  cr = loc[word][(o == 1)? 0 : 1];
+                  console.log(rc + actual.substring(j,j+1))
+                  if (j < rc && (rc + actual.length-(j+1)) <= n)  {
+                    let available = true;
+                    for (var k = rc-j; k <= (rc + actual.length-(j+1)); k++) {
+                      if (rc != k && available) {
+                        if (o == 0) {
+                          if(v[k][cr+i]){
+                            available = false;
+                          }
+                        }else{
+                          if(v[cr+i][k]){
+                            available = false;
+                          }
+                        }
+                      }
+                    }
+                    if (available) {
+                      row = (o == 0)? rc-j : cr+i;
+                      column = (o == 1)? rc-j : cr+i;
+                      pair.push([row,column,o])
+                    }
+                  }
                 }
-              }
             }
-          }  
-        }
+          }
       });
-      return listpair;
+      console.log(v)
+      return pair;
     }
 
   </script>
