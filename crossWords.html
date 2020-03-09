@@ -59,6 +59,13 @@
       color: #d9480f;
     }
 
+    .wrapper > .empty {
+      border: none;
+      width: auto;
+      background-color: white;
+      padding: 0.5em;
+    }
+
 
     @media only screen and (max-width: 768px) {
       /* For mobile phones: */
@@ -93,7 +100,7 @@
       });
       console.log(maxlen);
       result += '</ol>';
-      buildBoard(maxlen*2, Object.keys(matches))
+      buildBoard(parseInt(maxlen*(3/2)), Object.keys(matches))
       document.getElementById('definitions').innerHTML = result;
     });
 
@@ -102,12 +109,19 @@
       var result = '<div class="wrapper" style="grid-template-columns: repeat('+size +', 1fr);">';
       for (var i = 0; i < size; i++) {
         for (var j = 0; j < size; j++) {
-          result += `
-          <div>
-           ${board[i][j]}
-          </div>      
-        ` 
-          ''
+          if (board[i][j] != '0') {
+              result += `
+              <div>
+               ${board[i][j]}
+              </div>      
+            `;
+          }else{
+            result += `
+              <div class='empty'>
+                    
+              </div>      
+            `;
+          }    
         }
       }
       result += '</div>'
@@ -156,6 +170,7 @@
           console.log(actualword)
           ppair = findPair(wordO[(orientation == 0)? 1 : 0], actualword, wloc, visited, size);
           select = Math.ceil(Math.random() * (ppair.length-1));
+          console.log(select)
           row = ppair[select][0];
           column = ppair[select][1];
           for (var i = 0; i < actualword.length; i++) {
@@ -185,7 +200,7 @@
                   o = loc[word][2];
                   rc = loc[word][(o == 1)? 1 : 0];
                   cr = loc[word][(o == 1)? 0 : 1];
-                  console.log(rc + actual.substring(j,j+1))
+                  console.log(rc + actual.substring(j,j+1) + '-' + cr)
                   if (j < rc && (rc + actual.length-(j+1)) <= n)  {
                     let available = true;
                     for (var k = rc-j; k <= (rc + actual.length-(j+1)); k++) {

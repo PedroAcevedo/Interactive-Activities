@@ -14,15 +14,91 @@
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title></title>
   </head>
+  <style type="text/css">
+    
+    .wrapper {
+      display: grid;
+      grid-auto-rows: minmax(10px, auto);
+    }
+    * {box-sizing: border-box;}
+
+    .wrapper {
+      border: solid #f76707;
+      background-color: #fff4e6;
+    }
+
+    .wrapper > div {
+      border: 2px solid #ffa94d;
+      text-align: center;
+      width: auto;
+      background-color: white;
+      padding: 0.5em;
+      color: #d9480f;
+    }
+
+    .wrapper > div #hover{
+      color: blue;
+    }
+
+    .container{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .word_list{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+  </style>
   <script type="text/javascript">
    	
-   	fetch('https://api.myjson.com/bins/cptzs')
+   /*fetch('https://api.myjson.com/bins/cptzs')
 	  .then(response => response.json())
-	  .then(json => console.log(json));
+	  .then(json => console.log(json));*/
 
-
+    function buildBoard(){
+      let size = 10;
+      var board = Array(size).fill('0').map((x) => Array(size).fill('0'));
+      var result = '<div class="wrapper" style="grid-template-columns: repeat('+size +', 1fr);">';
+      for (var i = 0; i < size; i++) {
+        for (var j = 0; j < size; j++) {
+            result += `
+            <div>
+             ${board[i][j]}
+            </div>      
+          `;
+        }
+      }
+      result += '</div>';
+      document.getElementById('result').innerHTML = result;  
+      console.log('XD');
+    }
   </script>
   <body>
-  
+    <section class="container">
+      <div id="result" class="board">
+        <div id="results" ></div>
+      </div>
+      <div class="word_list">
+        <ul>
+          <li>Hola</li>
+          <li>Hola</li>
+          <li>Hola</li>
+        </ul>
+        <ul>
+          <li>Hola</li>
+          <li>Hola</li>
+          <li>Hola</li>
+        </ul>
+      <ul>
+          <li>Hola</li>
+          <li>Hola</li>
+          <li>Hola</li>
+        </ul>
+      </div>
+      <button onclick="buildBoard()">CREATE BOARD</button>
+    </section>
   </body>
 </html>
