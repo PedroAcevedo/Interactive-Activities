@@ -105,7 +105,11 @@
     });
 
     function buildBoard(size, values){
-      var board = generateCrossWords(size,values)
+      var board = generateCrossWords(size,values.slice());
+      console.log(board)
+      while(board == undefined){
+        board = generateCrossWords(size,values.slice());        
+      }
       var result = '<div class="wrapper" style="grid-template-columns: repeat('+size +', 1fr);">';
       for (var i = 0; i < size; i++) {
         for (var j = 0; j < size; j++) {
@@ -169,10 +173,13 @@
         }else{
           console.log(actualword)
           ppair = findPair(wordO[(orientation == 0)? 1 : 0], actualword, wloc, visited, size);
+          if(ppair.length == 0){
+            return undefined;
+          }
           select = Math.ceil(Math.random() * (ppair.length-1));
-          console.log(select)
           row = ppair[select][0];
           column = ppair[select][1];
+          console.log(row +' - '+ column);
           for (var i = 0; i < actualword.length; i++) {
               if (orientation == 1) {
                 board[row+i][column] = actualword.substring(i,i+1)
@@ -200,14 +207,19 @@
                   o = loc[word][2];
                   rc = loc[word][(o == 1)? 1 : 0];
                   cr = loc[word][(o == 1)? 0 : 1];
-                  console.log(rc + actual.substring(j,j+1) + '-' + cr)
-                  if (j < rc && (rc + actual.length-(j+1)) <= n)  {
+                  if (j < rc && (rc + actual.length-(j+1)) < n)  {
                     let available = true;
                     for (var k = rc-j; k <= (rc + actual.length-(j+1)); k++) {
                       if (rc != k && available) {
                         if (o == 0) {
-                          if(v[k][cr+i]){
-                            available = false;
+                          if(cr+i >= n || k >= n){
+                              available = false;
+                          }else{ 
+                            console.log(v)
+                            console.log(k)
+                            if (v[k][cr+i]) {
+                              available = false;
+                            }
                           }
                         }else{
                           if(v[cr+i][k]){
@@ -226,7 +238,6 @@
             }
           }
       });
-      console.log(v)
       return pair;
     }
 
