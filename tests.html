@@ -53,10 +53,21 @@
     .question_box p {
       padding: 0px 30px 0px 30px;
     }
-    .question_box li {
-      margin-bottom: 15px; 
-      padding-right: 30px;
+    .question_box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
     }
+
+    .question_box label {
+      box-sizing: border-box;
+      max-width: 20%;
+      color: white;
+      padding: 20px;
+      margin: 5px;
+    }
+
 
     .button_sumit{
       font-family: inherit;
@@ -115,6 +126,7 @@
       console.log(document.querySelector('input[name="option '+i+'"]:checked').value)
     }*/
 
+    console.log(document.querySelector('input[name="option '+(index-1)+'"]:checked').value)
     if (questions.length > 0) {
       const {id, content, options} = questions.pop();
         results += `
@@ -122,12 +134,12 @@
               <p class="question_description">
                 ${index}. ${content} pipi
               </p>
-            <ul>`
+              <ul>`
         options.forEach((option) => {
           results += `
-              <li><input type="radio" name="option ${index}" value="${option}">
+              <label class="option" style="background-color:`+ getRandomColor() +`;"><input type="radio" name="option ${index}" value="${option}" style="display:none;">
                 ${option}
-              </li>       
+              </label>       
           `
         });
         results += '</ul></section>'
@@ -149,6 +161,15 @@
     }
     */
 
+  }
+
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
   var intervalID = setInterval(function(){
