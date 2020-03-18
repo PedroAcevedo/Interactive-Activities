@@ -27,10 +27,28 @@
       margin: 10px 0 10px 0;
     }
 
+    #loader { 
+      border: 16px solid #f3f3f3; /* Light grey */
+      border-top: 16px solid #3498db; /* Blue */
+      border-bottom: 16px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .container #loader {
+      display: block;
+    }
+
     .board{
       order: 1;
       min-width: 70%;
-      background-color: red;
     }
 
     .definitions{
@@ -46,7 +64,7 @@
     * {box-sizing: border-box;}
 
     .wrapper {
-      border: solid #f76707;
+      border: solid #ffffff;
       background-color: #fff4e6;
     }
 
@@ -56,7 +74,6 @@
       width: auto;
       background-color: white;
       padding: 0.5em;
-      color: #d9480f;
     }
 
     .wrapper > .empty {
@@ -66,6 +83,14 @@
       padding: 0.5em;
     }
 
+    .container .center { 
+      position: inherit; 
+      top: 0; 
+      bottom: 50%; 
+      left: 0; 
+      right: 0; 
+      margin: auto; 
+    }
 
     @media only screen and (max-width: 768px) {
       /* For mobile phones: */
@@ -85,11 +110,11 @@
 	  .then(function(json){
       console.log(json);
       const matches = json['matches'];
-      let result = '<ol>';
+      let results = '<ol>';
       let maxlen = 0
       console.log(typeof(matches))  
       Object.entries(matches).forEach(([key, value],index) => {
-        result += `
+        results += `
               <li>
                 ${value}
               </li>       
@@ -99,9 +124,10 @@
         }
       });
       console.log(maxlen);
-      result += '</ol>';
+      results += '</ol>';
       buildBoard(parseInt(maxlen*(3/2)), Object.keys(matches))
-      document.getElementById('definitions').innerHTML = result;
+      document.querySelector("#loader").style.display = "none"; 
+      document.getElementById('definitions').innerHTML = results;
     });
 
     function buildBoard(size, values){
@@ -244,7 +270,9 @@
   </script>
   <body>
     <section class="container">
-      <section id='result' class="board">
+      <section id='board' class="board">
+        <div id="loader" class="center">
+        </div> 
         <div id='result'></div>
       </section>
       <section id="definitions">
