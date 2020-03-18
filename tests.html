@@ -19,15 +19,30 @@
     body {
     font-family: 'Roboto', sans-serif;
     }
-    h1{
-      text-align: center;
-    }
 
     .container_box{
       display: flex;
       justify-content: center;
       flex-direction: column;
       flex-wrap: wrap;  
+    }
+
+    .container_flex{
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;  
+    }
+
+    .container_flex .title{
+      margin: 0;
+      text-align: left;
+      font-size: 40px;
+    }
+
+    .container_box #timer{
+      text-align: right;
+      font-size: 20px;
     }
 
     .question_box{
@@ -57,24 +72,26 @@
     }
   </style>
   <script type="text/javascript">
-    
+
     var num_questions = 0;
     var intervalID;
+    var questions = []
+    var index = 1;
 
     fetch('https://api.myjson.com/bins/cptzs')
       .then(response => response.json())
       .then(function (json) {
         console.log(json)
         
-        const questions = json['questions'];
-        let results = "<section class=\"title\"><h1>Test</h1></section>";
+        questions = json['questions'];
+        var title_timer = "<section class=\"title\"><h1>Test</h1></section> <div id=\"timer\">00:00</div>";
+        var results = '';
         num_questions = questions.length;
-        questions.forEach((question,index) =>  {
-          const {id, content, options} = question;
+        const {id, content, options} = questions.pop();
         results += `
           <section class="question_box">
               <p class="question_description">
-                ${index + 1}. ${content}
+                ${index}. ${content}
               </p>
             <ul>`
         options.forEach((option) => {
@@ -84,13 +101,40 @@
               </li>       
           `
         });
-        results += '</ul></section>'          
-        });
+        results += '</ul></section>'
+        index = index + 1;          
         document.getElementById('results').innerHTML = results;
+        document.getElementById('title_results').innerHTML = title_timer;
         document.getElementById('sendData').addEventListener('click', sendData);
     });
 
   function sendData(){
+    var results = '';
+    
+/*    for (var i = 0; i < 1;i++) {
+      console.log(document.querySelector('input[name="option '+i+'"]:checked').value)
+    }*/
+
+    if (questions.length > 0) {
+      const {id, content, options} = questions.pop();
+        results += `
+          <section class="question_box">
+              <p class="question_description">
+                ${index}. ${content} pipi
+              </p>
+            <ul>`
+        options.forEach((option) => {
+          results += `
+              <li><input type="radio" name="option ${index}" value="${option}">
+                ${option}
+              </li>       
+          `
+        });
+        results += '</ul></section>'
+        index = index +1;          
+        document.getElementById('results').innerHTML = results;
+    }
+
     /*
     json {
       userID:
@@ -104,9 +148,6 @@
       ]
     }
     */
-    for (var i = 0; i < num_questions;i++) {
-      console.log(document.querySelector('input[name="option '+i+'"]:checked').value)
-    }
 
   }
 
@@ -126,12 +167,12 @@
     }, 1000);
   </script>
   <body>
-    <form>
-      <p id="timer">00:00</p>
-      <section class="container_box" > 
+      <section class="container_box" >
+        <section class="container_flex">
+          <section id="title_results"></section>
+        </section>
         <section id="results" ></section>
         <input id="sendData" class="button_sumit" type="submit" value="Enviar">
       </section>
-  </form>
   </body>
 </html>
