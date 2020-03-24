@@ -6,145 +6,245 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link
-     href='http://fonts.googleapis.com/css?family=Roboto:300,700' 
-     rel='stylesheet' 
-     type='text/css'>
+       <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/timer.js"></script>
     <title></title>
   </head>
   <style type="text/css">
+
     body {
-    font-family: 'Roboto', sans-serif;
+      background-image: url('images/background-incities.png');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
     }
 
-    .container_box{
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      flex-wrap: wrap;  
+    .card-body {
+        padding: .5rem;
+    }
+    .list-group-item {
+        padding: .75rem;
+    }
+    .card:hover {
+        opacity: .7;
+        cursor: pointer;
+    }
+    .card-title:hover {
+        color: lightseagreen;
+    }
+    label#form_ {
+        font-size: 22px;
+    }
+    hr.new {
+      border-top: 1px solid grey;
+    }
+    #add-question {
+        border: 2px dashed grey;
+    }
+    .border-dashed-3 {
+        border:3px dashed grey
     }
 
-    .container_flex{
-      display: flex;
-      justify-content: flex-start;
-      flex-direction: row;
-      flex-wrap: wrap;  
+    .container-fluid {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
     }
 
-    .container_flex .title{
-      margin: 0;
-      text-align: left;
-      font-size: 40px;
+    .btn.btn-light.btn-lg.border-dashed-3:hover{
+        opacity: 40%;
     }
 
-    .container_box #timer{
-      text-align: right;
-      font-size: 20px;
+    .sticky-offset {
+        top: 65px;
     }
 
-    .question_box{
-      padding: 10px 20px 10px 20px;
-      text-align: justify;
+    /* format text for options in play_game */
+    .shad {
+        text-shadow: 1px 1px black;
+        color: white;
+        font-size: 1.75rem;
+    }
+    .shad2 {
+        text-shadow: 1px 1px black;
+        color: white;
+        font-size: 1.75rem;
+        text-align: center;
+    }
+    #loader { 
+      border: 16px solid #f3f3f3; /* Light grey */
+      border-top: 16px solid #3498db; /* Blue */
+      border-bottom: 16px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+      position: fixed; /* or absolute */
+      top: 45%;
+      left: 45%;
     }
 
-    .question_box p {
-      padding: 0px 30px 0px 30px;
-    }
-    .question_box ul {
-      list-style: none;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-    .question_box label {
-      box-sizing: border-box;
-      max-width: 20%;
-      color: white;
-      padding: 20px;
-      margin: 5px;
+    .container #loader {
+      display: block;
     }
 
-
-    .button_sumit{
-      font-family: inherit;
-      background-color: #004BB5;
-      color: white;
-      font-size: 20px;
-      text-align: center;
-      margin: 0px 30% 0px 30%;
+    .btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-success:focus, .btn-success:active:focus  {
+        background-color: #00C574;
+        border-color: #33CC99;;
     }
 
-    ul {
-      list-style-type: none;
+    .btn-warning, .btn-warning:hover, .btn-warning:active, .btn-warning:visited, .btn-warning:focus, .btn-warning:active:focus  {
+        background-color: #FF9933;
+        border-color: #E66B2E;
+    }
+    
+    .btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited, .btn-danger:focus, .btn-danger:active:focus  {
+        background-color: #CC0066;
+        border-color: #B3003B;
+    }
+
+     
+
+    @media (max-width:425px){
+        .row{
+            flex-direction: column;
+        }
+        #signUpForm{
+            padding: 0;
+            
+        }
     }
   </style>
   <script type="text/javascript">
 
     var num_questions = 0;
     var intervalID;
-    var questions = []
+    var questions = [];
     var index = 1;
+    var selected = [];
+    var set = undefined
+    var buttonclicked;
 
     fetch('https://api.myjson.com/bins/cptzs')
       .then(response => response.json())
       .then(function (json) {
         console.log(json)
-        
+
         questions = json['questions'];
-        var title_timer = "<section class=\"title\"><h1>Test</h1></section> <div id=\"timer\">00:00</div>";
+        var title_timer = `
+        <div class="container-fullwidth">
+         <header>
+          <nav class="fixed-top navbar navbar-expand-lg bg-white justify-content-center" style="border-bottom:3px #dee2e6 solid">
+            <div class="row">
+              <section class=\"title\"><h1>Título de la actividad</h1> 
+            </div>
+              <h3 id="timer" style="margin-left: 10%;" value="00:00"></h3>
+          </nav>
+          </header>
+        </div>
+        `;
+        var results_enum = '';
         var results = '';
         num_questions = questions.length;
         const {id, content, options} = questions.pop();
-        results += `
-          <section class="question_box">
-              <p class="question_description">
-                ${index}. ${content}
-              </p>
-            <ul>`
-        options.forEach((option) => {
-          results += `
-              <li><input type="radio" name="option ${index}" value="${option}">
-                ${option}
-              </li>       
-          `
-        });
-        results += '</ul></section>'
-        index = index + 1;          
-        document.getElementById('results').innerHTML = results;
+        results_enum += `
+        <a class="carousel-control-next d-flex align-items-start" style="height: 50px;" role="button" data-slide="next">
+          <button id="sendData" type="button" class="btn btn-info d-flex shadow" style="margin-top:100px">Siguiente</button>
+        </a>
+        <div class="row ml-0 mr-0 mt-5 pt-5 font-weight-bold" style="padding-left:20px;">${index} de ${num_questions}</div>
+        <div class="row justify-content-center"> 
+          <h3 style="padding: 5% 10%;">${content}</h3>
+        </div>
+        `
+        index = index + 1;     
+        document.querySelector("#loader").style.display = "none"; 
+        document.querySelector("#content").style.display = "block";     
+        document.getElementById('results_enum').innerHTML = results_enum;
         document.getElementById('title_results').innerHTML = title_timer;
+        document.getElementById('results').innerHTML = getOptions(options);
         document.getElementById('sendData').addEventListener('click', sendData);
     });
 
+  function clickButton(val){
+    set = val
+  }
+
+  function getOptions(options){
+    return `
+          <div class="row">
+              <div class="col pl-1 pr-1">
+                <button type="button" class="btn btn-success d-flex w-100" style="height:100%" onclick="clickButton( \'` + options[0] + `\')">
+                  <div class="col-2 shad"><b>A</b></div>
+                  <div class="col text-left" style="color:black;font-size: 20px;">${options[0]}</div>
+                </button>
+              </div>
+              <div class="col pl-1 pr-1">
+                <button type="button" class="btn btn-primary d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[1] + `\')">
+                  <div class="col-2 shad"><b>B</b></div>
+                  <div class="col text-left" style="color:black;font-size: 20px;">${options[1]}</div>
+                </button>
+              </div>
+              <div class="col pl-1 pr-1">
+                <button type="button" class="btn btn-warning d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[2] + `\')">
+                  <div class="col-2 shad text-right"><b>C</b></div>
+                  <div class="col text-left"  style="color:black;font-size: 20px;">${options[2]}</div>
+                </button>
+              </div>
+              <div class="col pl-1 pr-1">
+                  <button type="button" class="btn btn-danger d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[3] + `\')">
+                    <div class="col-2 shad"><b>D</b></div>
+                    <div class="col text-left" style="color:black;font-size: 20px;">${options[3]}</div>
+                  </button>
+              </div>
+            </div>
+            `
+  }
+
   function sendData(){
+    var results_enum = '';
     var results = '';
-    
-/*    for (var i = 0; i < 1;i++) {
+    document.querySelector("#content").style.display = "none"; 
+    document.querySelector("#loader").style.display = "block";  
+    /* for (var i = 0; i < 1;i++) {
       console.log(document.querySelector('input[name="option '+i+'"]:checked').value)
     }*/
-
-    console.log(document.querySelector('input[name="option '+(index-1)+'"]:checked').value)
+    selected.push(set)
     if (questions.length > 0) {
       const {id, content, options} = questions.pop();
-        results += `
-          <section class="question_box">
-              <p class="question_description">
-                ${index}. ${content} pipi
-              </p>
-              <ul>`
-        options.forEach((option) => {
-          results += `
-              <label class="option" style="background-color:`+ getRandomColor() +`;"><input type="radio" name="option ${index}" value="${option}" style="display:none;">
-                ${option}
-              </label>       
-          `
-        });
-        results += '</ul></section>'
-        index = index +1;          
-        document.getElementById('results').innerHTML = results;
+      results_enum += questions.length==0? `
+        <a class="carousel-control-next d-flex align-items-start" style="height: 50px;" role="button" data-slide="next">
+          <button id="sendData" type="button" class="btn btn-info d-flex shadow" style="margin-top:100px" data-toggle="modal" data-target="#myModal">Siguiente</button>
+        </a>`
+        :`
+        <a class="carousel-control-next d-flex align-items-start" style="height: 50px;" role="button" data-slide="next">
+          <button id="sendData" type="button" class="btn btn-info d-flex shadow" style="margin-top:100px">Siguiente</button>
+        </a>`
+
+        results_enum += `
+        <div class="row ml-0 mr-0 mt-5 pt-5 font-weight-bold" style="padding-left:20px">${index} de ${num_questions}</div>
+        <div class="row justify-content-center"> 
+          <h3 style="padding: 5% 10%;">${content}</h3>
+        </div>
+        `;
+      index = index +1;
+      document.getElementById('results_enum').innerHTML = results_enum;  
+      document.getElementById('results').innerHTML = getOptions(options);
+      document.querySelector("#content").style.display = "block"; 
+      document.querySelector("#loader").style.display = "none";    
+      document.getElementById('sendData').addEventListener('click', sendData);
+    }else{
+      console.log(selected);
+      document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Puntaje: 1000</li> <li>Correctas: 3/4</li></ul>`;
     }
 
     /*
@@ -163,37 +263,74 @@
 
   }
 
-  function getRandomColor() {
+  function postToServer(){
+    document.querySelector("#content").style.display = "none"; 
+    document.querySelector("#loader").style.display = "block";  
+    document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Puntaje: 1000</li> <li>Correctas: 3/4</li></ul>`;
+
+  }
+
+  /*function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
     for (var i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
-  }
+  }*/
 
   var intervalID = setInterval(function(){
-      console.log('Hola');
-      $("#timer").text(function() {
+      $("#timer").val(function() {
         var timer = showTime(5);
         if (timer.localeCompare('02:00')==-1){
           $("#timer").css("color", "red");
         }
         if (timer.localeCompare('end')==0) {
           clearTimeout(intervalID);
+          $('#myModal').modal('toggle');
+          postToServer();
         }
+        $("#timer").text(timer)
         return timer;
       });
 
     }, 1000);
   </script>
   <body>
-      <section class="container_box" >
-        <section class="container_flex">
-          <section id="title_results"></section>
-        </section>
-        <section id="results" ></section>
-        <input id="sendData" class="button_sumit" type="submit" value="Enviar">
-      </section>
+    <div id="content">
+      <div class="header-nav">
+        <section id="title_results"></section>
+      </div>
+      <div id="question-counter"></div>
+        <section id="results_enum" class="d-block w-30 pb-2"></section>
+      <div id="results"></div>
+    </div>
+    <div id="loader" class="center"></div>
+    <div class="container">
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="row justify-content-center"> 
+                <h4 class="modal-title" style="padding-left: 20px;">Resultados</h4>
+              </div>
+            </div>
+            <div class="modal-body">
+              <p id="score"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" data-dismiss="modal">Terminar</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>
