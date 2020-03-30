@@ -3,7 +3,7 @@ var intervalID, set, num_questions, time_to_finish;
 var questions, selected  = [];
 var index = 1;
 
-fetch('https://api.myjson.com/bins/cptzs')
+fetch('https://api.myjson.com/bins/1c6we4')
     .then(response => response.json())
     .then(function (json) {
         //console.log(json);
