@@ -1,104 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <link
-     href='http://fonts.googleapis.com/css?family=Roboto:300,700' 
-     rel='stylesheet' 
-     type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap" rel="stylesheet" />
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title></title>
-  </head>
-  <style type="text/css">
-    
-    .wrapper {
-      display: grid;
-      grid-auto-rows: minmax(10px, auto);
-    }
-    * {box-sizing: border-box;}
 
-    .wrapper {
-      border: solid #f76707;
-      background-color: #fff4e6;
-    }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="css/main.css" rel="stylesheet">
+  <script type="text/javascript" src="js/timer.js"></script>
+  <title></title>
+</head>
+<style>
+   .container section {
+    padding: 10px;
+    margin: 10px 0 10px 0;
+  }
 
-    .wrapper > div {
-      border: 2px solid #ffa94d;
-      text-align: center;
-      width: auto;
-      background-color: white;
-      padding: 0.5em;
-      color: #d9480f;
-    }
+  .wrapper {
+    display: grid;
+    grid-auto-rows: minmax(25px, 25px);
+    border: solid #ffffff;
+    grid-column-gap: 1px;
+    text-align: left;
+    grid-row-gap: 1px;
+    background-color: black;
+  }
 
-    .wrapper > div #hover{
-      color: blue;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
-    .container{
-      display: flex;
-      flex-direction: column;
-    }
 
-    .word_list{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-    }
+  .wrapper > div {
+    text-align: center;
+    width: 35px;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
 
-  </style>
-  <script type="text/javascript">
-   	
-   /*fetch('https://api.myjson.com/bins/cptzs')
-	  .then(response => response.json())
-	  .then(json => console.log(json));*/
+  .wrapper > .empty {
+    border: none;
+    width: auto;
+    padding: 0.5em;
+  }
 
-    function buildBoard(){
-      let size = 10;
-      var board = Array(size).fill('0').map((x) => Array(size).fill('0'));
-      var result = '<div class="wrapper" style="grid-template-columns: repeat('+size +', 1fr);">';
-      for (var i = 0; i < size; i++) {
-        for (var j = 0; j < size; j++) {
-            result += `
-            <div>
-             ${board[i][j]}
-            </div>      
-          `;
-        }
-      }
-      result += '</div>';
-      document.getElementById('result').innerHTML = result;  
-      console.log('XD');
-    }
-  </script>
-  <body>
-    <section class="container">
-      <div id="result" class="board">
-        <div id="results" ></div>
-      </div>
-      <div class="word_list">
-        <ul>
-          <li>Hola</li>
-          <li>Hola</li>
-          <li>Hola</li>
-        </ul>
-        <ul>
-          <li>Hola</li>
-          <li>Hola</li>
-          <li>Hola</li>
-        </ul>
-      <ul>
-          <li>Hola</li>
-          <li>Hola</li>
-          <li>Hola</li>
-        </ul>
-      </div>
-      <button onclick="buildBoard()">CREATE BOARD</button>
-    </section>
-  </body>
+  .bottomright {
+    position: relative;
+    font-size: x-small;
+    bottom: 15px;
+    right: 8px;
+  }
+
+  .letter {
+    border: 1px solid black;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .container .center {
+    position: inherit;
+    top: 0;
+    bottom: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  .unselectable {
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */      
+  }
+
+  .unselectable:hover {
+    background-color: yellow;
+  }
+
+</style>
+<body>
+
+  <div id="loader" class="center"></div>
+  <div class="header-nav">
+    <section id="title_results"></section>
+  </div>
+  <div class="row ml-0 mr-0 mt-5 pt-5 font-weight-bold" style="padding-left:20px">
+    <div class="col-md-7">
+      <section class="container">
+        <section id='board' class="board">
+          <div id='result'></div>
+        </section>
+    </div>
+
+  <script type="text/javascript" src="js/letterSoup.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>

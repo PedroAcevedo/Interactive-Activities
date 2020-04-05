@@ -1,282 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <link
-     href='http://fonts.googleapis.com/css?family=Roboto:300,700' 
-     rel='stylesheet' 
-     type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap" rel="stylesheet" />
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title></title>
-  </head>
-  <style type="text/css">
-    .container{
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      flex-wrap: wrap;
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <link href="css/main.css" rel="stylesheet">
+  <script src="js/crossWords.js"></script>
+  <script type="text/javascript" src="js/timer.js"></script>
+  <title></title>
+</head>
+<style type="text/css">
+  .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+
+  .wrapper {
+    display: grid;
+    grid-auto-rows: minmax(25px, 32px);
+    border: solid #ffffff;
+    grid-column-gap: 1px;
+    text-align: left;
+    grid-row-gap: 1px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+
+  .wrapper>div {
+    border: 1px solid black;
+    text-align: center;
+    width: 32px;
+    height: 32px;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    position: relative;
+  }
+
+  .wrapper>.empty {
+    border: none;
+    width: auto;
+    padding: 0.5em;
+  }
+
+  .letters {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+
+  .bottomright {
+    position: relative;
+    font-size: x-small;
+    bottom: 15px;
+    right: 8px;
+  }
+
+  .letter {
+    border: 1px solid black;
+    text-align: center;
+    font-size: medium;
+    cursor: pointer;
+  }
+
+  .container .center {
+    position: inherit;
+    top: 0;
+    bottom: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  .list {
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+
+  .question_number {
+    position: absolute;
+    font-size: 12px;
+    color: grey;
+    left: 3px;
+    top: 3px;
+  }
+
+  .btn-check {
+    background: no-repeat padding-box #FF9933;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 12px;
+    font-family: Roboto;
+    padding: 7px 15px;
+}
+
+  @media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    [class="board"] {
+      width: 100%;
     }
 
-    .container section {
-      padding: 10px;
-      margin: 10px 0 10px 0;
+    [class="definitions"] {
+      width: 100%;
     }
+  }
+</style>
 
-    #loader { 
-      border: 16px solid #f3f3f3; /* Light grey */
-      border-top: 16px solid #3498db; /* Blue */
-      border-bottom: 16px solid #3498db; /* Blue */
-      border-radius: 50%;
-      width: 120px;
-      height: 120px;
-      animation: spin 2s linear infinite;
-    }
+<body>
+  <div id="loader" class="center"></div>
+  <div id="content">
+    <div class="header-nav">
+      <div id="title_results"></div>
+    </div>
+    <div class="row ml-0 mr-0 mt-5 pt-5 font-weight-bold" style="padding-left:20px">
+      <div class="col-md-6">
+        <section class="container">
+          <section id='board' class="board">
+            <div id='result'></div>
+          </section>
+      </div>
+      <div class="col-md-1"></div>
+      <section id="definitions"></section>
+    </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .container #loader {
-      display: block;
-    }
-
-    .board{
-      order: 1;
-      min-width: 70%;
-    }
-
-    .definitions{
-      order: 2;
-      min-width: 25%;
-      background-color: blue;
-    }
-
-    .wrapper {
-      display: grid;
-      grid-auto-rows: minmax(10px, auto);
-    }
-    * {box-sizing: border-box;}
-
-    .wrapper {
-      border: solid #ffffff;
-      background-color: #fff4e6;
-    }
-
-    .wrapper > div {
-      border: 2px solid #ffa94d;
-      text-align: center;
-      width: auto;
-      background-color: white;
-      padding: 0.5em;
-    }
-
-    .wrapper > .empty {
-      border: none;
-      width: auto;
-      background-color: white;
-      padding: 0.5em;
-    }
-
-    .container .center { 
-      position: inherit; 
-      top: 0; 
-      bottom: 50%; 
-      left: 0; 
-      right: 0; 
-      margin: auto; 
-    }
-
-    @media only screen and (max-width: 768px) {
-      /* For mobile phones: */
-      [class="board"] {
-        width: 100%;
-      }
-      [class="definitions"] {
-        width: 100%;
-      }
-    }
-
-  </style>
-  <script type="text/javascript">
-   	
-   	fetch('https://api.myjson.com/bins/kil8w')
-	  .then(response => response.json())
-	  .then(function(json){
-      console.log(json);
-      const matches = json['matches'];
-      let results = '<ol>';
-      let maxlen = 0
-      console.log(typeof(matches))  
-      Object.entries(matches).forEach(([key, value],index) => {
-        results += `
-              <li>
-                ${value}
-              </li>       
-        ` 
-        if (key.length > maxlen) {
-          maxlen = key.length
-        }
-      });
-      console.log(maxlen);
-      results += '</ol>';
-      buildBoard(parseInt(maxlen*(3/2)), Object.keys(matches))
-      document.querySelector("#loader").style.display = "none"; 
-      document.getElementById('definitions').innerHTML = results;
-    });
-
-    function buildBoard(size, values){
-      var board = generateCrossWords(size,values.slice());
-      console.log(board)
-      while(board == undefined){
-        board = generateCrossWords(size,values.slice());        
-      }
-      var result = '<div class="wrapper" style="grid-template-columns: repeat('+size +', 1fr);">';
-      for (var i = 0; i < size; i++) {
-        for (var j = 0; j < size; j++) {
-          if (board[i][j] != '0') {
-              result += `
-              <div>
-               ${board[i][j]}
-              </div>      
-            `;
-          }else{
-            result += `
-              <div class='empty'>
-                    
-              </div>      
-            `;
-          }    
-        }
-      }
-      result += '</div>'
-      document.getElementById('result').innerHTML = result;
-    }
-
-    function generateCrossWords(size, values){
-      var board =  Array(size).fill('0').map((x) => Array(size).fill('0'));
-      var visited = Array(size).fill('0').map((x) => Array(size).fill(false));  
-      var words = values.sort(function(a,b){
-        if (a.length > b.length) {
-          return 1;
-        }
-        if (a.length < b.length) {
-            return -1;
-        }
-          // a must be equal to b
-        return 0;
-      });
-      orientation =  Math.round(Math.random());
-      start = false;
-      actualword = words.pop();
-      wloc = {};
-      wordO = {
-        0 : [], //Horizontal
-        1 : [] //Vertical
-      }
-      while(words.length > 0){
-        orientation = (orientation == 0)? 1 : 0;
-        if (!start) {
-          wordO[orientation].push(actualword);
-          row = (orientation == 0)? Math.floor(Math.random() * (size/2 - 4)) + 4 : 0;
-          column = (orientation == 1)? Math.floor(Math.random() * (size/2 - 4)) + 4 : 0;
-          for (var i = 0; i < actualword.length ; i++) {
-              if (orientation == 1) {
-                board[i][column] = actualword.substring(i,i+1)
-                visited[i][column] = true;
-              }else{
-                board[row][i] = actualword.substring(i,i+1)
-                visited[row][i] = true;
-              }
-          }
-          wloc[actualword] = [row, column, orientation];
-          start = true;
-        }else{
-          console.log(actualword)
-          ppair = findPair(wordO[(orientation == 0)? 1 : 0], actualword, wloc, visited, size);
-          if(ppair.length == 0){
-            return undefined;
-          }
-          select = Math.ceil(Math.random() * (ppair.length-1));
-          row = ppair[select][0];
-          column = ppair[select][1];
-          console.log(row +' - '+ column);
-          for (var i = 0; i < actualword.length; i++) {
-              if (orientation == 1) {
-                board[row+i][column] = actualword.substring(i,i+1)
-                visited[row+i][column] = true;
-              }else{
-                board[row][column+i] = actualword.substring(i,i+1)
-                visited[row][column+i] = true;
-              }
-          }
-          wloc[actualword] = [row, column, orientation];
-          wordO[orientation].push(actualword);
-
-        }
-        actualword = words.pop();
-      }
-      return board
-    }
-
-    function findPair (wo, actual, loc, v, n){
-      pair = [];
-      wo.forEach((word) =>{
-            for (var j = 0; j < actual.length; j++) {
-              for (var i = 0; i < word.length; i++) {
-                if (word.substring(i,i+1) == actual.substring(j,j+1)) {
-                  o = loc[word][2];
-                  rc = loc[word][(o == 1)? 1 : 0];
-                  cr = loc[word][(o == 1)? 0 : 1];
-                  if (j < rc && (rc + actual.length-(j+1)) < n)  {
-                    let available = true;
-                    for (var k = rc-j; k <= (rc + actual.length-(j+1)); k++) {
-                      if (rc != k && available) {
-                        if (o == 0) {
-                          if(cr+i >= n || k >= n){
-                              available = false;
-                          }else{ 
-                            console.log(v)
-                            console.log(k)
-                            if (v[k][cr+i]) {
-                              available = false;
-                            }
-                          }
-                        }else{
-                          if(v[cr+i][k]){
-                            available = false;
-                          }
-                        }
-                      }
-                    }
-                    if (available) {
-                      row = (o == 0)? rc-j : cr+i;
-                      column = (o == 1)? rc-j : cr+i;
-                      pair.push([row,column,o])
-                    }
-                  }
-                }
-            }
-          }
-      });
-      return pair;
-    }
-
-  </script>
-  <body>
-    <section class="container">
-      <section id='board' class="board">
-        <div id="loader" class="center">
-        </div> 
-        <div id='result'></div>
-      </section>
-      <section id="definitions">
-      </section>
-    </section>
-  </body>
 </html>

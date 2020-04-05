@@ -1,0 +1,88 @@
+.card-body {
+    padding: .5rem;
+}
+
+.list-group-item {
+    padding: .75rem;
+}
+
+.card:hover {
+    opacity: .7;
+    cursor: pointer;
+}
+
+.card-title:hover {
+    color: lightseagreen;
+}
+
+label#form_ {
+    font-size: 22px;
+}
+
+hr.new {
+    border-top: 1px solid grey;
+}
+
+#add-question {
+    border: 2px dashed grey;
+}
+
+.border-dashed-3 {
+    border: 3px dashed grey
+}
+
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.btn.btn-light.btn-lg.border-dashed-3:hover {
+    opacity: 40%;
+}
+
+.sticky-offset {
+    top: 65px;
+}
+
+/* format text for options in play_game */
+
+.shad {
+    text-shadow: 1px 1px black;
+    color: white;
+    font-size: 1.75rem;
+}
+
+.shad2 {
+    text-shadow: 1px 1px black;
+    color: white;
+    font-size: 1.75rem;
+    text-align: center;
+}
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-success:focus, .btn-success:active:focus {
+    background-color: #00C574;
+    border-color: #33CC99;
+    ;
+}
+
+.btn-warning, .btn-warning:hover, .btn-warning:active, .btn-warning:visited, .btn-warning:focus, .btn-warning:active:focus {
+    background-color: #FF9933;
+    border-color: #E66B2E;
+}
+
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited, .btn-danger:focus, .btn-danger:active:focus {
+    background-color: #CC0066;
+    border-color: #B3003B;
+}
+
+@media (max-width:425px) {
+    .row {
+        flex-direction: column;
+    }
+    #signUpForm {
+        padding: 0;
+    }
+}
