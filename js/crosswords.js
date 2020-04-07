@@ -95,6 +95,22 @@ fetch('https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628') 
             });
     });
 
+function clearboard(board,size){
+    for (var i = 0; i < size; i++) {
+        var cont = 0;
+        for (var j = 0; j < size; j++) {
+            if(board[i][j]=='0'){
+                cont++;
+            }
+        }
+        if(cont==size){
+            board.splice(i);
+        }
+    }
+    console.log
+    return board[0].length;
+}
+
 var wordCount = {}
 function buildBoard(size, values, def1) {
     var board = generateCrossWords(size, values.slice());

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <link href="css/main.css" rel="stylesheet">
+    <script type="text/javascript" src="js/timer.js"></script>
+    <!--<script type="text/javascript" src="js/test.js"></script>-->
+    <title></title>
+</head>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("select").change(function () {
+            $(this).find("option:selected").each(function () {
+                var optionValue = $(this).attr("value");
+                console.log(optionValue);
+                if (optionValue) {
+                    $(".form").not("." + optionValue).hide();
+                    $("." + optionValue).show();
+                } else {
+                    $(".form").hide();
+                }
+            });
+        }).change();
+    });
+</script>
+
+<body>
+
+    <div class="form-group">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Tipo de actividad</label>
+            <select class="form-control" id="exampleFormControlSelect1">
+                <option selected>Seleccione un tipo de actividad</option>
+                <option value="1">Sopa de letras</option>
+                <option value="2">Test</option>
+                <option value="3">Crucigrama</option>
+                <option value="4">Match memory</option>
+            </select>
+        </div>
+        <form>
+            <div class="form 1" style="display: none;">
+                Sopa de letras
+            </div>
+            <div class="form 2" style="display: none;">
+
+                <div id="preguntas"></div>
+
+                <div class="form-group">
+                    <label for="TestTextArea">Texto de la pregunta</label>
+                    <textarea class="form-control" id="TestTextArea" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="TestInput">Opción 1</label>
+                    <input type="text" class="form-control" id="TestInput1"
+                        placeholder="Opción de respuesta 1">
+                </div>
+                <div class="form-group">
+                    <label for="TestInput2">Opción 2</label>
+                    <input type="text" class="form-control" id="TestInput2"
+                        placeholder="Opción de respuesta 2">
+                </div>
+                <div class="form-group">
+                    <label for="TestInput3">Opción 3</label>
+                    <input type="text" class="form-control" id="TestInput3"
+                        placeholder="Opción de respuesta 3">
+                </div>
+                <div class="form-group">
+                    <label for="TestInput4">Opción 4</label>
+                    <input type="text" class="form-control" id="TestInput4"
+                        placeholder="Opción de respuesta 4">
+                </div>
+
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">Respuesta correcta: </legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios1"
+                                    value="1" checked>
+                                <label class="form-check-label" for="gridRadios1">
+                                    Opción 1
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios2"
+                                    value="2">
+                                <label class="form-check-label" for="gridRadios2">
+                                    Opción 2
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios3"
+                                    value="3">
+                                <label class="form-check-label" for="gridRadios3">
+                                    Opción 3
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios3"
+                                    value="4">
+                                <label class="form-check-label" for="gridRadios3">
+                                    Opción 4
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <a class="btn btn-primary" onclick="addQuestion()">Agregar</a>
+
+
+                <div class="form-group">
+                    <label for="formGroupExampleInput5">Tiempo limite para terminar la actividad</label>
+                    <input type="number" class="form-control" id="TestInput5"
+                        placeholder="Minutos para terminar la actividad">
+                </div>
+
+            </div>
+            <div class="form 3" style="display: none;">
+                Crucigrama
+            </div>
+            <div class="form 4" style="display: none;">
+                Match memory
+            </div>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <a type="submit" class="btn btn-primary" onclick="postToServer()">Submit</a>
+    </form>
+
+    <script>
+
+        questions = []
+
+        function postToServer() {
+            var url = '';
+            var data = {};
+            switch (document.getElementById('exampleFormControlSelect1').value) {
+                case '1':
+                    console.log('El kilogramo de Naranjas cuesta $0.59.');
+                    break;
+                case '2':
+                    if (questions.length > 0) {
+                        if (questions.length >= 5) {
+                            data['test'] = questions;
+                            url = 'http://127.0.0.1:8000/api/createInteractive';
+                        } else {
+                            alert('Adicione al menos 5 preguntas al test');
+                        }
+                    } else {
+                        alert('Debe agregar 5 preguntas minimo al test');
+                    }
+                    break;
+                case '3':
+                    console.log('El kilogramo de Bananas cuesta $0.48.');
+                    break;
+                case '4':
+                    console.log('El kilogramo de Cerezas cuesta $3.00.');
+                    break;
+                default:
+                    alert('Debe seleccionar una actividad');
+            }
+            if(data!=undefined){
+                console.log(data);
+                data['activity_id'] = 1;
+                data['type'] = parseInt(document.getElementById('exampleFormControlSelect1').value);
+                data['time_limit'] = parseInt(document.getElementById('TestInput5').value);
+                fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data), // data can be `string` or {object}!
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => res.json())
+                .catch(error => console.error('Error:', error))
+                .then(function (res) {
+                    console.log(data)
+                    console.log('HOLAAAA:', res);
+                });
+            }
+        }
+
+        function addQuestion() {
+            var content = document.getElementById('TestTextArea')
+            if (content.value.length > 0) {
+                var options = []
+                for(var i=1; i<=4; i++){
+                    options.push(document.getElementById('TestInput'+i));
+                }
+                console.log(options)
+                var data = {
+                    content: content.value,
+                    options: [
+                        options[0].value,
+                        options[1].value,
+                        options[2].value,
+                        options[3].value
+                    ],
+                    is_answer: document.querySelector('input[name="TestRadio"]:checked').value
+                }
+                questions.push(data);
+                console.log(questions);
+                updateQuestionList();
+                content.value = '';
+                options.forEach((op) => op.value = '');
+            } else {
+                alert('Complete el campo requerido');
+            }
+        }
+
+        function remove(index) {
+            questions.splice(index, 1);
+            updateQuestionList();
+        }
+
+        function updateQuestionList() {
+            var html = '<ul class="list-group">';
+            questions.forEach(function (question, index) {
+                html += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${question['content'].substring(0, 10)} ...
+                    <a class="btn" onclick="remove(${index})"><span class="badge badge-primary badge-pill">x</span></a>
+                </li>
+            `;
+            });
+            document.getElementById('preguntas').innerHTML = html;
+        }
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

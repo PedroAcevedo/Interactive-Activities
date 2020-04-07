@@ -2,8 +2,8 @@
   "type": [0, 1, 2, 3, 4],
   "userID": 1222312,
   "activity_id": 1212,
-  "activity_title": "Título de actividad",
-  "level": 1,
+  "title": "Título de actividad",
+  "time_limit": 5,
   "list_options": [
     "interculturalidad",
     "competencia",

@@ -24,3 +24,19 @@ function showTime(start){
 	seconds = (segs >= 10)? segs : '0' + segs;
 	return minutes + ':' + seconds;
 }
+
+function timediff(start, now){
+	let time_now = now.split(':');
+	let minutes = start - parseInt(time_now[0]);
+	let segs = 60 - parseInt(time_now[1]);
+
+	if(segs < 60){
+		minutes--;
+	}else{
+		segs = 0;
+	}
+	minutes = (minutes >= 10)? minutes : '0' + minutes;
+	segs = (segs >= 10)? segs : '0' + segs;
+	return minutes + ':' + segs;
+}
+

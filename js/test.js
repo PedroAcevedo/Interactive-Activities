@@ -2,15 +2,17 @@ var num_questions, userID, activity_id  = 0;
 var intervalID, set, num_questions, time_to_finish;
 var questions, selected  = [];
 var index = 1;
+var type = 0;
 
-fetch('https://api.myjson.com/bins/1c6we4')
+fetch('http://localhost:8000/api/getInteractive/46')
     .then(response => response.json())
     .then(function (json) {
         //console.log(json);
-        questions = json['questions'];
+        questions = json['data']['questions'];
+        type = json['data']['type'];
         num_questions = questions.length;
-        time_to_finish = json['level'] == 1? 5 : 3;
-        var title = json['activity_title'];
+        time_to_finish = json['data']['time_limit'];
+        var title = json['data']['title'];
         const { id, content, options } = questions.pop();
 
         var title_timer = `
@@ -62,23 +64,25 @@ function postToServer() {
     document.querySelector("#content").style.display = "none";
     document.querySelector("#loader").style.display = "block";
     let data = {
+        "type": type,
         "userID": userID,
-        "time_to_finish": document.getElementById('timer').value,
+        "time_to_finish": timediff(time_to_finish, document.getElementById('timer').value),
         "activity_id": activity_id,
         "answers": selected
     }
-    fetch('https://api.myjson.com/bins/ktsi4', {
-        method: 'GET', // or 'POST'
-        //body: JSON.stringify(data), // data can be `string` or {object}!
+    console.log(data);
+    fetch('http://localhost:8000/api/responseInteractive', {
+        method: 'POST',
+        body: JSON.stringify(data), // data can be `string` or {object}!
         headers: {
             'Content-Type': 'application/json'
         }
     }).then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(function (res) {
-            console.log(data)
+            console.log(res)
             console.log('Success:', res);
-            document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Puntaje: 1000</li> <li>Correctas: 3/4</li></ul>`;
+            document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Puntaje: 1000</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul>`;
             $('#myModal').modal('toggle');
         });
 }
@@ -115,27 +119,27 @@ function getOptions(options) {
     return `
           <div class="row">
               <div class="col pl-1 pr-1">
-                <button type="button" class="btn btn-success d-flex w-100" style="height:100%" onclick="clickButton( \'` + options[0] + `\')">
+                <button type="button" class="btn btn-success d-flex w-100" style="height:100%" onclick="clickButton( \'` + options[0]['option_id'] + `\')">
                   <div class="col-6 col-md-2 shad"><b>A</b></div>
-                  <div class="col-12 col-md-10 text-left" style="color:black;font-size: 20px;padding:5px;">${options[0]}</div>
+                  <div class="col-12 col-md-10 text-left" style="color:black;font-size: 20px;padding:5px;">${options[0]['content']}</div>
                 </button>
               </div>
               <div class="col pl-1 pr-1">
-                <button type="button" class="btn btn-primary d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[1] + `\')">
+                <button type="button" class="btn btn-primary d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[1]['option_id']  + `\')">
                   <div class="col-6 col-md-2 shad"><b>B</b></div>
-                  <div class="col-12 col-md-10 text-left" style="color:black;font-size: 20px;padding:5px;">${options[1]}</div>
+                  <div class="col-12 col-md-10 text-left" style="color:black;font-size: 20px;padding:5px;">${options[1]['content']}</div>
                 </button>
               </div>
               <div class="col pl-1 pr-1">
-                <button type="button" class="btn btn-warning d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[2] + `\')">
+                <button type="button" class="btn btn-warning d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[2]['option_id']  + `\')">
                   <div class="col-6 col-md-2 shad"><b>C</b></div>
-                  <div class="col-12 col-md-10 text-left" style="color:black;font-size: 20px;padding:5px;">${options[2]}</div>
+                  <div class="col-12 col-md-10 text-left" style="color:black;font-size: 20px;padding:5px;">${options[2]['content']}</div>
                 </button>
               </div>
               <div class="col pl-1 pr-1">
-                  <button type="button" class="btn btn-danger d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[3] + `\')">
+                  <button type="button" class="btn btn-danger d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[3]['option_id']  + `\')">
                     <div class="col-6 col-md-2 shad"><b>D</b></div>
-                    <div class="col-12 col-md-10 text-left" style="color:black;font-size: 20px;padding:5px;">${options[3]}</div>
+                    <div class="col-12 col-md-10 text-left" style="color:black;font-size: 20px;padding:5px;">${options[3]['content']}</div>
                   </button>
               </div>
             </div>
