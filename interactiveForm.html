@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -29,6 +30,30 @@
                 }
             });
         }).change();
+
+
+        $('#MemoryCheck1').change(function () {
+            console.log("EVENTO CHANGE")
+            if (this.checked) {
+                $('#MemoryText1').hide();
+                $('#MemoryImage1').show();
+            } else {
+                $('#MemoryImage1').hide();
+                $('#MemoryText1').show();
+            }
+        });
+
+
+        $('#MemoryCheck2').change(function () {
+            if (this.checked) {
+                $('#MemoryText2').hide();
+                $('#MemoryImage2').show();
+            } else {
+                $('#MemoryImage2').hide();
+                $('#MemoryText2').show();
+            }
+        });
+
     });
 </script>
 
@@ -47,7 +72,16 @@
         </div>
         <form>
             <div class="form 1" style="display: none;">
-                Sopa de letras
+
+                <div id="soup"></div>
+
+                <div class="form-group">
+                    <label for="SoupTextInput">Palabra</label>
+                    <input type="text" class="form-control" id="SoupTextInput" placeholder="Palabra de la actividad">
+                </div>
+
+                <a class="btn btn-primary" onclick="addSoup()">Agregar</a>
+
             </div>
             <div class="form 2" style="display: none;">
 
@@ -60,23 +94,19 @@
 
                 <div class="form-group">
                     <label for="TestInput">Opción 1</label>
-                    <input type="text" class="form-control" id="TestInput1"
-                        placeholder="Opción de respuesta 1">
+                    <input type="text" class="form-control" id="TestInput1" placeholder="Opción de respuesta 1">
                 </div>
                 <div class="form-group">
                     <label for="TestInput2">Opción 2</label>
-                    <input type="text" class="form-control" id="TestInput2"
-                        placeholder="Opción de respuesta 2">
+                    <input type="text" class="form-control" id="TestInput2" placeholder="Opción de respuesta 2">
                 </div>
                 <div class="form-group">
                     <label for="TestInput3">Opción 3</label>
-                    <input type="text" class="form-control" id="TestInput3"
-                        placeholder="Opción de respuesta 3">
+                    <input type="text" class="form-control" id="TestInput3" placeholder="Opción de respuesta 3">
                 </div>
                 <div class="form-group">
                     <label for="TestInput4">Opción 4</label>
-                    <input type="text" class="form-control" id="TestInput4"
-                        placeholder="Opción de respuesta 4">
+                    <input type="text" class="form-control" id="TestInput4" placeholder="Opción de respuesta 4">
                 </div>
 
                 <fieldset class="form-group">
@@ -84,8 +114,8 @@
                         <legend class="col-form-label col-sm-2 pt-0">Respuesta correcta: </legend>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios1"
-                                    value="1" checked>
+                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios1" value="1"
+                                    checked>
                                 <label class="form-check-label" for="gridRadios1">
                                     Opción 1
                                 </label>
@@ -117,41 +147,108 @@
 
                 <a class="btn btn-primary" onclick="addQuestion()">Agregar</a>
 
-
-                <div class="form-group">
-                    <label for="formGroupExampleInput5">Tiempo limite para terminar la actividad</label>
-                    <input type="number" class="form-control" id="TestInput5"
-                        placeholder="Minutos para terminar la actividad">
-                </div>
-
             </div>
             <div class="form 3" style="display: none;">
-                Crucigrama
+
+                <div id="cross"></div>
+
+                <div class="form-group">
+                    <label for="SoupTextInput">Palabra</label>
+                    <input type="text" class="form-control" id="CrossTextInput" placeholder="Opción de respuesta 1">
+                </div>
+
+                <div class="form-group">
+                    <label for="SoupTextArea">Definición/relación de la palabra/label>
+                        <textarea class="form-control" id="CrossTextArea" rows="3"></textarea>
+                </div>
+
+                <a class="btn btn-primary" onclick="addCrossWords()">Agregar</a>
+
             </div>
             <div class="form 4" style="display: none;">
-                Match memory
+
+                <div id="memory"></div>
+
+                <div class="form-group">
+                    <label for="SoupTextInput">Pareja - elemento 1</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="MemoryCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Subir Imagen
+                        </label>
+                    </div>
+                    <div id="MemoryText1">
+                        <input type="text" class="form-control" id="MemoryTextInput1" placeholder="Palabra o frase">
+
+                    </div>
+                    <div id="MemoryImage1" class="custom-file" style="display: none;">
+                        <input type="file" class="custom-file-input" id="MemoryFile1" lang="es" accept="image/*">
+                        <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <label for="SoupTextInput">Pareja - elemento 2</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="MemoryCheck2">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Subir Imagen
+                        </label>
+                    </div>
+                    <div id="MemoryText2">
+                        <input type="text" class="form-control" id="MemoryTextInput2" placeholder="Palabra o frase">
+
+                    </div>
+                    <div id="MemoryImage2" class="custom-file" style="display: none;">
+                        <input type="file" class="custom-file-input" id="MemoryFile2" lang="es" accept="image/*">
+                        <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
+                    </div>
+
+                </div>
+
+                <a class="btn btn-primary" onclick="addMemory()">Agregar</a>
+
             </div>
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
+
+    <div class="form-group">
+        <label for="formGroupExampleInput5">Tiempo limite para terminar la actividad</label>
+        <input type="number" class="form-control" id="TestInput5" placeholder="Minutos para terminar la actividad">
+    </div>
+
     <a type="submit" class="btn btn-primary" onclick="postToServer()">Submit</a>
     </form>
 
     <script>
 
         questions = []
+        Match = {}
+        soup = []
+        memoryfiles = {}
+
 
         function postToServer() {
-            var url = '';
+            var url = 'http://127.0.0.1:8000/api/createInteractive';
             var data = {};
             switch (document.getElementById('exampleFormControlSelect1').value) {
                 case '1':
-                    console.log('El kilogramo de Naranjas cuesta $0.59.');
+                    if (soup.length > 0) {
+                        if (soup.length >= 5) {
+                            data['soup'] = soup;
+                        } else {
+                            alert('Adicione al menos 5 preguntas al test');
+
+                        }
+                    } else {
+                        alert('Debe agregar 5 palabras minimo a la sopa de letras');
+                    }
                     break;
                 case '2':
                     if (questions.length > 0) {
                         if (questions.length >= 5) {
                             data['test'] = questions;
-                            url = 'http://127.0.0.1:8000/api/createInteractive';
                         } else {
                             alert('Adicione al menos 5 preguntas al test');
                         }
@@ -160,31 +257,74 @@
                     }
                     break;
                 case '3':
-                    console.log('El kilogramo de Bananas cuesta $0.48.');
+                    if (Object.keys(Match).length > 0) {
+                        if (Object.keys(Match).length > 5) {
+                            data['matches'] = Match;
+                        } else {
+                            alert('Adicione al menos 5 matches a la actividad');
+                        }
+                    } else {
+                        alert('Debe agregar 5 matches minimo a la actividad');
+                    }
                     break;
                 case '4':
-                    console.log('El kilogramo de Cerezas cuesta $3.00.');
+                    if (Object.keys(Match).length > 0) {
+                        if (Object.keys(Match).length > 5) {
+                            var formData = new FormData();
+                            Object.entries(memoryfiles).forEach(([key, value], index) => {
+                                formData.append('file[]', value);
+                            });
+                            var list = [];
+                            list.push(Match);
+                            formData.append('matches', JSON.stringify(list));
+                            data['Something'] = formData;
+                        } else {
+                            alert('Adicione al menos 5 matches a la actividad');
+                        }
+                    } else {
+                        alert('Debe agregar 5 matches minimo a la actividad');
+                    }
                     break;
                 default:
                     alert('Debe seleccionar una actividad');
             }
-            if(data!=undefined){
+            if (Object.keys(data).length > 0) { 
                 console.log(data);
-                data['activity_id'] = 1;
-                data['type'] = parseInt(document.getElementById('exampleFormControlSelect1').value);
-                data['time_limit'] = parseInt(document.getElementById('TestInput5').value);
-                fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(data), // data can be `string` or {object}!
-                headers: {
-                    'Content-Type': 'application/json'
+                if (document.getElementById('exampleFormControlSelect1').value == 4) {
+                    var info = []
+                    var formData = data['Something'];
+                    info.push({ 
+                        'activity_id': 1, 
+                        'type': parseInt(document.getElementById('exampleFormControlSelect1').value), 
+                        'time_limit': parseInt(document.getElementById('TestInput5').value)
+                    });
+                    formData.append('info',JSON.stringify(info));
+                    fetch(url, {
+                        method: 'POST',
+                        body: formData, // data can be `string` or {object}!
+                    }).then(res => res.json())
+                        .catch(error => console.error('Error:', error))
+                        .then(function (res) {
+                            console.log(data)
+                            console.log('HOLAAAA:', res);
+                        });
+                } else {
+                    data['activity_id'] = 1;
+                    data['type'] = parseInt(document.getElementById('exampleFormControlSelect1').value);
+                    data['time_limit'] = parseInt(document.getElementById('TestInput5').value);
+                    fetch(url, {
+                        method: 'POST',
+                        body: JSON.stringify(data), // data can be `string` or {object}!
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(res => res.json())
+                        .catch(error => console.error('Error:', error))
+                        .then(function (res) {
+                            console.log(data)
+                            console.log('HOLAAAA:', res);
+                        });
                 }
-            }).then(res => res.json())
-                .catch(error => console.error('Error:', error))
-                .then(function (res) {
-                    console.log(data)
-                    console.log('HOLAAAA:', res);
-                });
             }
         }
 
@@ -192,8 +332,8 @@
             var content = document.getElementById('TestTextArea')
             if (content.value.length > 0) {
                 var options = []
-                for(var i=1; i<=4; i++){
-                    options.push(document.getElementById('TestInput'+i));
+                for (var i = 1; i <= 4; i++) {
+                    options.push(document.getElementById('TestInput' + i));
                 }
                 console.log(options)
                 var data = {
@@ -207,7 +347,6 @@
                     is_answer: document.querySelector('input[name="TestRadio"]:checked').value
                 }
                 questions.push(data);
-                console.log(questions);
                 updateQuestionList();
                 content.value = '';
                 options.forEach((op) => op.value = '');
@@ -215,6 +354,61 @@
                 alert('Complete el campo requerido');
             }
         }
+
+        function addSoup() {
+            var word = document.getElementById('SoupTextInput');
+            if (word.value.length > 0) {
+                soup.push(word.value + '');
+                updateSoupList();
+                word.value = '';
+            } else {
+                alert('Complete el campo requerido');
+            }
+        }
+
+        function addCrossWords() {
+            var content = document.getElementById('CrossTextArea');
+            var word = document.getElementById('CrossTextInput');
+            if (content.value.length > 0 && word.value.length > 0) {
+                let wordval = word.value;
+                Match[wordval] = content.value + '';
+                updateMatchList();
+                content.value = '';
+                word.value = '';
+            } else {
+                alert('Complete el campo requerido');
+            }
+        }
+
+        function addMemory() {
+            var word1 = document.getElementById('MemoryCheck1').checked ? document.getElementById('MemoryFile1') : document.getElementById('MemoryTextInput1');
+            var word2 = document.getElementById('MemoryCheck2').checked ? document.getElementById('MemoryFile2') : document.getElementById('MemoryTextInput2');
+            if (word1.value.length > 0 && word2.value.length > 0) {
+                let wordval = document.getElementById('MemoryCheck1').checked ? word1.files[0].name : word1.value;
+                Match[wordval] = document.getElementById('MemoryCheck2').checked ? word2.files[0].name : word2.value + '';
+                if (document.getElementById('MemoryCheck1').checked)
+                    memoryfiles[word1.files[0].name] = word1.files[0]
+                if (document.getElementById('MemoryCheck2').checked)
+                    memoryfiles[word2.files[0].name] = word2.files[0]
+                updateMatchList();
+                word1.value = '';
+                word2.value = '';
+            } else {
+                alert('Complete el campo requerido');
+            }
+        }
+
+
+        function removeMatch(index) {
+            delete Match[index];
+            updateMatchList();
+        }
+
+        function removeSoup(index) {
+            soup.splice(index, 1);
+            updateSoupList();
+        }
+
 
         function remove(index) {
             questions.splice(index, 1);
@@ -227,12 +421,69 @@
                 html += `
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     ${question['content'].substring(0, 10)} ...
-                    <a class="btn" onclick="remove(${index})"><span class="badge badge-primary badge-pill">x</span></a>
+                    <a class="btn" onclick="remove(${index})"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
                 </li>
             `;
             });
             document.getElementById('preguntas').innerHTML = html;
         }
+
+        function updateSoupList() {
+            var html = '<ul class="list-group">';
+            soup.forEach(function (word, index) {
+                html += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${word.substring(0, 10)} ...
+                    <a class="btn" onclick="remove(${index})"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
+                </li>
+            `;
+            });
+            document.getElementById('soup').innerHTML = html;
+        }
+
+
+        function updateMatchList() {
+
+            var col1 = '<ul class="list-group">';
+            var col2 = '<ul class="list-group">';
+            Object.entries(Match).forEach(([key, value], index) => {
+                col1 += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${key.substring(0, 18)} ...
+                    <a class="btn" onclick="removeMatch('${key}')"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
+                </li>`
+                col2 += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${value.substring(0, 20)} ...
+                    <a class="btn" onclick="removeMatch('${key}')"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
+                </li> `
+            });
+            var html = `
+            <div class="form-row">
+                <div class="col">
+                    ${col1}
+                </div>
+                <div class="col">
+                    ${col2}
+                    </div>
+            </div>
+            `
+
+            switch (document.getElementById('exampleFormControlSelect1').value) {
+                case '3':
+                    document.getElementById('cross').innerHTML = html;
+
+                    break;
+                case '4':
+                    document.getElementById('memory').innerHTML = html;
+
+                    break;
+                default:
+                    alert('Debe seleccionar una actividad');
+            }
+
+        }
+
 
     </script>
 
