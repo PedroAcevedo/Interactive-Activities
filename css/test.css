@@ -85,4 +85,13 @@ hr.new {
     #signUpForm {
         padding: 0;
     }
+
+    .content{
+        margin-top: 30%;
+    }
+
+    #sendData{
+        top: 20%;
+        left: 75%;
+    }
 }

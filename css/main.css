@@ -23,6 +23,15 @@ body {
     left: 45%;
 }
 
+.btn-back {
+    color: #06c;
+    background-color: #f4f4f4;
+    border-color: #f4f4f4;
+    border-radius: 50px;
+    font-size: 11px;
+    font-family: Roboto, sans-serif;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

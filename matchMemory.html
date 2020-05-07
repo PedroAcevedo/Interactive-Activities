@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="utf-8" />
@@ -8,127 +8,45 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link href="css/main.css" rel="stylesheet">
-  <script type="text/javascript" src="js/timer.js"></script>
-  <script type="text/javascript" src="js/matchMemory.js"></script>
+  <link href="css/matchMemory.css" rel="stylesheet">
   <title></title>
 </head>
-<style>
-  * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-
-  .memory-game {
-    width: 640px;
-    height: 640px;
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    perspective: 1000px;
-  }
-
-  .memory-card {
-    width: calc(25% - 10px);
-    height: calc(33.333% - 10px);
-    margin: 5px;
-    position: relative;
-    transform: scale(1);
-    transform-style: preserve-3d;
-    transition: transform .5s;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
-  }
-
-  .memory-card:active {
-    transform: scale(0.97);
-    transition: transform .2s;
-  }
-
-  .memory-card.flip {
-    transform: rotateY(180deg);
-  }
-
-  .front-face,
-  .back-face {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    position: absolute;
-    border-radius: 5px;
-    background: #1C7CCC;
-    backface-visibility: hidden;
-  }
-
-  .front-face {
-    transform: rotateY(180deg);
-  }
-</style>
-<script type="text/javascript">
-</script>
-
 <body>
 
+  <audio id="flip">
+    <source src="data/Card-flip-sound-effect.mp3" type="audio/mpeg">
+  </audio>
+  
   <div id="loader" class="center"></div>
-  <div class="header-nav">
-    <section id="title_results"></section>
+  <div id="content">
+    <div class="header-nav">
+      <section id="title_results"></section>
+    </div>
+    <section id="board" class="ml-0 mr-0 mt-5 pt-5 font-weight-bold">
+    </section>
   </div>
-  <section class="memory-game row ml-0 mr-0 mt-5 pt-5">
-    <div class="memory-card" data-framework="aurelia">
-      <img class="front-face" src="images/aurelia.svg" alt="Aurelia" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-    <div class="memory-card" data-framework="aurelia">
-      <img class="front-face" src="images/aurelia.svg" alt="Aurelia" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
 
-    <div class="memory-card" data-framework="vue">
-      <img class="front-face" src="images/vue.svg" alt="Vue" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <h4 class="modal-title w-100 text-center"></h4>
+          </div>
+        </div>
+        <div class="modal-body">
+          <p id="score">
+            Texto orientador
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-button" type="button" class="btn btn-success" data-dismiss="modal">Empezar</button>
+        </div>
+      </div>
     </div>
-    <div class="memory-card" data-framework="vue">
-      <img class="front-face" src="images/vue.svg" alt="Vue" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-
-    <div class="memory-card" data-framework="angular">
-      <img class="front-face" src="images/angular.svg" alt="Angular" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-    <div class="memory-card" data-framework="angular">
-      <img class="front-face" src="images/angular.svg" alt="Angular" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-
-    <div class="memory-card" data-framework="ember">
-      <img class="front-face" src="images/ember.svg" alt="Ember" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-    <div class="memory-card" data-framework="ember">
-      <img class="front-face" src="images/ember.svg" alt="Ember" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-
-    <div class="memory-card" data-framework="backbone">
-      <img class="front-face" src="images/backbone.svg" alt="Backbone" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-    <div class="memory-card" data-framework="backbone">
-      <img class="front-face" src="images/backbone.svg" alt="Backbone" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-
-    <div class="memory-card" data-framework="react">
-      <img class="front-face" src="images/react.svg" alt="React" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-    <div class="memory-card" data-framework="react">
-      <img class="front-face" src="images/react.svg" alt="React" />
-      <img class="back-face" src="images/js-badge.svg" alt="JS Badge" />
-    </div>
-  </section>
-
-
+  </div>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
@@ -138,6 +56,11 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+  <script>
+      $('#myModal').modal('toggle');
+  </script>
+  <script type="text/javascript" src="js/timer.js"></script>
+  <script type="text/javascript" src="js/matchMemory.js"></script>
 </body>
 
 </html>

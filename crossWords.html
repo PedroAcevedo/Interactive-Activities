@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="utf-8" />
@@ -7,134 +7,55 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
   <link href="css/main.css" rel="stylesheet">
+  <link href="css/crosswords.css" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
   <script src="js/crossWords.js"></script>
   <script type="text/javascript" src="js/timer.js"></script>
-  <title></title>
+  <title>INCITIES</title>
 </head>
-<style type="text/css">
-  .container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-
-  .wrapper {
-    display: grid;
-    grid-auto-rows: minmax(25px, 32px);
-    text-align: left;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-
-  .wrapper>div {
-    border: 1px solid black;
-    text-align: center;
-    width: 32px;
-    height: 32px;
-    background-color: white;
-    margin: 0;
-    padding: 0;
-    border-collapse: collapse;
-    position: relative;
-  }
-
-  .wrapper>.empty {
-    border: none;
-    width: auto;
-    background-color: black;
-    padding: 0.5em;
-  }
-
-  .letters {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-  }
-
-  .bottomright {
-    position: relative;
-    font-size: x-small;
-    bottom: 15px;
-    right: 8px;
-  }
-
-  .letter {
-    border: 1px solid black;
-    text-align: center;
-    font-size: medium;
-    cursor: pointer;
-  }
-
-  .container .center {
-    position: inherit;
-    top: 0;
-    bottom: 50%;
-    left: 0;
-    right: 0;
-    margin: auto;
-  }
-
-  .list {
-    height: 100%;
-    overflow: scroll;
-    overflow-x: hidden;
-  }
-
-  .question_number {
-    position: absolute;
-    font-size: 12px;
-    color: grey;
-    left: 3px;
-    top: 3px;
-  }
-
-  .btn-check {
-    background: no-repeat padding-box #FF9933;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: 400;
-    font-size: 12px;
-    font-family: Roboto;
-    padding: 7px 15px;
-}
-
-  @media only screen and (max-width: 768px) {
-
-    /* For mobile phones: */
-    [class="board"] {
-      width: 100%;
-    }
-
-    [class="definitions"] {
-      width: 100%;
-    }
-  }
-</style>
-
 <body>
+
   <div id="loader" class="center"></div>
   <div id="content">
     <div class="header-nav">
       <div id="title_results"></div>
     </div>
-    <div class="row ml-0 mr-0 mt-5 pt-5 font-weight-bold" style="padding-left:20px">
-      <div class="col-md-6">
+    <div class="row ml-0 mr-0 mt-5 pt-5 font-weight-bold justify-content-md-center">
+      <div class="col-md-5 d-flex justify-content-center">
         <section class="container">
           <section id='board' class="board">
             <div id='result'></div>
           </section>
       </div>
-      <div class="col-md-1"></div>
-      <section id="definitions"></section>
+      <div class="col-md-4">
+        <section id="definitions"></section>
+      </div>
     </div>
+  </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <h4 class="modal-title w-100 text-center"></h4>
+          </div>
+        </div>
+        <div class="modal-body">
+          <p id="score">
+            Texto orientador.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-button" type="button" class="btn btn-success" data-dismiss="modal">Empezar</button>
+        </div>
+      </div>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -143,6 +64,9 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+  <script>
+      $('#myModal').modal('toggle');
+  </script>
 </body>
 
 </html>

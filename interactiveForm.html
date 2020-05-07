@@ -18,6 +18,9 @@
 </head>
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $('#myModal').modal('toggle');
+
         $("select").change(function () {
             $(this).find("option:selected").each(function () {
                 var optionValue = $(this).attr("value");
@@ -59,167 +62,195 @@
 
 <body>
 
-    <div class="form-group">
-        <div class="form-group">
-            <label for="exampleFormControlSelect1">Tipo de actividad</label>
-            <select class="form-control" id="exampleFormControlSelect1">
-                <option selected>Seleccione un tipo de actividad</option>
-                <option value="1">Sopa de letras</option>
-                <option value="2">Test</option>
-                <option value="3">Crucigrama</option>
-                <option value="4">Match memory</option>
-            </select>
-        </div>
-        <form>
-            <div class="form 1" style="display: none;">
-
-                <div id="soup"></div>
-
-                <div class="form-group">
-                    <label for="SoupTextInput">Palabra</label>
-                    <input type="text" class="form-control" id="SoupTextInput" placeholder="Palabra de la actividad">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row justify-content-center">
+                        <h4 class="modal-title" style="padding-left: 20px;"></h4>
+                    </div>
                 </div>
-
-                <a class="btn btn-primary" onclick="addSoup()">Agregar</a>
-
-            </div>
-            <div class="form 2" style="display: none;">
-
-                <div id="preguntas"></div>
-
-                <div class="form-group">
-                    <label for="TestTextArea">Texto de la pregunta</label>
-                    <textarea class="form-control" id="TestTextArea" rows="3"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="TestInput">Opción 1</label>
-                    <input type="text" class="form-control" id="TestInput1" placeholder="Opción de respuesta 1">
-                </div>
-                <div class="form-group">
-                    <label for="TestInput2">Opción 2</label>
-                    <input type="text" class="form-control" id="TestInput2" placeholder="Opción de respuesta 2">
-                </div>
-                <div class="form-group">
-                    <label for="TestInput3">Opción 3</label>
-                    <input type="text" class="form-control" id="TestInput3" placeholder="Opción de respuesta 3">
-                </div>
-                <div class="form-group">
-                    <label for="TestInput4">Opción 4</label>
-                    <input type="text" class="form-control" id="TestInput4" placeholder="Opción de respuesta 4">
-                </div>
-
-                <fieldset class="form-group">
-                    <div class="row">
-                        <legend class="col-form-label col-sm-2 pt-0">Respuesta correcta: </legend>
-                        <div class="col-sm-10">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios1" value="1"
-                                    checked>
-                                <label class="form-check-label" for="gridRadios1">
-                                    Opción 1
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios2"
-                                    value="2">
-                                <label class="form-check-label" for="gridRadios2">
-                                    Opción 2
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios3"
-                                    value="3">
-                                <label class="form-check-label" for="gridRadios3">
-                                    Opción 3
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="TestRadio" id="gridRadios3"
-                                    value="4">
-                                <label class="form-check-label" for="gridRadios3">
-                                    Opción 4
-                                </label>
-                            </div>
+                <div class="modal-body ">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Tipo de actividad</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option selected>Seleccione un tipo de actividad</option>
+                                <option value="1">Sopa de letras</option>
+                                <option value="2">Test</option>
+                                <option value="3">Crucigrama</option>
+                                <option value="4">Match memory</option>
+                            </select>
                         </div>
+                        <form>
+                            <div class="form 1" style="display: none;">
+
+                                <div id="soup"></div>
+
+                                <div class="form-group">
+                                    <label for="SoupTextInput">Palabra</label>
+                                    <input type="text" class="form-control" id="SoupTextInput"
+                                        placeholder="Palabra de la actividad">
+                                </div>
+
+                                <a class="btn btn-primary" onclick="addSoup()">Agregar</a>
+
+                            </div>
+                            <div class="form 2" style="display: none;">
+
+                                <div id="preguntas"></div>
+
+                                <div class="form-group">
+                                    <label for="TestTextArea">Texto de la pregunta</label>
+                                    <textarea class="form-control" id="TestTextArea" rows="3"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="TestInput">Opción 1</label>
+                                    <input type="text" class="form-control" id="TestInput1"
+                                        placeholder="Opción de respuesta 1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="TestInput2">Opción 2</label>
+                                    <input type="text" class="form-control" id="TestInput2"
+                                        placeholder="Opción de respuesta 2">
+                                </div>
+                                <div class="form-group">
+                                    <label for="TestInput3">Opción 3</label>
+                                    <input type="text" class="form-control" id="TestInput3"
+                                        placeholder="Opción de respuesta 3">
+                                </div>
+                                <div class="form-group">
+                                    <label for="TestInput4">Opción 4</label>
+                                    <input type="text" class="form-control" id="TestInput4"
+                                        placeholder="Opción de respuesta 4">
+                                </div>
+
+                                <fieldset class="form-group">
+                                    <div class="row">
+                                        <legend class="col-form-label col-sm-2 pt-0">Respuesta correcta: </legend>
+                                        <div class="col-sm-10">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="TestRadio"
+                                                    id="gridRadios1" value="1" checked>
+                                                <label class="form-check-label" for="gridRadios1">
+                                                    Opción 1
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="TestRadio"
+                                                    id="gridRadios2" value="2">
+                                                <label class="form-check-label" for="gridRadios2">
+                                                    Opción 2
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="TestRadio"
+                                                    id="gridRadios3" value="3">
+                                                <label class="form-check-label" for="gridRadios3">
+                                                    Opción 3
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="TestRadio"
+                                                    id="gridRadios3" value="4">
+                                                <label class="form-check-label" for="gridRadios3">
+                                                    Opción 4
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <a class="btn btn-primary" onclick="addQuestion()">Agregar</a>
+
+                            </div>
+                            <div class="form 3" style="display: none;">
+
+                                <div id="cross"></div>
+
+                                <div class="form-group">
+                                    <label for="SoupTextInput">Palabra</label>
+                                    <input type="text" class="form-control" id="CrossTextInput"
+                                        placeholder="Palabra referencia">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="SoupTextArea">Definición/relación de la palabra</label>
+                                        <textarea class="form-control" id="CrossTextArea" rows="3"></textarea>
+                                </div>
+
+                                <a class="btn btn-primary" onclick="addCrossWords()">Agregar</a>
+
+                            </div>
+                            <div class="form 4" style="display: none;">
+
+                                <div id="memory"></div>
+
+                                <div class="form-group">
+                                    <label for="SoupTextInput">Pareja - elemento 1</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="MemoryCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            Subir Imagen
+                                        </label>
+                                    </div>
+                                    <div id="MemoryText1">
+                                        <input type="text" class="form-control" id="MemoryTextInput1"
+                                            placeholder="Palabra o frase">
+
+                                    </div>
+                                    <div id="MemoryImage1" class="custom-file" style="display: none;">
+                                        <input type="file" class="custom-file-input" id="MemoryFile1" lang="es"
+                                            accept="image/*">
+                                        <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="SoupTextInput">Pareja - elemento 2</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="MemoryCheck2">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            Subir Imagen
+                                        </label>
+                                    </div>
+                                    <div id="MemoryText2">
+                                        <input type="text" class="form-control" id="MemoryTextInput2"
+                                            placeholder="Palabra o frase">
+
+                                    </div>
+                                    <div id="MemoryImage2" class="custom-file" style="display: none;">
+                                        <input type="file" class="custom-file-input" id="MemoryFile2" lang="es"
+                                            accept="image/*">
+                                        <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
+                                    </div>
+
+                                </div>
+
+                                <a class="btn btn-primary" onclick="addMemory()">Agregar</a>
+
+                            </div>
+                            <small id="emailHelp" class="form-text text-muted">Selecciona una actividad interactiva para ingresar en la plataforma.</small>
                     </div>
-                </fieldset>
 
-                <a class="btn btn-primary" onclick="addQuestion()">Agregar</a>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput5">Tiempo limite para terminar la actividad</label>
+                        <input type="number" class="form-control" id="TestInput5"
+                            placeholder="Minutos para terminar la actividad">
+                    </div>
+                </div>
+                <div class="modal-footer">
 
+                    <a type="submit" class="btn btn-primary" onclick="postToServer()">Submit</a>
+                </div>
             </div>
-            <div class="form 3" style="display: none;">
-
-                <div id="cross"></div>
-
-                <div class="form-group">
-                    <label for="SoupTextInput">Palabra</label>
-                    <input type="text" class="form-control" id="CrossTextInput" placeholder="Opción de respuesta 1">
-                </div>
-
-                <div class="form-group">
-                    <label for="SoupTextArea">Definición/relación de la palabra/label>
-                        <textarea class="form-control" id="CrossTextArea" rows="3"></textarea>
-                </div>
-
-                <a class="btn btn-primary" onclick="addCrossWords()">Agregar</a>
-
-            </div>
-            <div class="form 4" style="display: none;">
-
-                <div id="memory"></div>
-
-                <div class="form-group">
-                    <label for="SoupTextInput">Pareja - elemento 1</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="MemoryCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Subir Imagen
-                        </label>
-                    </div>
-                    <div id="MemoryText1">
-                        <input type="text" class="form-control" id="MemoryTextInput1" placeholder="Palabra o frase">
-
-                    </div>
-                    <div id="MemoryImage1" class="custom-file" style="display: none;">
-                        <input type="file" class="custom-file-input" id="MemoryFile1" lang="es" accept="image/*">
-                        <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-
-                    <label for="SoupTextInput">Pareja - elemento 2</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="MemoryCheck2">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Subir Imagen
-                        </label>
-                    </div>
-                    <div id="MemoryText2">
-                        <input type="text" class="form-control" id="MemoryTextInput2" placeholder="Palabra o frase">
-
-                    </div>
-                    <div id="MemoryImage2" class="custom-file" style="display: none;">
-                        <input type="file" class="custom-file-input" id="MemoryFile2" lang="es" accept="image/*">
-                        <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
-                    </div>
-
-                </div>
-
-                <a class="btn btn-primary" onclick="addMemory()">Agregar</a>
-
-            </div>
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="formGroupExampleInput5">Tiempo limite para terminar la actividad</label>
-        <input type="number" class="form-control" id="TestInput5" placeholder="Minutos para terminar la actividad">
     </div>
-
-    <a type="submit" class="btn btn-primary" onclick="postToServer()">Submit</a>
-    </form>
 
     <script>
 
@@ -288,17 +319,17 @@
                 default:
                     alert('Debe seleccionar una actividad');
             }
-            if (Object.keys(data).length > 0) { 
+            if (Object.keys(data).length > 0) {
                 console.log(data);
                 if (document.getElementById('exampleFormControlSelect1').value == 4) {
                     var info = []
                     var formData = data['Something'];
-                    info.push({ 
-                        'activity_id': 1, 
-                        'type': parseInt(document.getElementById('exampleFormControlSelect1').value), 
+                    info.push({
+                        'activity_id': 1,
+                        'type': parseInt(document.getElementById('exampleFormControlSelect1').value),
                         'time_limit': parseInt(document.getElementById('TestInput5').value)
                     });
-                    formData.append('info',JSON.stringify(info));
+                    formData.append('info', JSON.stringify(info));
                     fetch(url, {
                         method: 'POST',
                         body: formData, // data can be `string` or {object}!
