@@ -1,14 +1,15 @@
 var focusword = []
 var actual = 0;
 var solved = {};
+var def = [];
 var helps = 0;
 var activity_id, type, userID;
 
-fetch('http://localhost:8000/api/getInteractive/47') //https://api.myjson.com/bins/a3l3w')
+fetch('https://incities-interactive.herokuapp.com/api/getInteractive/47') //https://api.myjson.com/bins/a3l3w')
     .then(response => response.json())
     .then(function (json) {
         json = json['data'];
-        const def = json['matches'];
+        def = json['matches'];
         type = json['type'];
         time_to_finish = json['time_limit'];
         var title = json['title'];
@@ -129,7 +130,7 @@ function buildBoard(board, size, index, def1) {
         <h3>Crucigrama</h3>
     </div>
     </div>
-    <div class="row">
+    <div class="row mb-2 mt-2">
     ` + result;
     for (var i = 0; i < size; i++) {
         for (var j = 0; j < size; j++) {
@@ -203,7 +204,7 @@ function optionButtons(e) {
 function checkword(word_list, word, id) {
     //getInteractive/{id}/crosswords/{word_id}/{word?}
     if (solved[id] === undefined) {
-        fetch('http://localhost:8000/api/getInteractive/' + activity_id + '/crosswords/' + id + "/" + word) //https://api.myjson.com/bins/a3l3w')
+        fetch('https://incities-interactive.herokuapp.com/api/getInteractive/' + activity_id + '/crosswords/' + id + "/" + word) //https://api.myjson.com/bins/a3l3w')
             .then(response => response.json())
             .then(function (json) {
                 if (json['data']['response'] == true) {
@@ -212,6 +213,12 @@ function checkword(word_list, word, id) {
                     });
                     document.getElementById(id).classList.add("list-group-item-success");
                     solved[id] = 1;
+
+                    if (Object.keys(solved).length == Object.keys(def).length) {
+                        setTimeout(() => {
+                            postToServer();
+                        }, 2000);
+                    }
                 } else {
                     word_list.forEach(function (box) {
                         box.value = '';
@@ -223,7 +230,7 @@ function checkword(word_list, word, id) {
 
 function getword(id) {
     //getInteractive/{id}/crosswords/{word_id}/{word?}
-    fetch('http://localhost:8000/api/getInteractive/' + activity_id + '/crosswords/' + id) //https://api.myjson.com/bins/a3l3w')
+    fetch('https://incities-interactive.herokuapp.com/api/getInteractive/' + activity_id + '/crosswords/' + id) //https://api.myjson.com/bins/a3l3w')
         .then(response => response.json())
         .then(function (json) {
             word_reference = json['data']['word'];
@@ -235,6 +242,12 @@ function getword(id) {
             document.getElementById(id).classList.add("list-group-item-success");
             solved[id] = 1;
             helps++;
+
+            if (Object.keys(solved).length == Object.keys(def).length) {
+                setTimeout(() => {
+                    postToServer();
+                }, 2000);
+            }
         });
 }
 
@@ -267,7 +280,7 @@ function postToServer() {
         "solved": Object.keys(solved).length
     }
     console.log(data);
-    fetch('http://localhost:8000/api/responseInteractive', {
+    fetch('https://incities-interactive.herokuapp.com/api/responseInteractive', {
         method: 'POST',
         body: JSON.stringify(data), // data can be `string` or {object}!
         headers: {

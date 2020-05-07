@@ -4,7 +4,7 @@ var questions, selected = [];
 var index = 1;
 var type = 0;
 
-fetch('http://localhost:8000/api/getInteractive/51')
+fetch('https://incities-interactive.herokuapp.com/api/getInteractive/51')
   .then(response => response.json())
   .then(function (json) {
     //console.log(json);
@@ -71,7 +71,7 @@ function postToServer() {
     "answers": selected
   }
   console.log(data);
-  fetch('http://localhost:8000/api/responseInteractive', {
+  fetch('https://incities-interactive.herokuapp.com/api/responseInteractive', {
     method: 'POST',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {

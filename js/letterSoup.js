@@ -5,7 +5,7 @@ var initial, second = undefined;
 var selectedList = [];
 var wordList = [];
 
-fetch('http://localhost:8000/api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
+fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
   .then(response => response.json())
   .then(function (json) {
 
@@ -228,7 +228,7 @@ function postToServer() {
     "solved": soup_answer
   }
   console.log(data);
-  fetch('http://localhost:8000/api/responseInteractive', {
+  fetch('https://incities-interactive.herokuapp.com/api/responseInteractive', {
     method: 'POST',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {

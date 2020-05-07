@@ -5,7 +5,7 @@ let lockBoard = false;
 let firstCard, secondCard;
 let flipSound;
 
-fetch('http://localhost:8000/api/getInteractive/50')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
+fetch('https://incities-interactive.herokuapp.com/api/getInteractive/50')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
 .then(response => response.json())
 .then(function (json) {
   json = json['data'];
@@ -33,7 +33,7 @@ fetch('http://localhost:8000/api/getInteractive/50')//'https://jsonblob.com/api/
   document.getElementById('btn-back').addEventListener('click', postToServer);
   cards = document.querySelectorAll('.memory-card');
   cards.forEach((card) => {  card.addEventListener('click', flipCard)});
-  //shuffle();
+  shuffle();
 });
 
 function buildCards(matches){
@@ -126,7 +126,7 @@ function disableCards() {
     if(pairs==num_matches){
       postToServer();
     }
-  }, 1500);
+  }, 2000);
 }
 
 function unflipCards() {
@@ -163,7 +163,7 @@ function postToServer() {
       "flips": pairs
   }
   console.log(data);
-  fetch('http://localhost:8000/api/responseInteractive', {
+  fetch('https://incities-interactive.herokuapp.com/api/responseInteractive', {
       method: 'POST',
       body: JSON.stringify(data), // data can be `string` or {object}!
       headers: {
