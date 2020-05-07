@@ -33,6 +33,7 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/51')
     document.querySelector("#loader").style.display = "none";
     document.querySelector("#content").style.display = "block";
     document.getElementById('sendData').addEventListener('click', sendData);
+    document.getElementById('btn-back').addEventListener('click', postToServer);
     index = index + 1;
   });
 
