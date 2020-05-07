@@ -176,6 +176,7 @@ function postToServer() {
           console.log('Success:', res);
           document.querySelector('.modal-title').innerHTML = "Resultados";
           document.getElementById('modal-button').innerHTML = "Terminar";
+          document.getElementById('modal-button').addEventListener('click',function(){window.location='index.html'});
           document.getElementById('score').innerHTML = `<ul><li>Tiempo: ${time}</li> <li>Flips totales: ${attempts}</li> <li>Parejas encontradas: ${res['data']['flips']}/${num_matches}</li> </ul>`;
           $('#myModal').modal('toggle');
   });

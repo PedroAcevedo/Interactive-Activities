@@ -5,7 +5,7 @@ var def = [];
 var helps = 0;
 var activity_id, type, userID;
 
-fetch('https://incities-interactive.herokuapp.com/api/getInteractive/47') //https://api.myjson.com/bins/a3l3w')
+fetch('https://incities-interactive.herokuapp.com/api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https://www.freemysqlhosting.net/account/
     .then(response => response.json())
     .then(function (json) {
         json = json['data'];
@@ -293,6 +293,7 @@ function postToServer() {
             console.log('Success:', res);
             document.querySelector('.modal-title').innerHTML = "Resultados";
             document.getElementById('modal-button').innerHTML = "Terminar";
+            document.getElementById('modal-button').addEventListener('click',function(){window.location='index.html'});
             document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul>`;
             $('#myModal').modal('toggle');
         });

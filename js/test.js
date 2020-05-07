@@ -84,6 +84,7 @@ function postToServer() {
       console.log('Success:', res);
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
+      document.getElementById('modal-button').addEventListener('click',function(){window.location='index.html'});
       document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul>`;
       $('#myModal').modal('toggle');
     });
