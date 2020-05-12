@@ -55,6 +55,12 @@ hr.new {
     font-size: 1.75rem;
 }
 
+.option{
+    color:white;
+    font-size: 20px;
+    padding:5px;
+}
+
 .shad2 {
     text-shadow: 1px 1px black;
     color: white;
@@ -90,8 +96,12 @@ hr.new {
         margin-top: 30%;
     }
 
-    #sendData{
-        top: 20%;
-        left: 75%;
+    .carousel-control-next{
+        margin-right: 20%;
     }
+
+    .option{
+        font-size: 16px;
+    }
+
 }

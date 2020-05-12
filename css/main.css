@@ -44,3 +44,31 @@ body {
 .container #loader {
     display: block;
 }
+
+
+@media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    h3{
+        font-size: 16px;
+    }
+
+    body h1, h2{
+        font-size: 18px;
+    }
+
+    nav{
+        text-align: left;
+    }
+
+    #loader{
+        border: 10px solid #f3f3f3;
+        /* Light grey */
+        border-top: 10px solid #3498db;
+        /* Blue */
+        border-bottom: 10px solid #3498db;
+        /* Blue */
+        width: 60px;
+        height: 60px;
+    }
+  }
