@@ -53,7 +53,7 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
   
 
     $('.letters')
-      .mouseup(function () {
+    .on('mouseup', function () {
         selection = false;
         initial, second = undefined;
         if ($(this) != initial) {
@@ -79,7 +79,7 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
           selectedList = [];
         }
       })
-      .mousedown(function () {
+      .on('mousedown', function () {
         selection = true;
         initial = $(this);
         selectedList.push(initial);

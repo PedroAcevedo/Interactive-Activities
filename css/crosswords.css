@@ -114,9 +114,23 @@
       width: 100%;
     }
     
-    .wrapper>div{
-      width: 20px;
-      height: 20px;
+    .wrapper{
+      grid-auto-rows: minmax(10px, 17px);
+      grid-column-gap: 1px;
+      text-align: left;
+    }
+    
+    .wrapper > div{
+      width: 17px;
+      height: 17px;
+      font-size: 10px;
+    }
+
+    .question_number {
+      font-size: 8px;
+      color: black;
+      left: 1.5px;
+      top: 1.5px;
     }
 
     [id="definitions"] {
