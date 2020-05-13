@@ -42,7 +42,7 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/47') //http
         <button class="btn-check btn" id="option-btn-check" >Verificar palabra</button>
         <button class="btn-check btn" id="option-btn-reveal" >Revelar</button>
         <button class="btn-check btn" id="option-btn-clear" >Limpiar este</button>
-        <button class="btn-check btn" id="option-btn-end" >Terminar juego</button>`;
+        <button class="btn-check btn" id="option-btn-end" >Terminar Crucigrama</button>`;
         buildBoard(json['board'], json['size'], order, results);
         document.querySelector("#loader").style.display = "none";
         document.getElementById('btn-back').addEventListener('click', postToServer);
