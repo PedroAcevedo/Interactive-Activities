@@ -38,7 +38,7 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/50')//'http
 
 function buildCards(matches){
   cards_view = `
-  <div class="row" >
+  <div class="row w-100" >
   <div class="col-2">
     <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button>
   </div>
