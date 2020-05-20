@@ -87,13 +87,15 @@
   #words {
     margin-top: 20px;
   }
-
-  h5{
+  h5 {
     font-size: 12px;
   }
   .card-tile {
     width: min-content;
     padding: 10px;
     margin: 2px 5px;
+  }
+  #option-btn-check {
+    font-size: small;
   }
 }

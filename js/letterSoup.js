@@ -42,7 +42,7 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
     });
     words += `</div>   
 
-    <button class="btn btn-check w-100" id="option-btn-check" > Terminar sopa de letras</button>
+    <button class="btn btn-check w-75" id="option-btn-check" > Terminar sopa de letras</button>
     `;
     document.getElementById('title_results').innerHTML = title_timer;
     document.getElementById('words').innerHTML = words;
@@ -85,6 +85,102 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
         selectedList.push(initial);
         selectWord = $(this).text().trim();
         $(this).css("background-color", 'yellow');
+      })
+      .on("touchmove", function(e) {
+        // get the touch element
+        var touch = e.touches[0];
+
+        // get the DOM element
+        var box = document.elementFromPoint(touch.clientX, touch.clientY);
+        box = $(box);
+        // make sure an element was found - some areas on the page may have no elements
+        if (box) {
+            // interact with the DOM element
+            // Dispatch/Trigger/Fire the event
+            if (selection) {
+              console.log('in');
+              if (box != initial) {
+                if (!selectedList.includes(box)) {
+                  if (second == undefined) {
+                    second = box;
+                    console.log(initial.data('row'));
+                    if (initial.data('row') == second.data('row')) {
+                      orientation = 0;
+                      if (initial.data('column') < second.data('column')) {
+                        direction = 1;
+                      } else {
+                        direction = 2;
+                      }
+                    } else {
+                      if (initial.data('column') == second.data('column')) {
+                        orientation = 1;
+                        if (initial.data('row') < second.data('row')) {
+                          direction = 1;
+                        } else {
+                          direction = 2;
+                        }
+                      } else {
+                        orientation = 2;
+                        if (initial.data('column') < second.data('column')) {
+                          direction = 1;
+                        } else {
+                          direction = 2;
+                        }
+                      }
+                    }
+                    selectBox(second);
+                  } else {
+                    if (orientation == 0) {
+                      if (initial.data('row') == box.data('row')) {
+                        if (direction == 1) {
+                          if (initial.data('column') < box.data('column')) {
+                            selectBox(box);
+                          }
+                        } else {
+                          if (initial.data('column') > box.data('column')) {
+                            selectBox(box);
+                          }
+                        }
+                      }
+                    } else {
+                      if (orientation == 1) {
+                        if (initial.data('column') == box.data('column')) {
+                          if (direction == 1) {
+                            if (initial.data('row') < box.data('row')) {
+                              selectBox(box);
+                            }
+                          } else {
+                            if (initial.data('row') > box.data('row')) {
+                              selectBox(box);
+                            }
+                          }
+                        }
+                      } else {
+                        if (Math.abs(selectedList.slice(-1)[0].data('row') - box.data('row')) == 1 && Math.abs(selectedList.slice(-1)[0].data('column') - box.data('column')) == 1) {
+                          if (direction == 1) {
+                            if (initial.data('column') < box.data('column')) {
+                              selectBox(box);
+                            }
+                          } else {
+                            if (initial.data('column') > box.data('column')) {
+                              selectBox(box);
+                            }
+                          }
+                        }
+                      }
+                    }
+      
+                  }
+                } else {
+                  console.log('in');
+                  selectWord = selectWord.slice(0, -1);
+                  selectedList.remove(box);
+                }
+              } else {
+                second = undefined;
+              }
+            }
+        }
       });
 
     $(".unselectable ").on('mouseenter', function () {
