@@ -247,7 +247,7 @@ function checkword(word_list, word, id) {
 
 function getword(id) {
     //getInteractive/{id}/crosswords/{word_id}/{word?}
-    fetch('https://incities-interactive.herokuapp.com/api/getInteractive/' + activity_id + '/crosswords/' + id) //https://api.myjson.com/bins/a3l3w')
+    fetch(API + 'api/getInteractive/' + activity_id + '/crosswords/' + id) //https://api.myjson.com/bins/a3l3w')
         .then(response => response.json())
         .then(function (json) {
             word_reference = json['data']['word'];
