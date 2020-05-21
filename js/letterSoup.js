@@ -1,11 +1,16 @@
+var selectWord, type, userID, time_to_finish, activity_id, initial, second;
 var soup_answer = 0, orientation = 0, direction = 0;
 var selection = false;
-var selectWord, type, userID, time_to_finish, activity_id = '';
-var initial, second = undefined;
 var selectedList = [];
 var wordList = [];
+var API = 'http://localhost:8000/';
 
-fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
+/**
+ * 
+ *  GET the initial activity
+ *  
+ */
+fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
   .then(response => response.json())
   .then(function (json) {
 
@@ -41,17 +46,23 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
         `;
     });
     words += `</div>   
-
     <button class="btn btn-check w-75" id="option-btn-check" > Terminar sopa de letras</button>
     `;
+    /* title_results := defines the navbar */
+
     document.getElementById('title_results').innerHTML = title_timer;
+    /* word := define the list of words to seach */
     document.getElementById('words').innerHTML = words;
+    /* option-btn-check := button for end the game */
     document.getElementById('option-btn-check').addEventListener('click', postToServer);
+    /* builBoard := builds the letter soup board */
     buildBoard(size, soup);
+    /* loader := simulate a charge view */
     document.querySelector("#loader").style.display = "none";
+    /* btn-back := defines the button to go back */
     document.getElementById('btn-back').addEventListener('click', postToServer);
 
-
+    /** letters := soup tiles actions */
     $('.letters')
       .on('mouseup touchstart', function () {
         selection = false;
@@ -86,7 +97,7 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
         selectWord = $(this).text().trim();
         $(this).css("background-color", 'yellow');
       })
-      .on("touchmove", function(e) {
+      .on("touchmove", function (e) {
         // get the touch element
         var touch = e.touches[0];
 
@@ -95,43 +106,68 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
         box = $(box);
         // make sure an element was found - some areas on the page may have no elements
         if (box) {
-            // interact with the DOM element
-            // Dispatch/Trigger/Fire the event
-            if (selection) {
-              console.log('in');
-              if (box != initial) {
-                if (!selectedList.includes(box)) {
-                  if (second == undefined) {
-                    second = box;
-                    console.log(initial.data('row'));
-                    if (initial.data('row') == second.data('row')) {
-                      orientation = 0;
-                      if (initial.data('column') < second.data('column')) {
+          // interact with the DOM element
+          // Dispatch/Trigger/Fire the event
+          if (selection) {
+            console.log('in');
+            if (box != initial) {
+              if (!selectedList.includes(box)) {
+                if (second == undefined) {
+                  second = box;
+                  console.log(initial.data('row'));
+                  if (initial.data('row') == second.data('row')) {
+                    orientation = 0;
+                    if (initial.data('column') < second.data('column')) {
+                      direction = 1;
+                    } else {
+                      direction = 2;
+                    }
+                  } else {
+                    if (initial.data('column') == second.data('column')) {
+                      orientation = 1;
+                      if (initial.data('row') < second.data('row')) {
                         direction = 1;
                       } else {
                         direction = 2;
                       }
                     } else {
-                      if (initial.data('column') == second.data('column')) {
-                        orientation = 1;
-                        if (initial.data('row') < second.data('row')) {
-                          direction = 1;
-                        } else {
-                          direction = 2;
+                      orientation = 2;
+                      if (initial.data('column') < second.data('column')) {
+                        direction = 1;
+                      } else {
+                        direction = 2;
+                      }
+                    }
+                  }
+                  selectBox(second);
+                } else {
+                  if (orientation == 0) {
+                    if (initial.data('row') == box.data('row')) {
+                      if (direction == 1) {
+                        if (initial.data('column') < box.data('column')) {
+                          selectBox(box);
                         }
                       } else {
-                        orientation = 2;
-                        if (initial.data('column') < second.data('column')) {
-                          direction = 1;
-                        } else {
-                          direction = 2;
+                        if (initial.data('column') > box.data('column')) {
+                          selectBox(box);
                         }
                       }
                     }
-                    selectBox(second);
                   } else {
-                    if (orientation == 0) {
-                      if (initial.data('row') == box.data('row')) {
+                    if (orientation == 1) {
+                      if (initial.data('column') == box.data('column')) {
+                        if (direction == 1) {
+                          if (initial.data('row') < box.data('row')) {
+                            selectBox(box);
+                          }
+                        } else {
+                          if (initial.data('row') > box.data('row')) {
+                            selectBox(box);
+                          }
+                        }
+                      }
+                    } else {
+                      if (Math.abs(selectedList.slice(-1)[0].data('row') - box.data('row')) == 1 && Math.abs(selectedList.slice(-1)[0].data('column') - box.data('column')) == 1) {
                         if (direction == 1) {
                           if (initial.data('column') < box.data('column')) {
                             selectBox(box);
@@ -142,44 +178,19 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
                           }
                         }
                       }
-                    } else {
-                      if (orientation == 1) {
-                        if (initial.data('column') == box.data('column')) {
-                          if (direction == 1) {
-                            if (initial.data('row') < box.data('row')) {
-                              selectBox(box);
-                            }
-                          } else {
-                            if (initial.data('row') > box.data('row')) {
-                              selectBox(box);
-                            }
-                          }
-                        }
-                      } else {
-                        if (Math.abs(selectedList.slice(-1)[0].data('row') - box.data('row')) == 1 && Math.abs(selectedList.slice(-1)[0].data('column') - box.data('column')) == 1) {
-                          if (direction == 1) {
-                            if (initial.data('column') < box.data('column')) {
-                              selectBox(box);
-                            }
-                          } else {
-                            if (initial.data('column') > box.data('column')) {
-                              selectBox(box);
-                            }
-                          }
-                        }
-                      }
                     }
-      
                   }
-                } else {
-                  console.log('in');
-                  selectWord = selectWord.slice(0, -1);
-                  selectedList.remove(box);
+
                 }
               } else {
-                second = undefined;
+                console.log('in');
+                selectWord = selectWord.slice(0, -1);
+                selectedList.remove(box);
               }
+            } else {
+              second = undefined;
             }
+          }
         }
       });
 
@@ -272,6 +283,12 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/15')//'http
 
   });
 
+
+/**
+ * 
+ * @param {*} size size of the board
+ * @param {*} soup squad matrix of lettes with the words configuration
+ */
 function buildBoard(size, soup) {
   var result = '<div class="wrapper" align="right" style="grid-template-columns: repeat(' + size + ', 1fr);">';
   result =
@@ -297,17 +314,29 @@ function buildBoard(size, soup) {
   document.getElementById('result').innerHTML = result;
 }
 
+/**
+ * 
+ * @param {*} wordselected finds if the selected word is an answer
+ */
 function verify(wordselected) {
   return wordList.findIndex((element) => element == wordselected);
 }
 
+/**
+ * 
+ * @param {*} element the actual box on click
+ */
 function selectBox(element) {
   selectedList.push(element);
   selectWord += element.text().trim();
   element.css("background-color", 'yellow');
 }
 
-
+/**
+ * 
+ *  Sending data  to server
+ * 
+ */
 function postToServer() {
   document.querySelector("#content").style.display = "none";
   document.querySelector("#loader").style.display = "block";
@@ -320,7 +349,7 @@ function postToServer() {
     "solved": soup_answer
   }
   console.log(data);
-  fetch('https://incities-interactive.herokuapp.com/api/responseInteractive', {
+  fetch(API + 'api/responseInteractive', {
     method: 'POST',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
@@ -346,7 +375,11 @@ function postToServer() {
     });
 }
 
-
+/**
+ * 
+ * Activate the timer
+ * 
+ */
 var intervalID = setInterval(function () {
   $("#timer").val(function () {
     var timer = showTime(time_to_finish);

@@ -15,6 +15,7 @@ var API = 'http://localhost:8000/';//https://incities-interactive.herokuapp.com
 fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https://www.freemysqlhosting.net/account/
     .then(response => response.json())
     .then(function (json) {
+        
         json = json['data'];
         def = json['matches'];
         type = json['type'];
@@ -33,6 +34,8 @@ fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https
             </header>
           </div>
           `;
+
+        /* title_results := defines the navbar */
         document.getElementById('title_results').innerHTML = title_timer;
         let results = '<h3 class="text-center">Definiciones</h3><div class="row"><div class="col-sm" style="padding: 20px;"><ol class="list-group">';
         let order = {}
