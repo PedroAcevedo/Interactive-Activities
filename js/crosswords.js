@@ -1,11 +1,18 @@
+var activity_id, type, userID;
 var focusword = []
 var actual = 0;
 var solved = {};
+var wordCount = {}
 var def = [];
 var helps = 0;
-var activity_id, type, userID;
+var API = 'http://localhost:8000/';//https://incities-interactive.herokuapp.com
 
-fetch('https://incities-interactive.herokuapp.com/api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https://www.freemysqlhosting.net/account/
+/**
+ * 
+ *  GET the initial activity
+ *  
+ */
+fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https://www.freemysqlhosting.net/account/
     .then(response => response.json())
     .then(function (json) {
         json = json['data'];
@@ -38,14 +45,22 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/47') //http
 
             order[key] = index + 1;
         });
+        /* results := define options buttons */
         results += `</ol></div></div> 
         <button class="btn-check btn" id="option-btn-check" >Verificar palabra</button>
         <button class="btn-check btn" id="option-btn-reveal" >Revelar</button>
         <button class="btn-check btn" id="option-btn-clear" >Limpiar este</button>
         <button class="btn-check btn" id="option-btn-end" >Terminar Crucigrama</button>`;
+
+        /** buildBoard := constructs the board on page  */
         buildBoard(json['board'], json['size'], order, results);
+
+        /* loader := simulate a charge view */
         document.querySelector("#loader").style.display = "none";
+        /* btn-back := defines the button to go back */
         document.getElementById('btn-back').addEventListener('click', postToServer);
+
+        /** letters := crossword tiles actions */
         $(".letters").focus(function () {
             if (focusword) {
                 if (focusword.findIndex(element => element.dataset.row == $(this).data('row') && element.dataset.column == $(this).data('column')) == -1) {
@@ -100,25 +115,17 @@ fetch('https://incities-interactive.herokuapp.com/api/getInteractive/47') //http
                 }
             }
         });
+
+
     });
 
-function clearboard(board, size) {
-    for (var i = 0; i < size; i++) {
-        var cont = 0;
-        for (var j = 0; j < size; j++) {
-            if (board[i][j] == '0') {
-                cont++;
-            }
-        }
-        if (cont == size) {
-            board.splice(i);
-        }
-    }
-    console.log
-    return board[0].length;
-}
-
-var wordCount = {}
+/**
+ * 
+ * @param {*} board squad matrix of lettes with the words configuration
+ * @param {*} size size of board
+ * @param {*} index establish the order of the appearance of the word
+ * @param {*} def1 is the definitions list of every word
+ */
 function buildBoard(board, size, index, def1) {
     var result = '<div class="wrapper" align="right" style="grid-template-columns: repeat(' + size + ', 1fr);">';
     result =
@@ -165,6 +172,10 @@ function buildBoard(board, size, index, def1) {
     }
 }
 
+/**
+ * 
+ * @param {*} e click event
+ */
 function optionButtons(e) {
     let writeword = '';
     let id;
@@ -180,11 +191,9 @@ function optionButtons(e) {
                 word_list.push(box);
             });
             checkword(word_list, writeword, id.split('*').shift().split('-').shift());
-            //postserver
             break;
         case 'option-btn-clear':
             focusword.forEach(function (box) {
-                console.log(box);
                 box.value = "";
             });
             break;
@@ -201,10 +210,15 @@ function optionButtons(e) {
     }
 }
 
+/**
+ * 
+ * @param {*} word_list list of the selected box in the board
+ * @param {*} word word to be checked
+ * @param {*} id id of the match
+ */
 function checkword(word_list, word, id) {
-    //getInteractive/{id}/crosswords/{word_id}/{word?}
     if (solved[id] === undefined) {
-        fetch('https://incities-interactive.herokuapp.com/api/getInteractive/' + activity_id + '/crosswords/' + id + "/" + word) //https://api.myjson.com/bins/a3l3w')
+        fetch(API + 'api/getInteractive/' + activity_id + '/crosswords/' + id + "/" + word) //https://api.myjson.com/bins/a3l3w')
             .then(response => response.json())
             .then(function (json) {
                 if (json['data']['response'] == true) {
@@ -251,6 +265,13 @@ function getword(id) {
         });
 }
 
+
+
+/**
+ * 
+ * Activate the timer
+ * 
+ */
 var intervalID = setInterval(function () {
     $("#timer").val(function () {
         var timer = showTime(time_to_finish);
@@ -268,6 +289,11 @@ var intervalID = setInterval(function () {
 }, 1000);
 
 
+/**
+ * 
+ *  Sending data  to server
+ * 
+ */
 function postToServer() {
     document.querySelector("#content").style.display = "none";
     document.querySelector("#loader").style.display = "block";
@@ -280,7 +306,7 @@ function postToServer() {
         "solved": Object.keys(solved).length
     }
     console.log(data);
-    fetch('https://incities-interactive.herokuapp.com/api/responseInteractive', {
+    fetch(API + 'api/responseInteractive', {
         method: 'POST',
         body: JSON.stringify(data), // data can be `string` or {object}!
         headers: {
@@ -293,7 +319,7 @@ function postToServer() {
             console.log('Success:', res);
             document.querySelector('.modal-title').innerHTML = "Resultados";
             document.getElementById('modal-button').innerHTML = "Terminar";
-            document.getElementById('modal-button').addEventListener('click',function(){window.location='index.html'});
+            document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
             document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul>`;
             $('#myModal').modal('toggle');
         });
