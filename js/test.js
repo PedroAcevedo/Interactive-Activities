@@ -1,49 +1,74 @@
-var num_questions, userID, activity_id = 0;
-var intervalID, set, num_questions, time_to_finish;
-var questions, selected = [];
+var intervalID, set, num_questions, time_to_finish, userID, activity_id;
+var questions = [], selected = [];
 var index = 1;
 var type = 0;
+var API = 'http://127.0.0.1:8000/';//'https://incities-interactive.herokuapp.com'
 
-fetch('https://incities-interactive.herokuapp.com/api/getInteractive/51')
+/**
+ * 
+ *  GET the initial activity
+ *  
+ */
+fetch(API + 'api/getInteractive/51')
   .then(response => response.json())
   .then(function (json) {
-    //console.log(json);
-    questions = json['data']['questions'];
-    type = json['data']['type'];
+    json = json['data'];
+    questions = json['questions'];
+    type = json['type'];
     num_questions = questions.length;
-    time_to_finish = json['data']['time_limit'];
-    var title = json['data']['title'];
-    const { id, content, options } = questions.pop();
+    time_to_finish = json['time_limit'];
+    var title = json['title'];
+    const { content, options } = questions.pop();
+
 
     var title_timer = `
-          <div class="container-fullwidth">
-           <header>
-            <nav class="fixed-top navbar navbar-expand-lg bg-white d-flex justify-content-center" style="border-bottom:3px #dee2e6 solid">
-              <div class="row ">
+    <div class="container-fullwidth">
+        <header>
+        <nav class="fixed-top navbar navbar-expand-lg bg-white d-flex justify-content-center" style="border-bottom:3px #dee2e6 solid">
+          <div class="row ">
                 <section class=\"title\"><h2>${title}</h2> 
-              </div>
-                <h3 id="timer" style="margin-left: 10%;" value="00:00"></h3>
-            </nav>
-            </header>
           </div>
-          `;
+              <h3 id="timer" style="margin-left: 10%;" value="00:00"></h3>
+          </nav>
+        </header>
+    </div>
+    `;
+   
+    /* title_results := defines the navbar */
     document.getElementById('title_results').innerHTML = title_timer;
+    /* results_enum := defines the statement or question text */
     document.getElementById('results_enum').innerHTML = getContent(content);
+    /* results := defines the list of options of a question */
     document.getElementById('results').innerHTML = getOptions(options);
+    /* loader := simulate a charge view */
     document.querySelector("#loader").style.display = "none";
+    /* content := contain all the activity code, hide when charge */
     document.querySelector("#content").style.display = "block";
+    /* sendData := defines the button for save the choice */
     document.getElementById('sendData').addEventListener('click', sendData);
+    /* btn-back := defines the button to go back */
     document.getElementById('btn-back').addEventListener('click', postToServer);
+    /* index := count the showed questions */
     index = index + 1;
   });
+
+
+  /**
+   * 
+   * @param {} val get the selected option 
+   */
 
 function clickButton(val) {
   set = val
   $("#sendData").removeAttr("disabled");
 }
 
+/**
+ * 
+ *  Restart the page view with a new question, when finish send answer to server
+ * 
+ */
 function sendData() {
-  var results_enum = '';
   document.querySelector("#content").style.display = "none";
   document.querySelector("#loader").style.display = "block";
   $(":submit").attr("disabled", true);
@@ -60,7 +85,11 @@ function sendData() {
     postToServer();
   }
 }
-
+/**
+ * 
+ *  Sending data  to server
+ * 
+ */
 function postToServer() {
   document.querySelector("#content").style.display = "none";
   document.querySelector("#loader").style.display = "block";
@@ -72,7 +101,7 @@ function postToServer() {
     "answers": selected
   }
   console.log(data);
-  fetch('https://incities-interactive.herokuapp.com/api/responseInteractive', {
+  fetch(API + 'api/responseInteractive', {
     method: 'POST',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
@@ -91,6 +120,12 @@ function postToServer() {
     });
 }
 
+/**
+ * 
+ * Activate the timer
+ * 
+ */
+
 var intervalID = setInterval(function () {
   $("#timer").val(function () {
     var timer = showTime(time_to_finish);
@@ -106,6 +141,13 @@ var intervalID = setInterval(function () {
   });
 
 }, 1000);
+
+
+/**
+ * 
+ * @param {*} content defines the question statement
+ * 
+ */
 
 function getContent(content) {
   let contenido = content.length > 300 ? `<h3 style="padding: 5% 15%;">${content}</h3>` : `<h1 style="padding: 5% 15%;">${content}</h1>`;
@@ -124,6 +166,11 @@ function getContent(content) {
     `
 }
 
+
+/**
+ * 
+ * @param {*} options list with the for options of answer
+ */
 function getOptions(options) {
   return `
           <div class="row">
@@ -154,12 +201,3 @@ function getOptions(options) {
             </div>
             `
 }
-
-/*function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}*/
