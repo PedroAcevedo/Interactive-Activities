@@ -36,7 +36,6 @@
 
 
         $('#MemoryCheck1').change(function () {
-            console.log("EVENTO CHANGE")
             if (this.checked) {
                 $('#MemoryText1').hide();
                 $('#MemoryImage1').show();
@@ -259,7 +258,10 @@
         soup = []
         memoryfiles = {}
 
-
+        /** 
+         * 
+         * Sending data to server 
+        */
         function postToServer() {
             var url = 'http://127.0.0.1:8000/api/createInteractive';
             var data = {};
@@ -386,6 +388,11 @@
             }
         }
 
+
+        /**
+         *  Adding flieds in a soup 
+         * 
+         * */
         function addSoup() {
             var word = document.getElementById('SoupTextInput');
             if (word.value.length > 0) {
@@ -397,6 +404,11 @@
             }
         }
 
+
+        /**
+         *  Adding flieds in a crossword 
+         * 
+         * */
         function addCrossWords() {
             var content = document.getElementById('CrossTextArea');
             var word = document.getElementById('CrossTextInput');
@@ -411,6 +423,11 @@
             }
         }
 
+
+        /**
+         *  Adding flieds in a memory match 
+         * 
+         * */
         function addMemory() {
             var word1 = document.getElementById('MemoryCheck1').checked ? document.getElementById('MemoryFile1') : document.getElementById('MemoryTextInput1');
             var word2 = document.getElementById('MemoryCheck2').checked ? document.getElementById('MemoryFile2') : document.getElementById('MemoryTextInput2');
@@ -430,22 +447,37 @@
         }
 
 
+        /**
+         *  remove item of a list
+         * 
+         * */
         function removeMatch(index) {
             delete Match[index];
             updateMatchList();
         }
 
+
+        /**
+         *  renove flieds in an activity 
+         * 
+         * */
         function removeSoup(index) {
             soup.splice(index, 1);
             updateSoupList();
         }
 
 
+        /***
+         * 
+         * remove item by index
+         * 
+         * */
         function remove(index) {
             questions.splice(index, 1);
             updateQuestionList();
         }
 
+        /* Update the questions entered */
         function updateQuestionList() {
             var html = '<ul class="list-group">';
             questions.forEach(function (question, index) {
@@ -459,6 +491,7 @@
             document.getElementById('preguntas').innerHTML = html;
         }
 
+        /* Update the soup of words entered*/
         function updateSoupList() {
             var html = '<ul class="list-group">';
             soup.forEach(function (word, index) {
@@ -472,6 +505,7 @@
             document.getElementById('soup').innerHTML = html;
         }
 
+        /* Update the matches words entered*/
 
         function updateMatchList() {
 
