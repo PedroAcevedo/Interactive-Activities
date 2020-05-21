@@ -219,7 +219,7 @@ function postToServer() {
     "flips": pairs
   }
   console.log(data);
-  fetch('https://incities-interactive.herokuapp.com/api/responseInteractive', {
+  fetch(API + 'api/responseInteractive', {
     method: 'POST',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
