@@ -4,7 +4,7 @@ var hasFlippedCard = false;
 var lockBoard = false;
 var firstCard, secondCard;
 var flipSound;
-var API = 'http://localhost:8000/';
+var API = 'https://incities-interactive.herokuapp.com/';
 
 /**
  * 

@@ -5,7 +5,7 @@ var solved = {};
 var wordCount = {}
 var def = [];
 var helps = 0;
-var API = 'http://localhost:8000/';//https://incities-interactive.herokuapp.com
+var API = 'https://incities-interactive.herokuapp.com/';//https://incities-interactive.herokuapp.com
 
 /**
  * 

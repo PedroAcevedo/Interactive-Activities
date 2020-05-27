@@ -2,7 +2,7 @@ var intervalID, set, num_questions, time_to_finish, userID, activity_id;
 var questions = [], selected = [];
 var index = 1;
 var type = 0;
-var API = 'http://127.0.0.1:8000/';//'https://incities-interactive.herokuapp.com'
+var API = 'https://incities-interactive.herokuapp.com/';//'https://incities-interactive.herokuapp.com'
 
 /**
  * 

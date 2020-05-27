@@ -3,7 +3,7 @@ var soup_answer = 0, orientation = 0, direction = 0;
 var selection = false;
 var selectedList = [];
 var wordList = [];
-var API = 'http://localhost:8000/';
+var API = 'https://incities-interactive.herokuapp.com/';
 
 /**
  * 
