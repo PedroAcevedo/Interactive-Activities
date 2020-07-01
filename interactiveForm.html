@@ -58,7 +58,12 @@
 
     });
 </script>
-
+<style>
+    .form-row{
+        overflow: scroll;
+        max-height: 300px;
+    }
+</style>
 <body>
 
     <!-- Modal -->
@@ -106,62 +111,89 @@
                                     <textarea class="form-control" id="TestTextArea" rows="3"></textarea>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="TestInput">Opción 1</label>
-                                    <input type="text" class="form-control" id="TestInput1"
-                                        placeholder="Opción de respuesta 1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="TestInput2">Opción 2</label>
-                                    <input type="text" class="form-control" id="TestInput2"
-                                        placeholder="Opción de respuesta 2">
-                                </div>
-                                <div class="form-group">
-                                    <label for="TestInput3">Opción 3</label>
-                                    <input type="text" class="form-control" id="TestInput3"
-                                        placeholder="Opción de respuesta 3">
-                                </div>
-                                <div class="form-group">
-                                    <label for="TestInput4">Opción 4</label>
-                                    <input type="text" class="form-control" id="TestInput4"
-                                        placeholder="Opción de respuesta 4">
+                                <div id="TestImage" class="custom-file">
+                                    <label for="TestFile">Imagen de la pregunta</label>
+                                    <input type="file" class="custom-file-input" id="TestFile" lang="es"
+                                        accept="image/*">
+                                    <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
                                 </div>
 
-                                <fieldset class="form-group">
-                                    <div class="row">
-                                        <legend class="col-form-label col-sm-2 pt-0">Respuesta correcta: </legend>
-                                        <div class="col-sm-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="TestRadio"
-                                                    id="gridRadios1" value="1" checked>
-                                                <label class="form-check-label" for="gridRadios1">
-                                                    Opción 1
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="TestRadio"
-                                                    id="gridRadios2" value="2">
-                                                <label class="form-check-label" for="gridRadios2">
-                                                    Opción 2
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="TestRadio"
-                                                    id="gridRadios3" value="3">
-                                                <label class="form-check-label" for="gridRadios3">
-                                                    Opción 3
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="TestRadio"
-                                                    id="gridRadios3" value="4">
-                                                <label class="form-check-label" for="gridRadios3">
-                                                    Opción 4
-                                                </label>
+                                <div class="btn-group w-100" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-info w-50 choices">Opción multiple</button>
+                                    <button type="button" class="btn btn-info w-50 choices">Verdadero/falso</button>
+                                </div>
+
+                                <div id="choices" class="pt-4 show">
+                                    <div class="form-group">
+                                        <label for="TestInput">Opción 1</label>
+                                        <input type="text" class="form-control" id="TestInput1"
+                                            placeholder="Opción de respuesta 1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="TestInput2">Opción 2</label>
+                                        <input type="text" class="form-control" id="TestInput2"
+                                            placeholder="Opción de respuesta 2">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="TestInput3">Opción 3</label>
+                                        <input type="text" class="form-control" id="TestInput3"
+                                            placeholder="Opción de respuesta 3">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="TestInput4">Opción 4</label>
+                                        <input type="text" class="form-control" id="TestInput4"
+                                            placeholder="Opción de respuesta 4">
+                                    </div>
+                                    <fieldset class="form-group">
+                                        <div class="row">
+                                            <legend class="col-form-label col-sm-2 pt-0">Respuesta correcta: </legend>
+                                            <div class="col-sm-10">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="TestRadio"
+                                                        id="gridRadios1" value="1" checked>
+                                                    <label class="form-check-label" for="gridRadios1">
+                                                        Opción 1
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="TestRadio"
+                                                        id="gridRadios2" value="2">
+                                                    <label class="form-check-label" for="gridRadios2">
+                                                        Opción 2
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="TestRadio"
+                                                        id="gridRadios3" value="3">
+                                                    <label class="form-check-label" for="gridRadios3">
+                                                        Opción 3
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="TestRadio"
+                                                        id="gridRadios4" value="4">
+                                                    <label class="form-check-label" for="gridRadios3">
+                                                        Opción 4
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
+                                    </fieldset>
+                                </div>
+
+                                <div id="trueFalse" class="d-flex justify-content-center w-100 p-4 hide">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="Logical" id="Logical1"
+                                            value="1">
+                                        <label class="form-check-label" for="Logical1">Verdadero</label>
                                     </div>
-                                </fieldset>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="Logical" id="Logical2"
+                                            value="2">
+                                        <label class="form-check-label" for="Logical2">Falso</label>
+                                    </div>
+                                </div>
+
 
                                 <a class="btn btn-primary" onclick="addQuestion()">Agregar</a>
 
@@ -178,7 +210,7 @@
 
                                 <div class="form-group">
                                     <label for="SoupTextArea">Definición/relación de la palabra</label>
-                                        <textarea class="form-control" id="CrossTextArea" rows="3"></textarea>
+                                    <textarea class="form-control" id="CrossTextArea" rows="3"></textarea>
                                 </div>
 
                                 <a class="btn btn-primary" onclick="addCrossWords()">Agregar</a>
@@ -233,7 +265,8 @@
                                 <a class="btn btn-primary" onclick="addMemory()">Agregar</a>
 
                             </div>
-                            <small id="emailHelp" class="form-text text-muted">Selecciona una actividad interactiva para ingresar en la plataforma.</small>
+                            <small id="emailHelp" class="form-text text-muted">Selecciona una actividad interactiva para
+                                ingresar en la plataforma.</small>
                     </div>
 
                     <div class="form-group">
@@ -257,6 +290,28 @@
         Match = {}
         soup = []
         memoryfiles = {}
+        questionsfiles = {}
+        testOptions = {
+            choice: document.getElementById('choices'),
+            logical: document.getElementById('trueFalse')
+        }
+
+
+        $('.choices').click(function (e) {
+            if ($(this).text() == 'Opción multiple') {
+                testOptions.choice.classList.remove("hide");
+                testOptions.logical.classList.remove("show");
+
+                testOptions.choice.classList.add("show");
+                testOptions.logical.classList.add("hide");
+            } else {
+                testOptions.choice.classList.remove("show");
+                testOptions.logical.classList.remove("hide");
+
+                testOptions.choice.classList.add("hide");
+                testOptions.logical.classList.add("show");
+            }
+        });
 
         /** 
          * 
@@ -281,7 +336,17 @@
                 case '2':
                     if (questions.length > 0) {
                         if (questions.length >= 5) {
+                            var formData = new FormData();
                             data['test'] = questions;
+                            if (Object.keys(questionsfiles).length > 0) {
+                                Object.entries(questionsfiles).forEach(([key, value], index) => {
+                                    formData.append('file[]', value);
+                                });
+                            }
+                            var list = [];
+                            list.push(questions);
+                            formData.append('questions', JSON.stringify(list));
+                            data['Something'] = formData;
                         } else {
                             alert('Adicione al menos 5 preguntas al test');
                         }
@@ -323,14 +388,16 @@
             }
             if (Object.keys(data).length > 0) {
                 console.log(data);
-                if (document.getElementById('exampleFormControlSelect1').value == 4) {
+                if (document.getElementById('exampleFormControlSelect1').value == 4 || document.getElementById('exampleFormControlSelect1').value == 2) {
                     var info = []
+                    var isMatch = document.getElementById('exampleFormControlSelect1').value == 4? true : false;
                     var formData = data['Something'];
                     info.push({
                         'activity_id': 1,
                         'type': parseInt(document.getElementById('exampleFormControlSelect1').value),
                         'time_limit': parseInt(document.getElementById('TestInput5').value)
                     });
+                    formData.append('evaluation', JSON.stringify(isMatch));
                     formData.append('info', JSON.stringify(info));
                     fetch(url, {
                         method: 'POST',
@@ -365,24 +432,39 @@
             var content = document.getElementById('TestTextArea')
             if (content.value.length > 0) {
                 var options = []
-                for (var i = 1; i <= 4; i++) {
-                    options.push(document.getElementById('TestInput' + i));
-                }
-                console.log(options)
                 var data = {
                     content: content.value,
-                    options: [
+                    image: ''
+                }
+                if (testOptions.choice.classList.contains('show')) {
+                    for (var i = 1; i <= 4; i++) {
+                        options.push(document.getElementById('TestInput' + i));
+                    }
+                    data.options = [
                         options[0].value,
                         options[1].value,
                         options[2].value,
                         options[3].value
-                    ],
-                    is_answer: document.querySelector('input[name="TestRadio"]:checked').value
+                    ];
+                    data.is_answer = document.querySelector('input[name="TestRadio"]:checked').value
+                    options.forEach((op) => op.value = '');
+                } else {
+                    data.options = [
+                        'Verdadero',
+                        'Falso'
+                    ]
+                    data.is_answer = document.querySelector('input[name*="Logical"]:checked').value
                 }
+                if (document.getElementById('TestFile').value.length > 0) {
+                    data.image = document.getElementById('TestFile').files[0].name;
+                    questionsfiles[document.getElementById('TestFile').files[0].name] = document.getElementById('TestFile').files[0];
+                    document.getElementById('TestFile').value = '';
+                    $(document.getElementById('TestFile')).next('.custom-file-label').html('Seleccione imagen');
+                }
+                content.value = '';
                 questions.push(data);
                 updateQuestionList();
-                content.value = '';
-                options.forEach((op) => op.value = '');
+
             } else {
                 alert('Complete el campo requerido');
             }
@@ -406,7 +488,7 @@
 
 
         /**
-         *  Adding flieds in a crossword 
+         *  Adding fields in a crossword 
          * 
          * */
         function addCrossWords() {
@@ -436,8 +518,10 @@
                 Match[wordval] = document.getElementById('MemoryCheck2').checked ? word2.files[0].name : word2.value + '';
                 if (document.getElementById('MemoryCheck1').checked)
                     memoryfiles[word1.files[0].name] = word1.files[0]
+                    $(word1).next('.custom-file-label').html('');
                 if (document.getElementById('MemoryCheck2').checked)
                     memoryfiles[word2.files[0].name] = word2.files[0]
+                    $(word2).next('.custom-file-label').html('Seleccione imagen');
                 updateMatchList();
                 word1.value = '';
                 word2.value = '';
@@ -465,7 +549,6 @@
             soup.splice(index, 1);
             updateSoupList();
         }
-
 
         /***
          * 
@@ -514,12 +597,12 @@
             Object.entries(Match).forEach(([key, value], index) => {
                 col1 += `
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    ${key.substring(0, 18)} ...
+                    ${key.substring(0, 10)} ...
                     <a class="btn" onclick="removeMatch('${key}')"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
                 </li>`
                 col2 += `
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    ${value.substring(0, 20)} ...
+                    ${value.substring(0, 10)} ...
                     <a class="btn" onclick="removeMatch('${key}')"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
                 </li> `
             });
@@ -549,6 +632,10 @@
 
         }
 
+
+        $(document).on('change', '.custom-file-input', function (event) {
+            $(this).next('.custom-file-label').html(event.target.files[0]? event.target.files[0].name: '');
+        })
 
     </script>
 

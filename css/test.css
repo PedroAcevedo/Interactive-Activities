@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .card-body {
     padding: .5rem;
 }
@@ -55,10 +59,10 @@ hr.new {
     font-size: 1.75rem;
 }
 
-.option{
-    color:white;
+.option {
+    color: white;
     font-size: 20px;
-    padding:5px;
+    padding: 5px;
 }
 
 .shad2 {
@@ -68,20 +72,37 @@ hr.new {
     text-align: center;
 }
 
-.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-success:focus, .btn-success:active:focus {
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-success {
     background-color: #00C574;
     border-color: #33CC99;
     ;
 }
 
-.btn-warning, .btn-warning:hover, .btn-warning:active, .btn-warning:visited, .btn-warning:focus, .btn-warning:active:focus {
+.btn-warning {
     background-color: #FF9933;
     border-color: #E66B2E;
 }
 
-.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited, .btn-danger:focus, .btn-danger:active:focus {
+.btn-danger {
     background-color: #CC0066;
     border-color: #B3003B;
+}
+
+.selected, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary:focus, .btn-primary:active:focus, .btn-danger:hover, .btn-danger:active, .btn-danger:visited, .btn-danger:focus, .btn-danger:active:focus, .btn-warning:active, .btn-warning:visited, .btn-warning:focus, .btn-warning:active:focus, .btn-warning:hover, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-success:focus, .btn-success:active:focus {
+    background-color: #A83EB3;
+    border-color: #993399;
+}
+
+.question-img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
 }
 
 @media (max-width:425px) {
@@ -91,17 +112,13 @@ hr.new {
     #signUpForm {
         padding: 0;
     }
-
-    .content{
+    .content {
         margin-top: 30%;
     }
-
-    .carousel-control-next{
+    .carousel-control-next {
         margin-right: 20%;
     }
-
-    .option{
+    .option {
         font-size: 16px;
     }
-
 }

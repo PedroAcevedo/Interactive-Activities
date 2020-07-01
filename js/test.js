@@ -1,15 +1,14 @@
-var intervalID, set, num_questions, time_to_finish, userID, activity_id;
-var questions = [], selected = [];
+var intervalID, num_questions, time_to_finish, userID, activity_id;
+var questions = [], selected = [], set = {};
 var index = 1;
 var type = 0;
-var API = 'https://incities-interactive.herokuapp.com/';//'https://incities-interactive.herokuapp.com'
 
 /**
  * 
  *  GET the initial activity
  *  
  */
-fetch(API + 'api/getInteractive/51')
+fetch(API + 'api/getInteractive/69')
   .then(response => response.json())
   .then(function (json) {
     json = json['data'];
@@ -18,7 +17,6 @@ fetch(API + 'api/getInteractive/51')
     num_questions = questions.length;
     time_to_finish = json['time_limit'];
     var title = json['title'];
-    const { content, options } = questions.pop();
 
 
     var title_timer = `
@@ -36,10 +34,9 @@ fetch(API + 'api/getInteractive/51')
    
     /* title_results := defines the navbar */
     document.getElementById('title_results').innerHTML = title_timer;
-    /* results_enum := defines the statement or question text */
-    document.getElementById('results_enum').innerHTML = getContent(content);
-    /* results := defines the list of options of a question */
-    document.getElementById('results').innerHTML = getOptions(options);
+
+    loadQuestions();
+
     /* loader := simulate a charge view */
     document.querySelector("#loader").style.display = "none";
     /* content := contain all the activity code, hide when charge */
@@ -53,15 +50,23 @@ fetch(API + 'api/getInteractive/51')
   });
 
 
-  /**
-   * 
-   * @param {} val get the selected option 
-   */
-
-function clickButton(val) {
-  set = val
-  $("#sendData").removeAttr("disabled");
-}
+  function loadQuestions(){
+    while (questions.length > 0){ 
+      const { id, content, options } = questions.pop();
+      document.getElementById('results_enum').innerHTML += `<div id="${'q-' + index}">` + getContent(content);
+      document.getElementById('results_enum').innerHTML += getOptions(options) + '</div>';
+      index = index + 1;
+    }
+    $('.results .btn').click(function(){
+      $(`.results .btn[data-question="${$(this).data('question')}"]`).removeClass('selected');
+      $(this).addClass('selected');
+      set[$(this).data('question')] = $(this).data('value');
+      window.location.href = `#q-${$(this).data('question')+1}`;
+      if(Object.keys(set).length == num_questions ){
+        $("#sendData").removeAttr("disabled");
+      }
+    });
+  }
 
 /**
  * 
@@ -71,19 +76,7 @@ function clickButton(val) {
 function sendData() {
   document.querySelector("#content").style.display = "none";
   document.querySelector("#loader").style.display = "block";
-  $(":submit").attr("disabled", true);
-  selected.push(set)
-  if (questions.length > 0) {
-    const { id, content, options } = questions.pop();
-    document.getElementById('results_enum').innerHTML = getContent(content);
-    document.getElementById('results').innerHTML = getOptions(options);
-    document.querySelector("#content").style.display = "block";
-    document.querySelector("#loader").style.display = "none";
-    document.getElementById('sendData').addEventListener('click', sendData);
-    index = index + 1;
-  } else {
-    postToServer();
-  }
+  postToServer();
 }
 /**
  * 
@@ -98,7 +91,7 @@ function postToServer() {
     "userID": userID,
     "time_to_finish": timediff(time_to_finish, document.getElementById('timer').value),
     "activity_id": activity_id,
-    "answers": selected
+    "answers": Object.values(set)
   }
   console.log(data);
   fetch(API + 'api/responseInteractive', {
@@ -150,16 +143,20 @@ var intervalID = setInterval(function () {
  */
 
 function getContent(content) {
+  let quest_img = '';
+  let quest = content.split('@@');
+  if(quest.length > 1){
+    content = quest[1];
+    quest_img = quest[0];
+  }
+
   let contenido = content.length > 300 ? `<h3 style="padding: 5% 15%;">${content}</h3>` : `<h1 style="padding: 5% 15%;">${content}</h1>`;
 
   return `
-    <a class="carousel-control-next ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start" style="height: 50px;" role="button" data-slide="next">
-      <button id="sendData" type="button" class="btn btn-info shadow" disabled>Siguiente</button> 
-    </a>
-    <div class="col pt-3 ml-0 mr-0 mt-5 pt-5 pr-5 d-flex justify-content-start">
-      <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button>
-    </div>
+    ${index == 1? '<div class="col pt-5 ml-0 mr-0 mt-5 pt-5 pr-5 d-flex justify-content-start"> <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button></div>': ''}
+    <a class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end" style="height: 50px;" role="button" data-slide="next"> ${index == num_questions? '<button id="sendData" type="button" class="btn btn-info shadow" disabled>Enviar test</button>':''} </a>
     <div class="row pt-3 ml-3 font-weight-bold" style="padding-left:20px">${index} de ${num_questions}</div>
+    ${quest_img != ''? quest_img.split("src='")[0] + "src='" + API.substring(0, API.length-1) + quest_img.split("src='")[1] : ""}
     <div class="row text-justify d-flex justify-content-center">
       ${contenido}
     </div>
@@ -172,32 +169,39 @@ function getContent(content) {
  * @param {*} options list with the for options of answer
  */
 function getOptions(options) {
-  return `
+  content = '<div class="results">';
+  content += `
           <div class="row">
               <div class="col pl-2 pr-2">
-                <button type="button" class="btn btn-success d-flex w-100" style="height:100%" onclick="clickButton( \'` + options[0]['option_id'] + `\')">
+                <button type="button" class="btn btn-success d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[0]['option_id'] + `\'>
                   <div class="col-2 shad"><b>A.</b></div>
                   <div class="col-10 text-left option">${options[0]['content']}</div>
                 </button>
               </div>
               <div class="col pl-2 pr-2">
-                <button type="button" class="btn btn-primary d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[1]['option_id'] + `\')">
+                <button type="button" class="btn btn-primary d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[1]['option_id'] + `\'>
                   <div class="col-2 shad"><b>B.</b></div>
                   <div class="col-10 text-left option">${options[1]['content']}</div>
                 </button>
               </div>
-              <div class="col pl-2 pr-2">
-                <button type="button" class="btn btn-warning d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[2]['option_id'] + `\')">
-                  <div class="col-2 shad"><b>C.</b></div>
-                  <div class="col-10 text-left option" >${options[2]['content']}</div>
-                </button>
-              </div>
-              <div class="col pl-2 pr-2">
-                  <button type="button" class="btn btn-danger d-flex w-100" style="height:100%" onclick="clickButton(\'` + options[3]['option_id'] + `\')">
-                    <div class="col-2 shad"><b>D.</b></div>
-                    <div class="col-10 text-left option">${options[3]['content']}</div>
-                  </button>
-              </div>
-            </div>
             `
+  if(options.length > 2){
+    content += `
+    <div class="col pl-2 pr-2">
+        <button type="button" class="btn btn-warning d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[2]['option_id'] + `\'>
+          <div class="col-2 shad"><b>C.</b></div>
+          <div class="col-10 text-left option" >${options[2]['content']}</div>
+        </button>
+      </div>
+      <div class="col pl-2 pr-2">
+          <button type="button" class="btn btn-danger d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[3]['option_id'] + `\'>
+            <div class="col-2 shad"><b>D.</b></div>
+            <div class="col-10 text-left option">${options[3]['content']}</div>
+          </button>
+      </div>
+    </div>
+    `
+  }
+  content += '</div>'
+  return content;
 }
