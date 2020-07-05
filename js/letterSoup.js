@@ -1,5 +1,5 @@
 var selectWord, type, userID, time_to_finish, activity_id, initial, second;
-var soup_answer = 0, orientation = 0, direction = 0;
+var soup_answer = 0, diag = 0;
 var selection = false;
 var selectedList = [];
 var wordList = [];
@@ -66,6 +66,7 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
       .on('mouseup touchstart', function () {
         selection = false;
         initial, second = undefined;
+        diag = 0;
         if ($(this) != initial) {
           console.log(selectWord);
           let index = verify(selectWord)
@@ -92,6 +93,7 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
       .on('mousedown touchend', function () {
         selection = true;
         initial = $(this);
+        initial[0].center = getCenter($(this));
         selectedList.push(initial);
         selectWord = $(this).text().trim();
         $(this).css("background-color", 'yellow');
@@ -193,95 +195,30 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
         }
       });
 
+
     $(".unselectable ").on('mouseenter', function () {
       //stuff to do on mouse enter
-      if (selection) {
-        if ($(this) != initial) {
-          if (!selectedList.includes($(this))) {
-            if (second == undefined) {
-              second = $(this);
-              console.log(initial.data('row'));
-              if (initial.data('row') == second.data('row')) {
-                orientation = 0;
-                if (initial.data('column') < second.data('column')) {
-                  direction = 1;
-                } else {
-                  direction = 2;
-                }
-              } else {
-                if (initial.data('column') == second.data('column')) {
-                  orientation = 1;
-                  if (initial.data('row') < second.data('row')) {
-                    direction = 1;
-                  } else {
-                    direction = 2;
-                  }
-                } else {
-                  orientation = 2;
-                  if (initial.data('column') < second.data('column')) {
-                    direction = 1;
-                  } else {
-                    direction = 2;
-                  }
-                }
-              }
-              selectBox(second);
-            } else {
-              if (orientation == 0) {
-                if (initial.data('row') == $(this).data('row')) {
-                  if (direction == 1) {
-                    if (initial.data('column') < $(this).data('column')) {
-                      selectBox($(this));
-                    }
-                  } else {
-                    if (initial.data('column') > $(this).data('column')) {
-                      selectBox($(this));
-                    }
-                  }
-                }
-              } else {
-                if (orientation == 1) {
-                  if (initial.data('column') == $(this).data('column')) {
-                    if (direction == 1) {
-                      if (initial.data('row') < $(this).data('row')) {
-                        selectBox($(this));
-                      }
-                    } else {
-                      if (initial.data('row') > $(this).data('row')) {
-                        selectBox($(this));
-                      }
-                    }
-                  }
-                } else {
-                  if (Math.abs(selectedList.slice(-1)[0].data('row') - $(this).data('row')) == 1 && Math.abs(selectedList.slice(-1)[0].data('column') - $(this).data('column')) == 1) {
-                    if (direction == 1) {
-                      if (initial.data('column') < $(this).data('column')) {
-                        selectBox($(this));
-                      }
-                    } else {
-                      if (initial.data('column') > $(this).data('column')) {
-                        selectBox($(this));
-                      }
-                    }
-                  }
-                }
-              }
-
-            }
-          } else {
-            console.log('in');
-            selectWord = selectWord.slice(0, -1);
-            selectedList.remove($(this));
-          }
-        } else {
-          second = undefined;
-        }
+      if(selection){
+        $(this)[0].center = getCenter($(this));
+        selectBox($(this));
       }
+
     });
 
 
   });
 
+
+function getCenter(element) {
+  var offset = element.offset();
+  var width = element.width();
+  var height = element.height();
+
+  var centerX = offset.left + width / 2;
+  var centerY = offset.top + height / 2;
+
+  return { 'x': centerX, 'y': centerY }
+}
 
 /**
  * 
@@ -326,9 +263,31 @@ function verify(wordselected) {
  * @param {*} element the actual box on click
  */
 function selectBox(element) {
-  selectedList.push(element);
-  selectWord += element.text().trim();
-  element.css("background-color", 'yellow');
+
+  if(selectedList.length > 0)
+    if(initial[0].center.x == element[0].center.x || initial[0].center.y == element[0].center.y ){
+      selectedList.push(element);
+      selectWord += element.text().trim();
+      element.css("background-color", 'yellow');
+    }else{
+      if(diag==0){
+        if(selectedList.length == 2){
+          diag = 1;
+          selectedList.pop().css("background-color", 'white');
+          selectWord = selectWord.substr(0,1);
+          selectedList.push(element);
+          selectWord += element.text().trim();
+          element.css("background-color", 'yellow');
+        }
+      }else{
+        if(Math.abs(initial.data('row') - element.data('row')) == selectedList.length && Math.abs(initial.data('column') - element.data('column')) == selectedList.length){
+          selectedList.push(element);
+          selectWord += element.text().trim();
+          element.css("background-color", 'yellow');
+        }
+      }
+    }
+
 }
 
 /**
