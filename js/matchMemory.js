@@ -96,14 +96,14 @@ function defineCard(key, value) {
     `
   <div class="memory-card" data-word="${key}">
     <img class="front-face" src="${API + value}" alt="" />
-    <img class="back-face" src="images/Incities_logo.svg" alt="Incities" />
+    <img class="back-face" src="assets/images/Incities_logo.svg" alt="Incities" />
   </div>
   `
     :
     `
   <div class="memory-card" data-word="${key}">
     <div class="front-face"> <p class="paragraph">${value}</p> </div>
-    <img class="back-face" src="images/Incities_logo.svg" alt="Incities" />
+    <img class="back-face" src="assets/images/Incities_logo.svg" alt="Incities" />
   </div>
   `;
 

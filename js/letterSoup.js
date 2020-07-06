@@ -278,7 +278,15 @@ function selectBox(element) {
           selectedList.push(element);
           selectWord += element.text().trim();
           element.css("background-color", 'yellow');
+        }else{
+          if(Math.abs(initial.data('row') - element.data('row')) == 1 && Math.abs(initial.data('column') - element.data('column')) == 1){
+            diag = 1;
+            selectedList.push(element);
+            selectWord += element.text().trim();
+            element.css("background-color", 'yellow');
+          }
         }
+
       }else{
         if(Math.abs(initial.data('row') - element.data('row')) == selectedList.length && Math.abs(initial.data('column') - element.data('column')) == selectedList.length){
           selectedList.push(element);
