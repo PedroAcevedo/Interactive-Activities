@@ -10,7 +10,7 @@ var flipSound;
  *  GET the initial activity
  * 
  */
-fetch(API + 'api/getInteractive/53')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
+fetch(API + 'api/getInteractive/76')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
   .then(response => response.json())
   .then(function (json) {
     json = json['data'];
@@ -95,7 +95,7 @@ function defineCard(key, value) {
   return value.includes('/') ?
     `
   <div class="memory-card" data-word="${key}">
-    <img class="front-face" src="${API + value}" alt="" />
+    <img class="front-face" src="${API.substring(0, API.length-1) + value}" alt="" />
     <img class="back-face" src="assets/images/Incities_logo.svg" alt="Incities" />
   </div>
   `

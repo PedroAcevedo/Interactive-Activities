@@ -59,7 +59,7 @@
     });
 </script>
 <style>
-    .form-row{
+    .form-row, #soup, #cross, #memory{
         overflow: scroll;
         max-height: 300px;
     }
@@ -356,7 +356,7 @@
                     break;
                 case '3':
                     if (Object.keys(Match).length > 0) {
-                        if (Object.keys(Match).length > 5) {
+                        if (Object.keys(Match).length >= 5) {
                             data['matches'] = Match;
                         } else {
                             alert('Adicione al menos 5 matches a la actividad');
@@ -367,7 +367,7 @@
                     break;
                 case '4':
                     if (Object.keys(Match).length > 0) {
-                        if (Object.keys(Match).length > 5) {
+                        if (Object.keys(Match).length >= 5) {
                             var formData = new FormData();
                             Object.entries(memoryfiles).forEach(([key, value], index) => {
                                 formData.append('file[]', value);

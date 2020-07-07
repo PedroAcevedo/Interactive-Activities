@@ -8,7 +8,7 @@ var type = 0;
  *  GET the initial activity
  *  
  */
-fetch(API + 'api/getInteractive/70')
+fetch(API + 'api/getInteractive/78')
   .then(response => response.json())
   .then(function (json) {
     json = json['data'];
