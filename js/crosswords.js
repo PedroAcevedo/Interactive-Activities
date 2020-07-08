@@ -14,7 +14,7 @@ var helps = 0;
 fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https://www.freemysqlhosting.net/account/
     .then(response => response.json())
     .then(function (json) {
-        
+        console.log(json)
         json = json['data'];
         def = json['matches'];
         type = json['type'];
@@ -36,26 +36,36 @@ fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https
 
         /* title_results := defines the navbar */
         document.getElementById('title_results').innerHTML = title_timer;
-        let results = '<h3 class="text-center">Definiciones</h3><div class="row"><div class="col-sm" style="padding: 20px;"><ol class="list-group">';
+        let verticals = '<div class="row"><div class="col-sm" style="padding: 20px;"> <h3 class="text-center">Palabras verticales</h3> <ol class="list-group">';
+        let horizontals = '<h3 class="text-center pt-4">Palabras horizontales</h3> <ol class="list-group">';
         let order = {}
+        let orientation = Object.values(json['orientation']);
         Object.entries(def).forEach(([key, value], index) => {
-            results += `
-                <li class="list-group-item" id="${key}">
+            if(orientation[index][2] == 1){
+                verticals += `
+                <li class="list-group-item" id="${key}" value="${index + 1}">
                 ${value}
                 </li>       
-                `
-
+                `;
+            }else{
+                horizontals += `
+                <li class="list-group-item" id="${key}" value="${index + 1}">
+                ${value}
+                </li>       
+                `;
+            }
             order[key] = index + 1;
         });
         /* results := define options buttons */
-        results += `</ol></div></div> 
+        verticals += '</ol>'
+        horizontals += `</ol></div></div> 
         <button class="btn-check btn" id="option-btn-check" >Verificar palabra</button>
         <button class="btn-check btn" id="option-btn-reveal" >Revelar</button>
-        <button class="btn-check btn" id="option-btn-clear" >Limpiar este</button>
+        <button class="btn-check btn" id="option-btn-clear" >Limpiar casillas</button>
         <button class="btn-check btn" id="option-btn-end" >Terminar Crucigrama</button>`;
 
         /** buildBoard := constructs the board on page  */
-        buildBoard(json['board'], json['size'], order, results);
+        buildBoard(json['board'], json['size'], order, verticals + horizontals);
 
         /* loader := simulate a charge view */
         document.querySelector("#loader").style.display = "none";

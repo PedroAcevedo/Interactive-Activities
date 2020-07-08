@@ -121,4 +121,8 @@ hr.new {
     .option {
         font-size: 16px;
     }
+    .question-img{
+        padding: 5px;
+        width: 100%;
+    }
 }

@@ -97,7 +97,7 @@
   .list-group {
     text-align: left;
     list-style: decimal inside;
-    height:450px;
+    height:200px;
     overflow-y: scroll;
   }
 

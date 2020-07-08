@@ -78,7 +78,7 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
               setInterval(postToServer(), 4000);
             }
             card.innerHTML = selectWord;
-            selectedList.forEach(word => word.css("background-color", 'yellow'));
+            selectedList.forEach(word => word.css("background-color", '#33CC99'));
             selectedList = [];
           } else {
             selectedList.forEach(word => word.css("background-color", 'white'));
@@ -96,7 +96,7 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
         initial[0].center = getCenter($(this));
         selectedList.push(initial);
         selectWord = $(this).text().trim();
-        $(this).css("background-color", 'yellow');
+        $(this).css("background-color", '#FF9933');
       })
       .on("touchmove", function (e) {
         // get the touch element
@@ -198,7 +198,7 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
 
     $(".unselectable ").on('mouseenter', function () {
       //stuff to do on mouse enter
-      if(selection){
+      if (selection) {
         $(this)[0].center = getCenter($(this));
         selectBox($(this));
       }
@@ -264,34 +264,34 @@ function verify(wordselected) {
  */
 function selectBox(element) {
 
-  if(selectedList.length > 0)
-    if(initial[0].center.x == element[0].center.x || initial[0].center.y == element[0].center.y ){
+  if (selectedList.length > 0)
+    if (initial[0].center.x == element[0].center.x || initial[0].center.y == element[0].center.y) {
       selectedList.push(element);
       selectWord += element.text().trim();
-      element.css("background-color", 'yellow');
-    }else{
-      if(diag==0){
-        if(selectedList.length == 2){
+      element.css("background-color", '#FF9933');
+    } else {
+      if (diag == 0) {
+        if (selectedList.length == 2) {
           diag = 1;
           selectedList.pop().css("background-color", 'white');
-          selectWord = selectWord.substr(0,1);
+          selectWord = selectWord.substr(0, 1);
           selectedList.push(element);
           selectWord += element.text().trim();
-          element.css("background-color", 'yellow');
-        }else{
-          if(Math.abs(initial.data('row') - element.data('row')) == 1 && Math.abs(initial.data('column') - element.data('column')) == 1){
+          element.css("background-color", '#FF9933');
+        } else {
+          if (Math.abs(initial.data('row') - element.data('row')) == 1 && Math.abs(initial.data('column') - element.data('column')) == 1) {
             diag = 1;
             selectedList.push(element);
             selectWord += element.text().trim();
-            element.css("background-color", 'yellow');
+            element.css("background-color", '#FF9933');
           }
         }
 
-      }else{
-        if(Math.abs(initial.data('row') - element.data('row')) == selectedList.length && Math.abs(initial.data('column') - element.data('column')) == selectedList.length){
+      } else {
+        if (Math.abs(initial.data('row') - element.data('row')) == selectedList.length && Math.abs(initial.data('column') - element.data('column')) == selectedList.length) {
           selectedList.push(element);
           selectWord += element.text().trim();
-          element.css("background-color", 'yellow');
+          element.css("background-color", '#FF9933');
         }
       }
     }
