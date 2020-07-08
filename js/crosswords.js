@@ -5,6 +5,7 @@ var solved = {};
 var wordCount = {}
 var def = [];
 var helps = 0;
+var closeText = '';
 
 /**
  * 
@@ -18,6 +19,7 @@ fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https
         json = json['data'];
         def = json['matches'];
         type = json['type'];
+        closeText = json['close'];
         time_to_finish = json['time_limit'];
         var title = json['title'];
         activity_id = json['interactive_id'];
@@ -41,13 +43,13 @@ fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https
         let order = {}
         let orientation = Object.values(json['orientation']);
         Object.entries(def).forEach(([key, value], index) => {
-            if(orientation[index][2] == 1){
+            if (orientation[index][2] == 1) {
                 verticals += `
                 <li class="list-group-item" id="${key}" value="${index + 1}">
                 ${value}
                 </li>       
                 `;
-            }else{
+            } else {
                 horizontals += `
                 <li class="list-group-item" id="${key}" value="${index + 1}">
                 ${value}
@@ -59,7 +61,7 @@ fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https
         /* results := define options buttons */
         verticals += '</ol>'
         horizontals += `</ol></div></div> 
-        <button class="btn-check btn" id="option-btn-check" >Verificar palabra</button>
+        <button class="btn-check btn" id="option-btn-check" >Verificar</button>
         <button class="btn-check btn" id="option-btn-reveal" >Revelar</button>
         <button class="btn-check btn" id="option-btn-clear" >Limpiar casillas</button>
         <button class="btn-check btn" id="option-btn-end" >Terminar Crucigrama</button>`;
@@ -332,7 +334,7 @@ function postToServer() {
             document.querySelector('.modal-title').innerHTML = "Resultados";
             document.getElementById('modal-button').innerHTML = "Terminar";
             document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
-            document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul>`;
+            document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul><p>${closeText}</p>`;
             $('#myModal').modal('toggle');
         });
 }

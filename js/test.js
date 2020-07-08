@@ -2,6 +2,7 @@ var intervalID, num_questions, time_to_finish, userID, activity_id;
 var questions = [], selected = [], set = {};
 var index = 1;
 var type = 0;
+var closeText = '';
 
 /**
  * 
@@ -17,7 +18,7 @@ fetch(API + 'api/getInteractive/78')
     num_questions = questions.length;
     time_to_finish = json['time_limit'];
     var title = json['title'];
-
+    closeText = json['close'];
 
     var title_timer = `
     <div class="container-fullwidth">
@@ -108,7 +109,7 @@ function postToServer() {
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
       document.getElementById('modal-button').addEventListener('click',function(){window.location='index.html'});
-      document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul>`;
+      document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul> <p>${closeText}</p>`;
       $('#myModal').modal('toggle');
     });
 }
@@ -156,7 +157,7 @@ function getContent(content) {
     ${index == 1? '<div class="col pt-5 ml-0 mr-0 mt-5 pt-5 pr-5 d-flex justify-content-start"> <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button></div>': ''}
     <a class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end" style="height: 50px;" role="button" data-slide="next"> ${index == num_questions? '<button id="sendData" type="button" class="btn btn-info shadow" disabled>Enviar test</button>':''} </a>
     <div class="row pt-3 ml-3 font-weight-bold" style="padding-left:20px">${index} de ${num_questions}</div>
-    ${quest_img != ''? quest_img.split("src='")[0] + "src='" + API.substring(0, API.length-1) + quest_img.split("src='")[1] : ""}
+    ${quest_img != ''? quest_img.split("src='")[0] + "src='" +  `${/^http/.test(quest_img.split("src='")[1])? '' : API.substring(0, API.length-1)}` + quest_img.split("src='")[1] : ""}
     <div class="row text-justify d-flex justify-content-center">
       ${contenido}
     </div>

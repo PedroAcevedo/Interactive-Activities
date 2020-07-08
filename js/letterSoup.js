@@ -3,6 +3,7 @@ var soup_answer = 0, diag = 0;
 var selection = false;
 var selectedList = [];
 var wordList = [];
+var closeText = '';
 
 /**
  * 
@@ -19,6 +20,7 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
     activity_id = json['interactive_id'];
     var soup = json['board'];
     wordList = json['soup'];
+    closeText = json['close'];
     type = json['type'];
     var size = json['size'];
     var title_timer = `
@@ -336,7 +338,7 @@ function postToServer() {
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
       document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
-      document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras encontradas: ${res['data']['solved']}/${wordList.length}</li> <li> Palabras sin descubir: ${nofind} </li></ul>`;
+      document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras encontradas: ${res['data']['solved']}/${wordList.length}</li> <li> Palabras sin descubir: ${nofind} </li></ul><p>${closeText}</p>`;
       $('#myModal').modal('toggle');
     });
 }

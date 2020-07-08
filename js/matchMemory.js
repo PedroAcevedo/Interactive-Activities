@@ -4,6 +4,7 @@ var hasFlippedCard = false;
 var lockBoard = false;
 var firstCard, secondCard;
 var flipSound;
+var closeText = '';
 
 /**
  * 
@@ -19,6 +20,7 @@ fetch(API + 'api/getInteractive/76')//'https://jsonblob.com/api/jsonBlob/30ae5e5
     var title = json['title'];
     activity_id = json['interactive_id'];
     var matches = json['matches'];
+    closeText = json['close'];
     var title_timer = `
   <div class="container-fullwidth">
    <header>
@@ -232,7 +234,7 @@ function postToServer() {
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
       document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
-      document.getElementById('score').innerHTML = `<ul><li>Tiempo: ${time}</li> <li>Flips totales: ${attempts}</li> <li>Parejas encontradas: ${res['data']['flips']}/${num_matches}</li> </ul>`;
+      document.getElementById('score').innerHTML = `<ul><li>Tiempo: ${time}</li> <li>Flips totales: ${attempts}</li> <li>Parejas encontradas: ${res['data']['flips']}/${num_matches}</li> </ul> <p>${closeText}</p>`;
       $('#myModal').modal('toggle');
     });
 }

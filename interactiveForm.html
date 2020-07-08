@@ -111,11 +111,21 @@
                                     <textarea class="form-control" id="TestTextArea" rows="3"></textarea>
                                 </div>
 
-                                <div id="TestImage" class="custom-file">
+                                <div class="btn-group w-100" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-info w-50 upload">Montar imagen</button>
+                                    <button type="button" class="btn btn-info w-50 upload">Enlazar vídeo</button>
+                                </div>
+
+                                <div id="TestImage" class="custom-file  mb-3 mt-3  show">
                                     <label for="TestFile">Imagen de la pregunta</label>
                                     <input type="file" class="custom-file-input" id="TestFile" lang="es"
                                         accept="image/*">
                                     <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
+                                </div>
+
+                                <div id="TestUrl" class="form-group mb-3 mt-3 hide">
+                                    <input type="text" class="form-control" id="URLTest"
+                                        placeholder="URL del vídeo">
                                 </div>
 
                                 <div class="btn-group w-100" role="group" aria-label="Basic example">
@@ -274,6 +284,12 @@
                         <input type="number" class="form-control" id="TestInput5"
                             placeholder="Minutos para terminar la actividad">
                     </div>
+
+                    <div class="form-group">
+                        <label for="TestTextArea">Texto de cierre</label>
+                        <textarea class="form-control" id="CloseText" rows="3"></textarea>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
 
@@ -293,7 +309,9 @@
         questionsfiles = {}
         testOptions = {
             choice: document.getElementById('choices'),
-            logical: document.getElementById('trueFalse')
+            logical: document.getElementById('trueFalse'),
+            image: document.getElementById('TestImage'),
+            video: document.getElementById('TestUrl')
         }
 
 
@@ -310,6 +328,22 @@
 
                 testOptions.choice.classList.add("hide");
                 testOptions.logical.classList.add("show");
+            }
+        });
+
+        $('.upload').click(function (e) {
+            if ($(this).text() == 'Montar imagen') {
+                testOptions.image.classList.remove("hide");
+                testOptions.video.classList.remove("show");
+
+                testOptions.image.classList.add("show");
+                testOptions.video.classList.add("hide");
+            } else {
+                testOptions.image.classList.remove("show");
+                testOptions.video.classList.remove("hide");
+
+                testOptions.image.classList.add("hide");
+                testOptions.video.classList.add("show");
             }
         });
 
@@ -395,7 +429,9 @@
                     info.push({
                         'activity_id': 1,
                         'type': parseInt(document.getElementById('exampleFormControlSelect1').value),
-                        'time_limit': parseInt(document.getElementById('TestInput5').value)
+                        'time_limit': parseInt(document.getElementById('TestInput5').value),
+                        'close':document.getElementById('CloseText').value
+
                     });
                     formData.append('evaluation', JSON.stringify(isMatch));
                     formData.append('info', JSON.stringify(info));
@@ -412,6 +448,7 @@
                     data['activity_id'] = 1;
                     data['type'] = parseInt(document.getElementById('exampleFormControlSelect1').value);
                     data['time_limit'] = parseInt(document.getElementById('TestInput5').value);
+                    data['close'] = document.getElementById('CloseText').value
                     fetch(url, {
                         method: 'POST',
                         body: JSON.stringify(data), // data can be `string` or {object}!
@@ -458,8 +495,13 @@
                 if (document.getElementById('TestFile').value.length > 0) {
                     data.image = document.getElementById('TestFile').files[0].name;
                     questionsfiles[document.getElementById('TestFile').files[0].name] = document.getElementById('TestFile').files[0];
-                    document.getElementById('TestFile').value = '';
                     $(document.getElementById('TestFile')).next('.custom-file-label').html('Seleccione imagen');
+                    $(document.getElementById('TestFile')).next('.custom-file-label').html('Seleccione imagen');
+                }else{
+                    if(document.getElementById('URLTest').value != ''){
+                        data.image = document.getElementById('URLTest').value;
+                        document.getElementById('URLTest').value = '';
+                    }
                 }
                 content.value = '';
                 questions.push(data);
