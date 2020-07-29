@@ -21,25 +21,17 @@ fetch(API + 'api/getInteractive/76')//'https://jsonblob.com/api/jsonBlob/30ae5e5
     activity_id = json['interactive_id'];
     var matches = json['matches'];
     closeText = json['close'];
-    var title_timer = `
-  <div class="container-fullwidth">
-   <header>
-    <nav class="fixed-top navbar navbar-expand-lg bg-white justify-content-center" style="border-bottom:3px #dee2e6 solid">
-      <div class="row">
-        <section class=\"title\"><h2>${title}</h2> 
-      </div>
-        <h3 id="timer" style="margin-left: 10%;" value="00:00"></h3>
-    </nav>
-    </header>
-  </div>
-  `;
+
+    var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
+
+
     num_matches = Object.keys(matches).length;
     /* title_results := defines the navbar */
-    document.getElementById('title_results').innerHTML = title_timer;
+    document.getElementById('board').innerHTML = title_timer;
     /* loader := simulate a charge view */
     document.querySelector("#loader").style.display = "none";
     /* board := defines the cards area */
-    document.getElementById('board').innerHTML = buildCards(matches);
+    document.getElementById('board').innerHTML += buildCards(matches);
     /* btn-back := defines the button to go back */
     document.getElementById('btn-back').addEventListener('click', postToServer);
     /* cards := save the element of each card on page */
@@ -57,13 +49,7 @@ fetch(API + 'api/getInteractive/76')//'https://jsonblob.com/api/jsonBlob/30ae5e5
 function buildCards(matches) {
   cards_view = `
   <div class="row w-100" >
-  <div class="col-2">
-    <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button>
-  </div>
-  <div class="col-6 d-flex justify-content-center">
-  <h3>Emparejamiento</h3>
-  </div>
-  <div class="col-4 d-flex justify-content-center">
+  <div class="col-12 d-flex justify-content-center">
   <ul class="list-group list-group-horizontal d-flex justify-content-center">
     <li class="list-group-item tile"> Intentos:  <p id="attempts">${attempts}</p></li>
     <li class="list-group-item tile"> Parejas:  <p id="pairs">${pairs}</p> </li>

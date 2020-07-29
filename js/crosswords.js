@@ -23,22 +23,11 @@ fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https
         time_to_finish = json['time_limit'];
         var title = json['title'];
         activity_id = json['interactive_id'];
-        var title_timer = `
-          <div class="container-fullwidth">
-           <header>
-            <nav class="fixed-top navbar navbar-expand-lg bg-white justify-content-center" style="border-bottom:3px #dee2e6 solid">
-              <div class="row">
-                <section class=\"title\"><h2>${title}</h2> 
-              </div>
-                <h3 id="timer" style="margin-left: 10%;" value="00:00"></h3>
-            </nav>
-            </header>
-          </div>
-          `;
+        var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
+        document.getElementById('title').innerHTML = title_timer;
 
         /* title_results := defines the navbar */
-        document.getElementById('title_results').innerHTML = title_timer;
-        let verticals = '<div class="row"><div class="col-sm" style="padding: 20px;"> <h3 class="text-center">Palabras verticales</h3> <ol class="list-group">';
+        let verticals = '<div class="row"><div class="col-sm" style="padding: 10px;"> <h3 class="text-center">Palabras verticales</h3> <ol class="list-group">';
         let horizontals = '<h3 class="text-center pt-4">Palabras horizontales</h3> <ol class="list-group">';
         let order = {}
         let orientation = Object.values(json['orientation']);
@@ -141,18 +130,7 @@ fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https
  * @param {*} def1 is the definitions list of every word
  */
 function buildBoard(board, size, index, def1) {
-    var result = '<div class="wrapper" align="right" style="grid-template-columns: repeat(' + size + ', 1fr);">';
-    result =
-        `<div class="row d-flex justify-content-between">
-    <div class="col d-flex justify-content-start">
-        <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button>
-    </div>
-    <div class="col">
-        <h3>Crucigrama</h3>
-    </div>
-    </div>
-    <div class="row mb-2 mt-2">
-    ` + result;
+    var result = '<div class="row mb-2 mt-2"> <div class="wrapper" align="right" style="grid-template-columns: repeat(' + size + ', 1fr);">';
     for (var i = 0; i < size; i++) {
         for (var j = 0; j < size; j++) {
             if (board[i][j] != '0') {

@@ -23,18 +23,9 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
     closeText = json['close'];
     type = json['type'];
     var size = json['size'];
-    var title_timer = `
-    <div class="container-fullwidth">
-     <header>
-      <nav class="fixed-top navbar navbar-expand-lg bg-white justify-content-center" style="border-bottom:3px #dee2e6 solid">
-        <div class="row">
-          <section class=\"title\"><h2>${title}</h2> 
-        </div>
-          <h3 id="timer" style="margin-left: 10%;" value="00:00"></h3>
-      </nav>
-      </header>
-    </div>
-    `;
+    var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
+    document.getElementById('title').innerHTML = title_timer;
+
     var words = '<h3 class="text-center"> Palabras a buscar: </h3> <div class="d-flex flex-row flex-wrap">';
 
     wordList.forEach(function (word, index) {
@@ -47,11 +38,10 @@ fetch(API + 'api/getInteractive/15')//'https://jsonblob.com/api/jsonBlob/30ae5e5
         `;
     });
     words += `</div>   
-    <button class="btn btn-check w-75" id="option-btn-check" > Terminar sopa de letras</button>
+    <button class="btn btn-check w-100" id="option-btn-check" > Terminar sopa de letras</button>
     `;
     /* title_results := defines the navbar */
 
-    document.getElementById('title_results').innerHTML = title_timer;
     /* word := define the list of words to seach */
     document.getElementById('words').innerHTML = words;
     /* option-btn-check := button for end the game */
@@ -228,16 +218,7 @@ function getCenter(element) {
  * @param {*} soup squad matrix of lettes with the words configuration
  */
 function buildBoard(size, soup) {
-  var result = '<div class="wrapper" align="right" style="grid-template-columns: repeat(' + size + ', 1fr);">';
-  result =
-    `<div class="row d-flex justify-content-between mb-3">
-  <div class="col-5 d-flex justify-content-start">
-      <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button>
-  </div>
-  <div class="col-7">
-      <h3 >Sopa de letras</h3>
-  </div>
-  </div>` + result;
+  var result = '<div class="wrapper mt-4" align="right" style="grid-template-columns: repeat(' + size + ', 1fr);">';
 
   for (var i = 0; i < size; i++) {
     for (var j = 0; j < size; j++) {
@@ -249,7 +230,7 @@ function buildBoard(size, soup) {
     }
   }
   result += '</div>'
-  document.getElementById('result').innerHTML = result;
+  document.getElementById('result').innerHTML += result;
 }
 
 /**

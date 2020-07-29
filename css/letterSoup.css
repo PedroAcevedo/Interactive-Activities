@@ -6,7 +6,7 @@
 
 .wrapper {
   display: grid;
-  grid-auto-rows: minmax(10px, 40px);
+  grid-auto-rows: minmax(10px, 35px);
   text-align: left;
 }
 
@@ -17,10 +17,10 @@
 .wrapper>div {
   border: 1px solid black;
   text-align: center;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   background-color: white;
-  line-height: 35px;
+  line-height: 30px;
   margin: 0;
   padding: 0;
   border-collapse: collapse;
@@ -63,7 +63,7 @@
   border-radius: 8px;
   color: #fff;
   font-weight: 400;
-  font-size: 20px;
+  font-size: medium;
   font-family: Roboto;
   margin-top: 20px;
   padding: 20px 15px;

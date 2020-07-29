@@ -20,21 +20,10 @@ fetch(API + 'api/getInteractive/78')
     var title = json['title'];
     closeText = json['close'];
 
-    var title_timer = `
-    <div class="container-fullwidth">
-        <header>
-        <nav class="fixed-top navbar navbar-expand-lg bg-white d-flex justify-content-center" style="border-bottom:3px #dee2e6 solid">
-          <div class="row ">
-                <section class=\"title\"><h2>${title}</h2> 
-          </div>
-              <h3 id="timer" style="margin-left: 10%;" value="00:00"></h3>
-          </nav>
-        </header>
-    </div>
-    `;
+    var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
    
     /* title_results := defines the navbar */
-    document.getElementById('title_results').innerHTML = title_timer;
+    document.getElementById('results_enum').innerHTML = title_timer;
 
     loadQuestions();
 
@@ -154,7 +143,6 @@ function getContent(content) {
   let contenido = content.length > 300 ? `<h3 style="padding: 5% 15%;">${content}</h3>` : `<h1 style="padding: 5% 15%;">${content}</h1>`;
 
   return `
-    ${index == 1? '<div class="col pt-5 ml-0 mr-0 mt-5 pt-5 pr-5 d-flex justify-content-start"> <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button></div>': ''}
     <a class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end" style="height: 50px;" role="button" data-slide="next"> ${index == num_questions? '<button id="sendData" type="button" class="btn btn-info shadow" disabled>Enviar test</button>':''} </a>
     <div class="row pt-3 ml-3 font-weight-bold" style="padding-left:20px">${index} de ${num_questions}</div>
     ${quest_img != ''? quest_img.split("src='")[0] + "src='" +  `${/^http/.test(quest_img.split("src='")[1])? '' : API.substring(0, API.length-1)}` + quest_img.split("src='")[1] : ""}
@@ -175,14 +163,14 @@ function getOptions(options) {
           <div class="row">
               <div class="col pl-2 pr-2">
                 <button type="button" class="btn btn-success d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[0]['option_id'] + `\'>
-                  <div class="col-2 shad"><b>A.</b></div>
-                  <div class="col-10 text-left option">${options[0]['content']}</div>
+                  <div class="col-3 shad"><b>A.</b></div>
+                  <div class="col-9 text-left option">${options[0]['content']}</div>
                 </button>
               </div>
               <div class="col pl-2 pr-2">
                 <button type="button" class="btn btn-primary d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[1]['option_id'] + `\'>
-                  <div class="col-2 shad"><b>B.</b></div>
-                  <div class="col-10 text-left option">${options[1]['content']}</div>
+                  <div class="col-3 shad"><b>B.</b></div>
+                  <div class="col-9 text-left option">${options[1]['content']}</div>
                 </button>
               </div>
             `
@@ -190,14 +178,14 @@ function getOptions(options) {
     content += `
     <div class="col pl-2 pr-2">
         <button type="button" class="btn btn-warning d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[2]['option_id'] + `\'>
-          <div class="col-2 shad"><b>C.</b></div>
-          <div class="col-10 text-left option" >${options[2]['content']}</div>
+          <div class="col-3 shad"><b>C.</b></div>
+          <div class="col-9 text-left option" >${options[2]['content']}</div>
         </button>
       </div>
       <div class="col pl-2 pr-2">
           <button type="button" class="btn btn-danger d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[3]['option_id'] + `\'>
-            <div class="col-2 shad"><b>D.</b></div>
-            <div class="col-10 text-left option">${options[3]['content']}</div>
+            <div class="col-3 shad"><b>D.</b></div>
+            <div class="col-9 text-left option">${options[3]['content']}</div>
           </button>
       </div>
     </div>

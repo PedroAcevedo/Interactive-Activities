@@ -45,31 +45,55 @@ body {
     display: block;
 }
 
-.show{
+.show {
     display: block !important;
 }
 
-.hide{
+.hide {
     display: none !important;
 }
 
+.layout {
+    display: grid;
+    width: 90%;
+    height: 100%;
+    grid-template-rows: 1fr;
+    grid-template-columns: 25% 75%;
+    grid-column-gap: 2rem;
+}
+
+.left-options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.title {
+    color: #1CB89B;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.125;
+}
+
+
+.stick {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 1rem;
+}
 
 @media only screen and (max-width: 768px) {
-
     /* For mobile phones: */
-    h3{
+    h3 {
         font-size: 16px;
     }
-
-    body h1, h2{
+    body h1, h2 {
         font-size: 18px;
     }
-
-    nav{
+    nav {
         text-align: left;
     }
-
-    #loader{
+    #loader {
         border: 10px solid #f3f3f3;
         /* Light grey */
         border-top: 10px solid #3498db;
@@ -79,4 +103,4 @@ body {
         width: 60px;
         height: 60px;
     }
-  }
+}

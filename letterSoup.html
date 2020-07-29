@@ -15,23 +15,29 @@
 <body>
 
   <div id="loader" class="center"></div>
-  <div id="content">
-    <div class="header-nav">
-      <section id="title_results"></section>
-    </div>
-    <div class="row ml-0 mr-0 mt-5 pt-5 font-weight-bold justify-content-md-center">
-      <div class="col-md-5">
-        <section class="container">
+  <div id="content" class="ml-auto mr-auto">
+    <div class="layout">
+      <div class="left-options pt-5">
+        <div class="mb-2">
+          <button id="btn-back" class="btn btn-back float-sm-right">  REGRESAR  < </button>
+        </div >
+        <div class="mb-2 stick">Tiempo restante: <h3 id="timer" value="00:00"></h3></div>
+      </div>
+    <div class="row ml-0 mr-0 font-weight-bold">
+      <div id="title"></div>
+      <div class="col-md-8">
+        <section class="container d-flex justify-content-center">
           <section id='board' class="board">
             <div id='result'></div>
           </section>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <section id="words" class="center">
         </section>
       </div>
       <div>
       </div>
+    </div>
     </div>
   </div>
   <!-- Modal -->

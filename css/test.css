@@ -61,7 +61,7 @@ hr.new {
 
 .option {
     color: white;
-    font-size: 20px;
+    font-size: medium;
     padding: 5px;
 }
 
@@ -98,7 +98,7 @@ hr.new {
     border-color: #993399;
 }
 
-.question-img{
+.question-img {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -119,9 +119,9 @@ hr.new {
         margin-right: 20%;
     }
     .option {
-        font-size: 16px;
+        font-size: small;
     }
-    .question-img{
+    .question-img {
         padding: 5px;
         width: 100%;
     }
