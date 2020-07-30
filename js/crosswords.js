@@ -119,6 +119,26 @@ fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https
             }
         });
 
+        /**
+ * 
+ * Activate the timer
+ * 
+ */
+        var intervalID = setInterval(function () {
+            $("#timer").val(function () {
+                var timer = showTime(time_to_finish);
+                if (timer.localeCompare('02:00') == -1) {
+                    $("#timer").css("color", "red");
+                }
+                if (timer.localeCompare('end') == 0) {
+                    clearTimeout(intervalID);
+                    postToServer();
+                }
+                $("#timer").text(timer)
+                return timer;
+            });
+
+        }, 1000);
 
     });
 
@@ -257,28 +277,6 @@ function getword(id) {
         });
 }
 
-
-
-/**
- * 
- * Activate the timer
- * 
- */
-var intervalID = setInterval(function () {
-    $("#timer").val(function () {
-        var timer = showTime(time_to_finish);
-        if (timer.localeCompare('02:00') == -1) {
-            $("#timer").css("color", "red");
-        }
-        if (timer.localeCompare('end') == 0) {
-            clearTimeout(intervalID);
-            postToServer();
-        }
-        $("#timer").text(timer)
-        return timer;
-    });
-
-}, 1000);
 
 
 /**

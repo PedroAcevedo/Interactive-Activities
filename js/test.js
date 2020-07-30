@@ -21,10 +21,9 @@ fetch(API + 'api/getInteractive/90')
     closeText = json['close'];
 
     var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
-   
+
     /* title_results := defines the navbar */
     document.getElementById('results_enum').innerHTML = title_timer;
-
     loadQuestions();
 
     /* loader := simulate a charge view */
@@ -37,26 +36,48 @@ fetch(API + 'api/getInteractive/90')
     document.getElementById('btn-back').addEventListener('click', postToServer);
     /* index := count the showed questions */
     index = index + 1;
+
+    /**
+     * 
+     * Activate the timer
+     * 
+     */
+
+    var intervalID = setInterval(function () {
+      $("#timer").val(function () {
+        var timer = showTime(time_to_finish);
+        if (timer.localeCompare('02:00') == -1) {
+          $("#timer").css("color", "red");
+        }
+        if (timer.localeCompare('end') == 0) {
+          clearTimeout(intervalID);
+          postToServer();
+        }
+        $("#timer").text(timer)
+        return timer;
+      });
+
+    }, 1000);
   });
 
 
-  function loadQuestions(){
-    while (questions.length > 0){ 
-      const { id, content, options } = questions.pop();
-      document.getElementById('results_enum').innerHTML += `<div id="${'q-' + index}">` + getContent(content);
-      document.getElementById('results_enum').innerHTML += getOptions(options) + '</div>';
-      index = index + 1;
-    }
-    $('.results .btn').click(function(){
-      $(`.results .btn[data-question="${$(this).data('question')}"]`).removeClass('selected');
-      $(this).addClass('selected');
-      set[$(this).data('question')] = $(this).data('value');
-      window.location.href = `#q-${$(this).data('question')+1}`;
-      if(Object.keys(set).length == num_questions ){
-        $("#sendData").removeAttr("disabled");
-      }
-    });
+function loadQuestions() {
+  while (questions.length > 0) {
+    const { id, content, options } = questions.pop();
+    document.getElementById('results_enum').innerHTML += `<div id="${'q-' + index}">` + getContent(content);
+    document.getElementById('results_enum').innerHTML += getOptions(options) + '</div>';
+    index = index + 1;
   }
+  $('.results .btn').click(function () {
+    $(`.results .btn[data-question="${$(this).data('question')}"]`).removeClass('selected');
+    $(this).addClass('selected');
+    set[$(this).data('question')] = $(this).data('value');
+    window.location.href = `#q-${$(this).data('question') + 1}`;
+    if (Object.keys(set).length == num_questions) {
+      $("#sendData").removeAttr("disabled");
+    }
+  });
+}
 
 /**
  * 
@@ -97,33 +118,13 @@ function postToServer() {
       console.log('Success:', res);
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
-      document.getElementById('modal-button').addEventListener('click',function(){window.location='index.html'});
+      document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
       document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul> <p>${closeText}</p>`;
       $('#myModal').modal('toggle');
     });
 }
 
-/**
- * 
- * Activate the timer
- * 
- */
 
-var intervalID = setInterval(function () {
-  $("#timer").val(function () {
-    var timer = showTime(time_to_finish);
-    if (timer.localeCompare('02:00') == -1) {
-      $("#timer").css("color", "red");
-    }
-    if (timer.localeCompare('end') == 0) {
-      clearTimeout(intervalID);
-      postToServer();
-    }
-    $("#timer").text(timer)
-    return timer;
-  });
-
-}, 1000);
 
 
 /**
@@ -135,7 +136,7 @@ var intervalID = setInterval(function () {
 function getContent(content) {
   let quest_img = '';
   let quest = content.split('@@');
-  if(quest.length > 1){
+  if (quest.length > 1) {
     content = quest[1];
     quest_img = quest[0];
   }
@@ -143,9 +144,9 @@ function getContent(content) {
   let contenido = content.length > 300 ? `<h3 style="padding: 5% 15%;">${content}</h3>` : `<h1 style="padding: 5% 15%;">${content}</h1>`;
 
   return `
-    <a class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end" style="height: 50px;" role="button" data-slide="next"> ${index == num_questions? '<button id="sendData" type="button" class="btn btn-info shadow" disabled>Enviar test</button>':''} </a>
+    ${ index != 1? `<a class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end" style="height: 50px;" role="button" data-slide="next"> ${index == num_questions ? '<button id="sendData" type="button" class="btn btn-info shadow" disabled>Enviar test</button>' : ''}  </a>`: ''}
     <div class="row pt-3 ml-3 font-weight-bold" style="padding-left:20px">${index} de ${num_questions}</div>
-    ${quest_img != ''? quest_img.split("src='")[0] + "src='" +  `${/^http/.test(quest_img.split("src='")[1])? '' : API.substring(0, API.length-1)}` + quest_img.split("src='")[1] : ""}
+    ${quest_img != '' ? quest_img.split("src='")[0] + "src='" + `${/^http/.test(quest_img.split("src='")[1]) ? '' : API.substring(0, API.length - 1)}` + quest_img.split("src='")[1] : ""}
     <div class="row text-justify d-flex justify-content-center">
       ${contenido}
     </div>
@@ -174,7 +175,7 @@ function getOptions(options) {
                 </button>
               </div>
             `
-  if(options.length > 2){
+  if (options.length > 2) {
     content += `
     <div class="col pl-2 pr-2">
         <button type="button" class="btn btn-warning d-flex w-100" style="height:100%" data-question="${index}" data-value=\'` + options[2]['option_id'] + `\'>

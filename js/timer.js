@@ -39,4 +39,3 @@ function timediff(start, now){
 	segs = (segs >= 10)? segs : '0' + segs;
 	return minutes + ':' + segs;
 }
-

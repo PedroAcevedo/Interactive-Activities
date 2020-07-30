@@ -40,12 +40,33 @@ fetch(API + 'api/getInteractive/76')//'https://jsonblob.com/api/jsonBlob/30ae5e5
     cards.forEach((card) => { card.addEventListener('click', flipCard) });
     /* shuffle := sorting the cards on page */
     shuffle();
+
+    /**
+     * 
+     * Activate the timer
+     * 
+     */
+    var intervalID = setInterval(function () {
+      $("#timer").val(function () {
+        var timer = showTime(time_to_finish);
+        if (timer.localeCompare('02:00') == -1) {
+          $("#timer").css("color", "red");
+        }
+        if (timer.localeCompare('end') == 0) {
+          clearTimeout(intervalID);
+          postToServer();
+        }
+        $("#timer").text(timer)
+        return timer;
+      });
+
+    }, 1000);
   });
 
-  /**
-   * 
-   * @param {*} matches dictionary of pairs of words for the card board
-   */
+/**
+ * 
+ * @param {*} matches dictionary of pairs of words for the card board
+ */
 function buildCards(matches) {
   cards_view = `
   <div class="row w-100" >
@@ -83,7 +104,7 @@ function defineCard(key, value) {
   return value.includes('/') ?
     `
   <div class="memory-card" data-word="${key}">
-    <img class="front-face" src="${API.substring(0, API.length-1) + value}" alt="" />
+    <img class="front-face" src="${API.substring(0, API.length - 1) + value}" alt="" />
     <img class="back-face" src="assets/images/Incities_logo.svg" alt="Incities" />
   </div>
   `
@@ -225,23 +246,4 @@ function postToServer() {
     });
 }
 
-/**
- * 
- * Activate the timer
- * 
- */
-var intervalID = setInterval(function () {
-  $("#timer").val(function () {
-    var timer = showTime(time_to_finish);
-    if (timer.localeCompare('02:00') == -1) {
-      $("#timer").css("color", "red");
-    }
-    if (timer.localeCompare('end') == 0) {
-      clearTimeout(intervalID);
-      postToServer();
-    }
-    $("#timer").text(timer)
-    return timer;
-  });
 
-}, 1000);
