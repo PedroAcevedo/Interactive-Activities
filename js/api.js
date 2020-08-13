@@ -1,1 +1,1 @@
-var API = 'https://apiavas.dcm-system.co/';  //'http://127.0.0.1:8000/' //
+var API = 'https://apiavas.dcm-system.co/public/';  //'http://127.0.0.1:8000/' //
