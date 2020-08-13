@@ -9,7 +9,7 @@ var closeText = '';
  *  GET the initial activity
  *  
  */
-fetch(API + 'api/getInteractive/90')
+fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
   .then(response => response.json())
   .then(function (json) {
     json = json['data'];
@@ -68,6 +68,10 @@ function loadQuestions() {
     document.getElementById('results_enum').innerHTML += getOptions(options) + '</div>';
     index = index + 1;
   }
+  document.getElementById('results_enum').innerHTML += `
+  <div id="${'q-' + (num_questions+1)}" class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex justify-content-end"> 
+      <button id="sendData" type="button" class="btn btn-lg btn-info shadow" disabled>Enviar test</button>
+  </div>`;
   $('.results .btn').click(function () {
     $(`.results .btn[data-question="${$(this).data('question')}"]`).removeClass('selected');
     $(this).addClass('selected');
@@ -144,7 +148,7 @@ function getContent(content) {
   let contenido = content.length > 300 ? `<h3 style="padding: 5% 15%;">${content}</h3>` : `<h1 style="padding: 5% 15%;">${content}</h1>`;
 
   return `
-    ${ index != 1? `<a class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end" style="height: 50px;" role="button" data-slide="next"> ${index == num_questions ? '<button id="sendData" type="button" class="btn btn-info shadow" disabled>Enviar test</button>' : ''}  </a>`: ''}
+    ${ index != 1? `<div class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end"> </div>`: ''}
     <div class="row pt-3 ml-3 font-weight-bold" style="padding-left:20px">${index} de ${num_questions}</div>
     ${quest_img != '' ? quest_img.split("src='")[0] + "src='" + `${/^http/.test(quest_img.split("src='")[1]) ? '' : API.substring(0, API.length - 1)}` + quest_img.split("src='")[1] : ""}
     <div class="row text-justify d-flex justify-content-center">

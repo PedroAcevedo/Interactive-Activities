@@ -12,7 +12,7 @@ var closeText = '';
  *  GET the initial activity
  *  
  */
-fetch(API + 'api/getInteractive/47') //https://api.myjson.com/bins/a3l3w') https://www.freemysqlhosting.net/account/
+fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
     .then(response => response.json())
     .then(function (json) {
         console.log(json)

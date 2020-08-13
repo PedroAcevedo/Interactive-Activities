@@ -11,7 +11,7 @@ var closeText = '';
  *  GET the initial activity
  * 
  */
-fetch(API + 'api/getInteractive/76')//'https://jsonblob.com/api/jsonBlob/30ae5e51-75b7-11ea-9538-21f393c40628')
+fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
   .then(response => response.json())
   .then(function (json) {
     json = json['data'];

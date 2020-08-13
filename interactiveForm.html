@@ -13,57 +13,73 @@
         crossorigin="anonymous"></script>
     <link href="css/main.css" rel="stylesheet">
     <script type="text/javascript" src="js/timer.js"></script>
+    <script type="text/javascript" src="js/api.js"></script>
     <!--<script type="text/javascript" src="js/test.js"></script>-->
     <title></title>
 </head>
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $('#myModal').modal('toggle');
+        fetch(API + 'api/getActivitySelectI')
+            .then(response => response.json())
+            .then(function (json) {
+                activities = json['data'];
+                var select_a = '';
 
-        $("select").change(function () {
-            $(this).find("option:selected").each(function () {
-                var optionValue = $(this).attr("value");
-                console.log(optionValue);
-                if (optionValue) {
-                    $(".form").not("." + optionValue).hide();
-                    $("." + optionValue).show();
-                } else {
-                    $(".form").hide();
-                }
+                activities.forEach((activity) => {
+                    select_a += `<option value="${activity.id}">${activity.title}</option>`;
+                });
+                $('#myModal').modal('toggle');
+                document.getElementById('activities').innerHTML = select_a;
+                $("#interactives").change(function () {
+                    $(this).find("option:selected").each(function () {
+                        var optionValue = $(this).attr("value");
+                        console.log(optionValue);
+                        if (optionValue) {
+                            $(".form").not("." + optionValue).hide();
+                            $("." + optionValue).show();
+                        } else {
+                            $(".form").hide();
+                        }
+                    });
+                }).change();
+
+
+                $('#MemoryCheck1').change(function () {
+                    if (this.checked) {
+                        $('#MemoryText1').hide();
+                        $('#MemoryImage1').show();
+                    } else {
+                        $('#MemoryImage1').hide();
+                        $('#MemoryText1').show();
+                    }
+                });
+
+
+                $('#MemoryCheck2').change(function () {
+                    if (this.checked) {
+                        $('#MemoryText2').hide();
+                        $('#MemoryImage2').show();
+                    } else {
+                        $('#MemoryImage2').hide();
+                        $('#MemoryText2').show();
+                    }
+                });
+
             });
-        }).change();
-
-
-        $('#MemoryCheck1').change(function () {
-            if (this.checked) {
-                $('#MemoryText1').hide();
-                $('#MemoryImage1').show();
-            } else {
-                $('#MemoryImage1').hide();
-                $('#MemoryText1').show();
-            }
-        });
-
-
-        $('#MemoryCheck2').change(function () {
-            if (this.checked) {
-                $('#MemoryText2').hide();
-                $('#MemoryImage2').show();
-            } else {
-                $('#MemoryImage2').hide();
-                $('#MemoryText2').show();
-            }
-        });
-
     });
+
 </script>
 <style>
-    .form-row, #soup, #cross, #memory{
+    .form-row,
+    #soup,
+    #cross,
+    #memory {
         overflow: scroll;
         max-height: 300px;
     }
 </style>
+
 <body>
 
     <!-- Modal -->
@@ -78,9 +94,16 @@
                 </div>
                 <div class="modal-body ">
                     <div class="form-group">
+                        <label for="activities">Actividad de aprendizaje</label>
+                        <select class="form-control" id="activities">
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Tipo de actividad</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
+                            <label for="interactives">Tipo de actividad</label>
+                            <select class="form-control" id="interactives">
                                 <option selected>Seleccione un tipo de actividad</option>
                                 <option value="1">Sopa de letras</option>
                                 <option value="2">Test</option>
@@ -99,7 +122,7 @@
                                         placeholder="Palabra de la actividad">
                                 </div>
 
-                                <a class="btn btn-primary" onclick="addSoup()">Agregar</a>
+                                <a class="btn btn-primary" style="color: white;" onclick="addSoup()">Agregar</a>
 
                             </div>
                             <div class="form 2" style="display: none;">
@@ -124,8 +147,7 @@
                                 </div>
 
                                 <div id="TestUrl" class="form-group mb-3 mt-3 hide">
-                                    <input type="text" class="form-control" id="URLTest"
-                                        placeholder="URL del vídeo">
+                                    <input type="text" class="form-control" id="URLTest" placeholder="URL del vídeo">
                                 </div>
 
                                 <div class="btn-group w-100" role="group" aria-label="Basic example">
@@ -205,7 +227,7 @@
                                 </div>
 
 
-                                <a class="btn btn-primary" onclick="addQuestion()">Agregar</a>
+                                <a class="btn btn-primary" style="color: white;" onclick="addQuestion()">Agregar</a>
 
                             </div>
                             <div class="form 3" style="display: none;">
@@ -223,7 +245,7 @@
                                     <textarea class="form-control" id="CrossTextArea" rows="3"></textarea>
                                 </div>
 
-                                <a class="btn btn-primary" onclick="addCrossWords()">Agregar</a>
+                                <a class="btn btn-primary" style="color: white;" onclick="addCrossWords()">Agregar</a>
 
                             </div>
                             <div class="form 4" style="display: none;">
@@ -272,7 +294,7 @@
 
                                 </div>
 
-                                <a class="btn btn-primary" onclick="addMemory()">Agregar</a>
+                                <a class="btn btn-primary" style="color: white;" onclick="addMemory()">Agregar</a>
 
                             </div>
                             <small id="emailHelp" class="form-text text-muted">Selecciona una actividad interactiva para
@@ -293,7 +315,7 @@
                 </div>
                 <div class="modal-footer">
 
-                    <a type="submit" class="btn btn-primary" onclick="postToServer()">Submit</a>
+                    <a type="submit" class="btn btn-primary" style="color: white;" onclick="postToServer()">Submit</a>
                 </div>
             </div>
         </div>
@@ -313,6 +335,7 @@
             image: document.getElementById('TestImage'),
             video: document.getElementById('TestUrl')
         }
+
 
 
         $('.choices').click(function (e) {
@@ -352,9 +375,9 @@
          * Sending data to server 
         */
         function postToServer() {
-            var url = 'http://127.0.0.1:8000/api/createInteractive';
+            var url = API + 'api/createInteractive';
             var data = {};
-            switch (document.getElementById('exampleFormControlSelect1').value) {
+            switch (document.getElementById('interactives').value) {
                 case '1':
                     if (soup.length > 0) {
                         if (soup.length >= 5) {
@@ -422,15 +445,15 @@
             }
             if (Object.keys(data).length > 0) {
                 console.log(data);
-                if (document.getElementById('exampleFormControlSelect1').value == 4 || document.getElementById('exampleFormControlSelect1').value == 2) {
+                if (document.getElementById('interactives').value == 4 || document.getElementById('interactives').value == 2) {
                     var info = []
-                    var isMatch = document.getElementById('exampleFormControlSelect1').value == 4? true : false;
+                    var isMatch = document.getElementById('interactives').value == 4 ? true : false;
                     var formData = data['Something'];
                     info.push({
-                        'activity_id': 1,
-                        'type': parseInt(document.getElementById('exampleFormControlSelect1').value),
+                        'activity_id': document.getElementById('activities').value,
+                        'type': parseInt(document.getElementById('interactives').value),
                         'time_limit': parseInt(document.getElementById('TestInput5').value),
-                        'close':document.getElementById('CloseText').value
+                        'close': document.getElementById('CloseText').value
 
                     });
                     formData.append('evaluation', JSON.stringify(isMatch));
@@ -441,12 +464,13 @@
                     }).then(res => res.json())
                         .catch(error => console.error('Error:', error))
                         .then(function (res) {
-                            console.log(data)
-                            console.log('HOLAAAA:', res);
+                            console.log(res);
+                            alert('Registro exitoso');
+                            location.reload();
                         });
                 } else {
-                    data['activity_id'] = 1;
-                    data['type'] = parseInt(document.getElementById('exampleFormControlSelect1').value);
+                    data['activity_id'] = document.getElementById('activities').value;
+                    data['type'] = parseInt(document.getElementById('interactives').value);
                     data['time_limit'] = parseInt(document.getElementById('TestInput5').value);
                     data['close'] = document.getElementById('CloseText').value
                     fetch(url, {
@@ -458,9 +482,10 @@
                     }).then(res => res.json())
                         .catch(error => console.error('Error:', error))
                         .then(function (res) {
-                            console.log(data)
-                            console.log('HOLAAAA:', res);
-                        });
+                            console.log(res);
+                            alert('Registro exitoso');
+                            location.reload();
+                    });
                 }
             }
         }
@@ -497,8 +522,8 @@
                     questionsfiles[document.getElementById('TestFile').files[0].name] = document.getElementById('TestFile').files[0];
                     $(document.getElementById('TestFile')).next('.custom-file-label').html('Seleccione imagen');
                     $(document.getElementById('TestFile')).next('.custom-file-label').html('Seleccione imagen');
-                }else{
-                    if(document.getElementById('URLTest').value != ''){
+                } else {
+                    if (document.getElementById('URLTest').value != '') {
                         data.image = document.getElementById('URLTest').value;
                         document.getElementById('URLTest').value = '';
                     }
@@ -560,10 +585,10 @@
                 Match[wordval] = document.getElementById('MemoryCheck2').checked ? word2.files[0].name : word2.value + '';
                 if (document.getElementById('MemoryCheck1').checked)
                     memoryfiles[word1.files[0].name] = word1.files[0]
-                    $(word1).next('.custom-file-label').html('');
+                $(word1).next('.custom-file-label').html('');
                 if (document.getElementById('MemoryCheck2').checked)
                     memoryfiles[word2.files[0].name] = word2.files[0]
-                    $(word2).next('.custom-file-label').html('Seleccione imagen');
+                $(word2).next('.custom-file-label').html('Seleccione imagen');
                 updateMatchList();
                 word1.value = '';
                 word2.value = '';
@@ -659,7 +684,7 @@
             </div>
             `
 
-            switch (document.getElementById('exampleFormControlSelect1').value) {
+            switch (document.getElementById('interactives').value) {
                 case '3':
                     document.getElementById('cross').innerHTML = html;
 
@@ -676,7 +701,7 @@
 
 
         $(document).on('change', '.custom-file-input', function (event) {
-            $(this).next('.custom-file-label').html(event.target.files[0]? event.target.files[0].name: '');
+            $(this).next('.custom-file-label').html(event.target.files[0] ? event.target.files[0].name : '');
         })
 
     </script>
