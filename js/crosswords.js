@@ -60,8 +60,7 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
 
         /* loader := simulate a charge view */
         document.querySelector("#loader").style.display = "none";
-        /* btn-back := defines the button to go back */
-        document.getElementById('btn-back').addEventListener('click', postToServer);
+
 
         /** letters := crossword tiles actions */
         $(".letters").focus(function () {

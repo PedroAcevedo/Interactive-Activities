@@ -32,8 +32,6 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
     document.querySelector("#content").style.display = "block";
     /* sendData := defines the button for save the choice */
     document.getElementById('sendData').addEventListener('click', sendData);
-    /* btn-back := defines the button to go back */
-    document.getElementById('btn-back').addEventListener('click', postToServer);
     /* index := count the showed questions */
     index = index + 1;
 

@@ -50,8 +50,6 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
     buildBoard(size, soup);
     /* loader := simulate a charge view */
     document.querySelector("#loader").style.display = "none";
-    /* btn-back := defines the button to go back */
-    document.getElementById('btn-back').addEventListener('click', postToServer);
 
     /** letters := soup tiles actions */
     $('.letters')

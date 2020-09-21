@@ -32,8 +32,6 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
     document.querySelector("#loader").style.display = "none";
     /* board := defines the cards area */
     document.getElementById('board').innerHTML += buildCards(matches);
-    /* btn-back := defines the button to go back */
-    document.getElementById('btn-back').addEventListener('click', postToServer);
     /* cards := save the element of each card on page */
     cards = document.querySelectorAll('.memory-card');
     /* adding click listener to the cards */
