@@ -1,4 +1,4 @@
-var activity_id, type, userID;
+var  activity_id, interactive_id, badge, theme, type, userID;
 var focusword = []
 var actual = 0;
 var solved = {};
@@ -6,13 +6,19 @@ var wordCount = {}
 var def = [];
 var helps = 0;
 var closeText = '';
+var intervalID;
 
 /**
  * 
  *  GET the initial activity
  *  
  */
-fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
+fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+    },
+})
     .then(response => response.json())
     .then(function (json) {
         console.log(json)
@@ -22,7 +28,11 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
         closeText = json['close'];
         time_to_finish = json['time_limit'];
         var title = json['title'];
-        activity_id = json['interactive_id'];
+
+        theme = json['theme'];
+        interactive_id = json['interactive_id'];
+        activity_id = json['id'];
+
         var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
         document.getElementById('title').innerHTML = title_timer;
 
@@ -123,7 +133,7 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
  * Activate the timer
  * 
  */
-        var intervalID = setInterval(function () {
+        intervalID = setInterval(function () {
             $("#timer").val(function () {
                 var timer = showTime(time_to_finish);
                 if (timer.localeCompare('02:00') == -1) {
@@ -229,7 +239,12 @@ function optionButtons(e) {
  */
 function checkword(word_list, word, id) {
     if (solved[id] === undefined) {
-        fetch(API + 'api/getInteractive/' + activity_id + '/crosswords/' + id + "/" + word) //https://api.myjson.com/bins/a3l3w')
+        fetch(API + 'api/getInteractive/' + interactive_id + '/crosswords/' + id + "/" + word, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+        }) //https://api.myjson.com/bins/a3l3w')
             .then(response => response.json())
             .then(function (json) {
                 if (json['data']['response'] == true) {
@@ -255,7 +270,13 @@ function checkword(word_list, word, id) {
 
 function getword(id) {
     //getInteractive/{id}/crosswords/{word_id}/{word?}
-    fetch(API + 'api/getInteractive/' + activity_id + '/crosswords/' + id) //https://api.myjson.com/bins/a3l3w')
+    fetch(API + 'api/getInteractive/' + interactive_id + '/crosswords/' + id,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+        }) //https://api.myjson.com/bins/a3l3w')
         .then(response => response.json())
         .then(function (json) {
             word_reference = json['data']['word'];
@@ -284,14 +305,15 @@ function getword(id) {
  * 
  */
 function postToServer() {
-    document.querySelector("#content").style.display = "none";
+    document.querySelector(".layout").style.display = "none";
     document.querySelector("#loader").style.display = "block";
     time = timediff(time_to_finish, document.getElementById('timer').value);
     let data = {
         "type": type,
         "userID": userID,
-        "time_to_finish": time,
+        "time_to_finish": time,   
         "activity_id": activity_id,
+        "interactive_id": interactive_id,
         "solved": Object.keys(solved).length
     }
     console.log(data);
@@ -299,17 +321,34 @@ function postToServer() {
         method: 'POST',
         body: JSON.stringify(data), // data can be `string` or {object}!
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': token
         }
     }).then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(function (res) {
             console.log(res)
             console.log('Success:', res);
+            let badge = res['data']['user_badge'] != false? res['data']['user_badge'][0] : false;
             document.querySelector('.modal-title').innerHTML = "Resultados";
             document.getElementById('modal-button').innerHTML = "Terminar";
-            document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
             document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul><p>${closeText}</p>`;
             $('#myModal').modal('toggle');
+            if (badge != false) {
+
+                document.getElementById('head').innerHTML = `
+                  <color style="color:${theme['color']}">${badges['' + badge['type_id']].name}</color>
+                `;
+                document.getElementById('badge').innerHTML = `
+                
+                  ${badges['' + badge['type_id']].svg.replace('fill=""','fill=' + theme['color']).replace("153.000000","120pt")}
+                
+                `;
+                document.getElementById('foot').innerHTML = `
+                <color style="color:${theme['color']}">${badges['' + badge['type_id']].description}</color>
+                `;
+        
+                $('#badge_modal').modal('toggle');
+              }
         });
 }

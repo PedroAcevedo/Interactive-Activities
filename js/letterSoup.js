@@ -1,4 +1,4 @@
-var selectWord, type, userID, time_to_finish, activity_id, initial, second;
+var selectWord, type, userID, time_to_finish, initial, second, activity_id, interactive_id, badge, theme;;
 var soup_answer = 0, diag = 0;
 var selection = false;
 var selectedList = [];
@@ -10,14 +10,25 @@ var closeText = '';
  *  GET the initial activity
  *  
  */
-fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
+fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': token
+  }
+})
   .then(response => response.json())
   .then(function (json) {
 
     json = json['data'];
     var title = json['title'];
     time_to_finish = json['time_limit'];
-    activity_id = json['interactive_id'];
+
+
+    theme = json['theme'];
+    interactive_id = json['interactive_id'];
+    activity_id = json['id'];
+
+
     var soup = json['board'];
     wordList = json['soup'];
     closeText = json['close'];
@@ -307,7 +318,7 @@ function selectBox(element) {
  * 
  */
 function postToServer() {
-  document.querySelector("#content").style.display = "none";
+  document.querySelector(".layout").style.display = "none";
   document.querySelector("#loader").style.display = "block";
   time = timediff(time_to_finish, document.getElementById('timer').value);
   let data = {
@@ -315,6 +326,7 @@ function postToServer() {
     "userID": userID,
     "time_to_finish": time,
     "activity_id": activity_id,
+    "interactive_id": interactive_id,
     "solved": soup_answer
   }
   console.log(data);
@@ -322,13 +334,15 @@ function postToServer() {
     method: 'POST',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': token
     }
   }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(function (res) {
       console.log(res)
       console.log('Success:', res);
+      let badge = res['data']['user_badge'] != false? res['data']['user_badge'][0] : false;
       let nofind = '<ul>';
       document.querySelectorAll('.card-tile').forEach(function (card) {
         if (!card.classList.contains('bg-success')) {
@@ -338,9 +352,24 @@ function postToServer() {
       nofind += '</ul>';
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
-      document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
       document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras encontradas: ${res['data']['solved']}/${wordList.length}</li> <li> Palabras sin descubir: ${nofind} </li></ul><p>${closeText}</p>`;
       $('#myModal').modal('toggle');
+      if (badge != false) {
+
+        document.getElementById('head').innerHTML = `
+          <color style="color:${theme['color']}">${badges['' + badge['type_id']].name}</color>
+        `;
+        document.getElementById('badge').innerHTML = `
+        
+          ${badges['' + badge['type_id']].svg.replace('fill=""','fill=' + theme['color']).replace("153.000000","120pt")}
+        
+        `;
+        document.getElementById('foot').innerHTML = `
+        <color style="color:${theme['color']}">${badges['' + badge['type_id']].description}</color>
+        `;
+
+        $('#badge_modal').modal('toggle');
+      }
     });
 }
 

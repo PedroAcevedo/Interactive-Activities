@@ -1,4 +1,4 @@
-var activity_id, time_to_finish, type, userID, pairs = 0, attempts = 0, num_matches;
+var time_to_finish, type, userID, pairs = 0, attempts = 0, num_matches, activity_id, interactive_id, badge, theme;;
 var cards;
 var hasFlippedCard = false;
 var lockBoard = false;
@@ -11,14 +11,25 @@ var closeText = '';
  *  GET the initial activity
  * 
  */
-fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
+fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': token
+  },
+})
   .then(response => response.json())
   .then(function (json) {
     json = json['data'];
     type = json['type'];
     time_to_finish = json['time_limit'];
     var title = json['title'];
+
     activity_id = json['interactive_id'];
+
+    theme = json['theme'];
+    interactive_id = json['interactive_id'];
+    activity_id = json['id'];
+
     var matches = json['matches'];
     closeText = json['close'];
 
@@ -99,17 +110,17 @@ function buildCards(matches) {
  */
 function defineCard(key, value) {
 
-  return value.includes('/') ?
+  return value.includes('/')  && value.includes('.') ?
     `
   <div class="memory-card" data-word="${key}">
-    <img class="front-face" src="${API.substring(0, API.length - 1) + value}" alt="" />
+    <img class="front-face" src="${value}" alt="" />
     <img class="back-face" src="assets/images/Incities_logo.svg" alt="Incities" />
   </div>
   `
     :
     `
   <div class="memory-card" data-word="${key}">
-    <div class="front-face"> <p class="paragraph">${value}</p> </div>
+    <div class="front-face"> <p class="paragraph" ${value.length>30? 'style="font-size: small;"' : ''}>${value}</p> </div>
     <img class="back-face" src="assets/images/Incities_logo.svg" alt="Incities" />
   </div>
   `;
@@ -214,7 +225,7 @@ function shuffle() {
  * 
  */
 function postToServer() {
-  document.querySelector("#content").style.display = "none";
+  document.querySelector(".layout").style.display = "none";
   document.querySelector("#loader").style.display = "block";
   time = timediff(time_to_finish, document.getElementById('timer').value);
   let data = {
@@ -222,6 +233,7 @@ function postToServer() {
     "userID": userID,
     "time_to_finish": time,
     "activity_id": activity_id,
+    "interactive_id": interactive_id,
     "flips": pairs
   }
   console.log(data);
@@ -229,18 +241,35 @@ function postToServer() {
     method: 'POST',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': token
     }
   }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(function (res) {
       console.log(res)
       console.log('Success:', res);
+      let badge = res['data']['user_badge'] != false ? res['data']['user_badge'][0] : false;
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
-      document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
       document.getElementById('score').innerHTML = `<ul><li>Tiempo: ${time}</li> <li>Flips totales: ${attempts}</li> <li>Parejas encontradas: ${res['data']['flips']}/${num_matches}</li> </ul> <p>${closeText}</p>`;
       $('#myModal').modal('toggle');
+      if (badge != false) {
+
+        document.getElementById('head').innerHTML = `
+          <color style="color:${theme['color']}">${badges['' + badge['type_id']].name}</color>
+        `;
+        document.getElementById('badge').innerHTML = `
+        
+          ${badges['' + badge['type_id']].svg.replace('fill=""', 'fill=' + theme['color']).replace("153.000000", "120pt")}
+        
+        `;
+        document.getElementById('foot').innerHTML = `
+        <color style="color:${theme['color']}">${badges['' + badge['type_id']].description}</color>
+        `;
+
+        $('#badge_modal').modal('toggle');
+      }
     });
 }
 

@@ -75,11 +75,268 @@ body {
     line-height: 1.125;
 }
 
-
 .stick {
     position: -webkit-sticky;
     position: sticky;
     top: 1rem;
+}
+
+#content {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr;
+}
+
+nav {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    box-sizing: inherit;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 8vh;
+    background-color: transparent;
+    display: flex;
+}
+
+header {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    box-sizing: inherit;
+    width: 100%;
+    padding-top: 40px;
+    padding-bottom: 1rem;
+    z-index: 1;
+    display: block;
+}
+
+.logo {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    font-weight: 400;
+    line-height: 1.5;
+    box-sizing: inherit;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 20px;
+}
+
+.logo img {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    font-weight: 400;
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 20px;
+    color: #3273dc;
+    cursor: pointer;
+    box-sizing: inherit;
+    height: auto;
+    max-width: 100%;
+    width: 245px;
+}
+
+.nav-right-container {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    box-sizing: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    box-sizing: inherit;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-links li a {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    line-height: 1.5;
+    list-style: none;
+    box-sizing: inherit;
+    cursor: pointer;
+    color: #06c;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: .36px;
+    text-transform: uppercase;
+    padding: 0 1rem;
+}
+
+.UserMenu_UserMenu__2oDz8 {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    box-sizing: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.image {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #3273dc;
+    cursor: pointer;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    height: 64px;
+    width: 64px;
+}
+
+.burger {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    box-sizing: inherit;
+    display: none;
+    cursor: pointer;
+}
+
+.is-rounded {
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    --color-primary: #06c;
+    --color-text-primary: #333;
+    --color-text-secondary: #707070;
+    --color-link-hover: #054888;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto";
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #3273dc;
+    cursor: pointer;
+    box-sizing: inherit;
+    max-width: 100%;
+    display: block;
+    height: auto;
+    width: 100%;
+    border-radius: 290486px;
+}
+
+.modal .modal-content{
+    width: 400px;
+    background: rgb(255, 255, 255);
+    min-height: 251px;
+    border-radius: 8px;
+    padding: 1em;
 }
 
 @media only screen and (max-width: 768px) {

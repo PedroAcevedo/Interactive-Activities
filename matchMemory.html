@@ -19,6 +19,33 @@
   
   <div id="loader" class="center"></div>
   <div id="content" class="ml-auto mr-auto">
+    <header>
+      <nav>
+          <div class="logo"><a href="https://avas.dcm-system.co/modulos"><img src="https://avas.dcm-system.co/static/media/logo.d076182e.svg" alt=""></a>
+          </div>
+          <div class="nav-right-container">
+            <ul class="nav-links">
+              <li><a href="https://avas.dcm-system.co/modulos">MÓDULOS</a></li>
+              <li><a href="https://avas.dcm-system.co/aportes">APORTES</a></li>
+              <li><a href="https://avas.dcm-system.co/progreso">PROGRESO</a></li>
+            </ul>
+            <div class="UserMenu_UserMenu__2oDz8">
+              <div class="dropdown is-right ">
+                <div class="dropdown-trigger UserMenu_Trigger__2Lo0v"><a aria-haspopup="true"
+                    aria-controls="dropdown-menu">
+                    <figure class="image is-64x64"><img class="is-rounded"
+                        src="https://avas.dcm-system.co/static/media/user.37c65c97.png" alt="User profile"></figure>
+                  </a></div>
+              </div>
+            </div>
+          </div>
+          <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+    </nav>
+    </header>
     <div class="layout">
       <div class="left-options pt-5">
         <div class="mb-2 stick">Tiempo restante: <h3 id="timer" value="00:00"></h3></div>
@@ -50,6 +77,32 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="badge_modal" tabindex="-1" aria-hidden="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+      <div class="modal-content">
+        <div class="d-flex w-100 justify-content-end" type="button" data-dismiss="modal"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.5rem; height: 1.5rem;"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" style="fill: currentcolor;"></path></svg></div>
+        <div class="modal-body d-flex flex-column justify-content-center">
+          <div class="row text-center">
+            <p id="head" class="w-100 text-center" style="font-size: 1.2em;font-weight: 600;margin-bottom: 1em;">
+              Insignia actividad de aprendizaje
+            </p>
+          </div>
+          <div id="badge" class="d-flex justify-content-center">
+            <img src="https://blog.teachlr.com/wp-content/uploads/2016/06/medal.png">
+          </div>
+          <div class="row text-center">
+            <p id="foot" style="font-size: 1em;
+            margin-top: 0.5em;
+            text-align: center;">
+              Felicidades, se te ha otorgado esta insignia.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>

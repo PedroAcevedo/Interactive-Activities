@@ -20,7 +20,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        fetch(API + 'api/getActivitySelectI')
+        fetch(API + 'api/getActivitySelectI', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+        })
             .then(response => response.json())
             .then(function (json) {
                 activities = json['data'];
@@ -29,7 +34,11 @@
                 activities.forEach((activity) => {
                     select_a += `<option value="${activity.id}">${activity.title}</option>`;
                 });
-                $('#myModal').modal('toggle');
+                $('#myModal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $('#myModal').modal('toggle')
                 document.getElementById('activities').innerHTML = select_a;
                 $("#interactives").change(function () {
                     $(this).find("option:selected").each(function () {
@@ -78,18 +87,25 @@
         overflow: scroll;
         max-height: 300px;
     }
+    .choices, .upload{
+        margin: 15px;
+    }
+
+    .btn{
+        background-color: #0a69b3!important;
+    }
 </style>
 
 <body>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade w-100" id="myModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content w-100">
+                <div class="modal-header m-0" style="background-color: #0a69b3!important;">
                     <div class="row justify-content-center">
-                        <h4 class="modal-title" style="padding-left: 20px;"></h4>
+                        <h5 class="modal-title" style="padding-left: 20px;color: white;"> ACTIVIDADES INTERACTIVAS </h5>
                     </div>
                 </div>
                 <div class="modal-body ">
@@ -377,6 +393,7 @@
         function postToServer() {
             var url = API + 'api/createInteractive';
             var data = {};
+            
             switch (document.getElementById('interactives').value) {
                 case '1':
                     if (soup.length > 0) {
@@ -460,7 +477,10 @@
                     formData.append('info', JSON.stringify(info));
                     fetch(url, {
                         method: 'POST',
-                        body: formData, // data can be `string` or {object}!
+                        body: formData,
+                        headers: {
+                            'Authorization': token
+                        } // data can be `string` or {object}!
                     }).then(res => res.json())
                         .catch(error => console.error('Error:', error))
                         .then(function (res) {
@@ -477,7 +497,8 @@
                         method: 'POST',
                         body: JSON.stringify(data), // data can be `string` or {object}!
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': token
                         }
                     }).then(res => res.json())
                         .catch(error => console.error('Error:', error))
@@ -485,7 +506,7 @@
                             console.log(res);
                             alert('Registro exitoso');
                             location.reload();
-                    });
+                        });
                 }
             }
         }
@@ -522,6 +543,7 @@
                     questionsfiles[document.getElementById('TestFile').files[0].name] = document.getElementById('TestFile').files[0];
                     $(document.getElementById('TestFile')).next('.custom-file-label').html('Seleccione imagen');
                     $(document.getElementById('TestFile')).next('.custom-file-label').html('Seleccione imagen');
+                    document.getElementById('TestFile').value = '';
                 } else {
                     if (document.getElementById('URLTest').value != '') {
                         data.image = document.getElementById('URLTest').value;
@@ -634,7 +656,7 @@
                 html += `
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     ${question['content'].substring(0, 10)} ...
-                    <a class="btn" onclick="remove(${index})"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
+                    <a class="btn" style="background-color: white !important;" onclick="remove(${index})"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
                 </li>
             `;
             });
@@ -648,7 +670,7 @@
                 html += `
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     ${word.substring(0, 10)} ...
-                    <a class="btn" onclick="removeSoup(${index})"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
+                    <a class="btn" style="background-color: white !important;" onclick="removeSoup(${index})"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
                 </li>
             `;
             });
@@ -665,12 +687,12 @@
                 col1 += `
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     ${key.substring(0, 10)} ...
-                    <a class="btn" onclick="removeMatch('${key}')"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
+                    <a class="btn" style="background-color: white !important;" onclick="removeMatch('${key}')"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
                 </li>`
                 col2 += `
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     ${value.substring(0, 10)} ...
-                    <a class="btn" onclick="removeMatch('${key}')"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
+                    <a class="btn" style="background-color: white !important;" onclick="removeMatch('${key}')"><span class="badge badge-primary badge-pill"><span class="material-icons">delete</span><i class="fa fa-trash"></i></span></a>
                 </li> `
             });
             var html = `

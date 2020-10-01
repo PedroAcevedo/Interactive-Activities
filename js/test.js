@@ -1,4 +1,4 @@
-var intervalID, num_questions, time_to_finish, userID, activity_id;
+var intervalID, num_questions, time_to_finish, userID, activity_id, interactive_id, badge, theme;
 var questions = [], selected = [], set = {};
 var index = 1;
 var type = 0;
@@ -9,11 +9,20 @@ var closeText = '';
  *  GET the initial activity
  *  
  */
-fetch(API + `api/getInteractive/${getUrlParameter('id')}`)
+fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': token
+  },
+})
   .then(response => response.json())
   .then(function (json) {
+    console.log(json);
     json = json['data'];
     questions = json['questions'];
+    theme = json['theme'];
+    interactive_id = json['interactive_id'];
+    activity_id = json['id'];
     type = json['type'];
     num_questions = questions.length;
     time_to_finish = json['time_limit'];
@@ -67,7 +76,7 @@ function loadQuestions() {
     index = index + 1;
   }
   document.getElementById('results_enum').innerHTML += `
-  <div id="${'q-' + (num_questions+1)}" class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex justify-content-end"> 
+  <div id="${'q-' + (num_questions + 1)}" class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex justify-content-end"> 
       <button id="sendData" type="button" class="btn btn-lg btn-info shadow" disabled>Enviar test</button>
   </div>`;
   $('.results .btn').click(function () {
@@ -87,7 +96,7 @@ function loadQuestions() {
  * 
  */
 function sendData() {
-  document.querySelector("#content").style.display = "none";
+  document.querySelector(".layout").style.display = "none";
   document.querySelector("#loader").style.display = "block";
   postToServer();
 }
@@ -97,13 +106,12 @@ function sendData() {
  * 
  */
 function postToServer() {
-  document.querySelector("#content").style.display = "none";
-  document.querySelector("#loader").style.display = "block";
   let data = {
     "type": type,
     "userID": userID,
     "time_to_finish": timediff(time_to_finish, document.getElementById('timer').value),
     "activity_id": activity_id,
+    "interactive_id": interactive_id,
     "answers": Object.values(set)
   }
   console.log(data);
@@ -111,18 +119,34 @@ function postToServer() {
     method: 'POST',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': token
     }
   }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(function (res) {
-      console.log(res)
       console.log('Success:', res);
+      let badge = res['data']['user_badge'] != false? res['data']['user_badge'][0] : false;
       document.querySelector('.modal-title').innerHTML = "Resultados";
-      document.getElementById('modal-button').innerHTML = "Terminar";
-      document.getElementById('modal-button').addEventListener('click', function () { window.location = 'index.html' });
+      document.getElementById('modal-button').innerHTML = "Terminar";      
       document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul> <p>${closeText}</p>`;
       $('#myModal').modal('toggle');
+      if (badge != false) {
+
+        document.getElementById('head').innerHTML = `
+          <color style="color:${theme['color']}">${badges['' + badge['type_id']].name}</color>
+        `;
+        document.getElementById('badge').innerHTML = `
+        
+          ${badges['' + badge['type_id']].svg.replace('fill=""','fill=' + theme['color']).replace("153.000000","120pt")}
+        
+        `;
+        document.getElementById('foot').innerHTML = `
+        <color style="color:${theme['color']}">${badges['' + badge['type_id']].description}</color>
+        `;
+
+        $('#badge_modal').modal('toggle');
+      }
     });
 }
 
@@ -146,7 +170,7 @@ function getContent(content) {
   let contenido = content.length > 300 ? `<h3 style="padding: 5% 15%;">${content}</h3>` : `<h1 style="padding: 5% 15%;">${content}</h1>`;
 
   return `
-    ${ index != 1? `<div class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end"> </div>`: ''}
+    ${index != 1 ? `<div class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end"> </div>` : ''}
     <div class="row pt-3 ml-3 font-weight-bold" style="padding-left:20px">${index} de ${num_questions}</div>
     ${quest_img != '' ? quest_img.split("src='")[0] + "src='" + `${/^http/.test(quest_img.split("src='")[1]) ? '' : API.substring(0, API.length - 1)}` + quest_img.split("src='")[1] : ""}
     <div class="row text-justify d-flex justify-content-center">
