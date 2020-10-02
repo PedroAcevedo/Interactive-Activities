@@ -113,7 +113,7 @@ function defineCard(key, value) {
   return value.includes('/')  && value.includes('.') ?
     `
   <div class="memory-card" data-word="${key}">
-    <img class="front-face" src="${value}" alt="" />
+    <img class="front-face" src="${API + value}" alt="" />
     <img class="back-face" src="assets/images/Incities_logo.svg" alt="Incities" />
   </div>
   `
