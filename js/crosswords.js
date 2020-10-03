@@ -32,8 +32,8 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
         theme = json['theme'];
         interactive_id = json['interactive_id'];
         activity_id = json['id'];
+        var title_timer = `<h3 class="title mt-5 mb-3" style="color:${json['pivot'][0]};">${title}</h3>`;
 
-        var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
         document.getElementById('title').innerHTML = title_timer;
 
         /* title_results := defines the navbar */

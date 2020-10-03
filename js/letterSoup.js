@@ -34,7 +34,7 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
     closeText = json['close'];
     type = json['type'];
     var size = json['size'];
-    var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
+    var title_timer = `<h3 class="title mt-5 mb-3" style="color:${json['pivot'][0]};">${title}</h3>`;
     document.getElementById('title').innerHTML = title_timer;
 
     var words = '<h3 class="text-center"> Palabras a buscar: </h3> <div class="d-flex flex-row flex-wrap">';

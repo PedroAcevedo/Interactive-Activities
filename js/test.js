@@ -29,7 +29,7 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
     var title = json['title'];
     closeText = json['close'];
 
-    var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
+    var title_timer = `<h3 class="title mt-5 mb-3" style="color:${json['pivot'][0]};">${title}</h3>`;
 
     /* title_results := defines the navbar */
     document.getElementById('results_enum').innerHTML = title_timer;

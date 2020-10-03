@@ -32,8 +32,9 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
 
     var matches = json['matches'];
     closeText = json['close'];
+    
+    var title_timer = `<h3 class="title mt-5 mb-3" style="color:${json['pivot'][0]};">${title}</h3>`;
 
-    var title_timer = `<h3 class="title mt-5 mb-3">${title}</h3>`;
 
 
     num_matches = Object.keys(matches).length;
