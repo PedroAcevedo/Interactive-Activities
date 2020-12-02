@@ -1,4 +1,4 @@
-var intervalID, num_questions, time_to_finish, userID, activity_id, interactive_id, badge, theme;
+var intervalID, num_questions, time_to_finish, userID, activity_id, interactive_id, badge, module_id, theme;
 var questions = [], selected = [], set = {};
 var index = 1;
 var type = 0;
@@ -23,6 +23,7 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
     theme = json['theme'];
     interactive_id = json['interactive_id'];
     activity_id = json['id'];
+    module_id = json['module_id'];
     type = json['type'];
     num_questions = questions.length;
     time_to_finish = json['time_limit'];
@@ -112,6 +113,7 @@ function postToServer() {
     "time_to_finish": timediff(time_to_finish, document.getElementById('timer').value),
     "activity_id": activity_id,
     "interactive_id": interactive_id,
+    "module_id": module_id,
     "answers": Object.values(set)
   }
   console.log(data);
@@ -126,26 +128,18 @@ function postToServer() {
     .catch(error => console.error('Error:', error))
     .then(function (res) {
       console.log('Success:', res);
-      let badge = res['data']['user_badge'] != false? res['data']['user_badge'][0] : false;
+      let badge = res['data']['user_badge'] != false? res['data']['user_badge'] : false;
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";      
       document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul> <p>${closeText}</p>`;
-      $('#myModal').modal('toggle');
       if (badge != false) {
-
-        document.getElementById('head').innerHTML = `
-          <color style="color:${theme['color']}">${badges['' + badge['type_id']].name}</color>
-        `;
-        document.getElementById('badge').innerHTML = `
+        const modals = badges_modal(badge,theme);
         
-          ${badges['' + badge['type_id']].svg.replace('fill=""','fill=' + theme['color']).replace("153.000000","120pt")}
-        
-        `;
-        document.getElementById('foot').innerHTML = `
-        <color style="color:${theme['color']}">${badges['' + badge['type_id']].description}</color>
-        `;
+        modals.next();
 
-        $('#badge_modal').modal('toggle');
+        $('#badge_modal').on('hidden.bs.modal', function (e) {
+          modals.next();
+        });
       }
     });
 }

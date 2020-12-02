@@ -1,4 +1,4 @@
-var time_to_finish, type, userID, pairs = 0, attempts = 0, num_matches, activity_id, interactive_id, badge, theme;;
+var time_to_finish, type, userID, pairs = 0, attempts = 0, num_matches, activity_id, interactive_id, module_id, badge, theme;;
 var cards;
 var hasFlippedCard = false;
 var lockBoard = false;
@@ -25,6 +25,7 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
     var title = json['title'];
 
     activity_id = json['interactive_id'];
+    module_id = json['module_id'];
 
     theme = json['theme'];
     interactive_id = json['interactive_id'];
@@ -234,6 +235,7 @@ function postToServer() {
     "userID": userID,
     "time_to_finish": time,
     "activity_id": activity_id,
+    "module_id": module_id,
     "interactive_id": interactive_id,
     "flips": pairs
   }
@@ -250,26 +252,18 @@ function postToServer() {
     .then(function (res) {
       console.log(res)
       console.log('Success:', res);
-      let badge = res['data']['user_badge'] != false ? res['data']['user_badge'][0] : false;
+      let badge = res['data']['user_badge'] != false ? res['data']['user_badge'] : false;
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
       document.getElementById('score').innerHTML = `<ul><li>Tiempo: ${time}</li> <li>Flips totales: ${attempts}</li> <li>Parejas encontradas: ${res['data']['flips']}/${num_matches}</li> </ul> <p>${closeText}</p>`;
-      $('#myModal').modal('toggle');
       if (badge != false) {
-
-        document.getElementById('head').innerHTML = `
-          <color style="color:${theme['color']}">${badges['' + badge['type_id']].name}</color>
-        `;
-        document.getElementById('badge').innerHTML = `
+        const modals = badges_modal(badge,theme);
         
-          ${badges['' + badge['type_id']].svg.replace('fill=""', 'fill=' + theme['color']).replace("153.000000", "120pt")}
-        
-        `;
-        document.getElementById('foot').innerHTML = `
-        <color style="color:${theme['color']}">${badges['' + badge['type_id']].description}</color>
-        `;
+        modals.next();
 
-        $('#badge_modal').modal('toggle');
+        $('#badge_modal').on('hidden.bs.modal', function (e) {
+          modals.next();
+        });
       }
     });
 }
