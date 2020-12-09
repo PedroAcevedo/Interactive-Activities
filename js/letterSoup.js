@@ -1,4 +1,4 @@
-var selectWord, type, userID, time_to_finish, initial, second, activity_id, interactive_id, badge, module_id, theme;;
+var selectWord, type, userID, time_to_finish, initial, second, activity_id, interactive_id, badge, module_id, theme_id, theme;;
 var soup_answer = 0, diag = 0;
 var selection = false;
 var selectedList = [];
@@ -28,6 +28,7 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
     interactive_id = json['interactive_id'];
     activity_id = json['id'];
     module_id = json['module_id'];
+    theme_id = json['theme_id'];
 
 
     var soup = json['board'];
@@ -355,6 +356,13 @@ function postToServer() {
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
       document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras encontradas: ${res['data']['solved']}/${wordList.length}</li> <li> Palabras sin descubir: ${nofind} </li></ul><p>${closeText}</p>`;
+      
+           
+      document.querySelector("#final-message p").innerText = res['data']['solved'] >= wordList.length/2? '¡Muy buen trabajo! Ha logrado encontrar las palabras claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para repetir';
+      document.querySelector("#loader").style.display = "none";
+      document.querySelector("#final-message").style.display = "block";
+      
+
       if (badge != false) {
         const modals = badges_modal(badge,theme);
         
@@ -363,6 +371,9 @@ function postToServer() {
         $('#badge_modal').on('hidden.bs.modal', function (e) {
           modals.next();
         });
+      } else {
+        $('#myModal').modal('toggle');
+
       }
     });
 }

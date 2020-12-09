@@ -1,4 +1,4 @@
-var time_to_finish, type, userID, pairs = 0, attempts = 0, num_matches, activity_id, interactive_id, module_id, badge, theme;;
+var time_to_finish, type, userID, pairs = 0, attempts = 0, num_matches, activity_id, interactive_id, module_id, theme_id, badge, theme;;
 var cards;
 var hasFlippedCard = false;
 var lockBoard = false;
@@ -26,6 +26,8 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
 
     activity_id = json['interactive_id'];
     module_id = json['module_id'];
+    theme_id = json['theme_id'];
+
 
     theme = json['theme'];
     interactive_id = json['interactive_id'];
@@ -256,6 +258,13 @@ function postToServer() {
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
       document.getElementById('score').innerHTML = `<ul><li>Tiempo: ${time}</li> <li>Flips totales: ${attempts}</li> <li>Parejas encontradas: ${res['data']['flips']}/${num_matches}</li> </ul> <p>${closeText}</p>`;
+      
+           
+      document.querySelector("#final-message p").innerText = res['data']['flips'] == num_matches? '¡Muy buen trabajo! Ha logrado relacionar las palabras e imágenes claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para repetir';
+      document.querySelector("#loader").style.display = "none";
+      document.querySelector("#final-message").style.display = "block";
+      
+      
       if (badge != false) {
         const modals = badges_modal(badge,theme);
         
@@ -264,6 +273,9 @@ function postToServer() {
         $('#badge_modal').on('hidden.bs.modal', function (e) {
           modals.next();
         });
+      } else {
+        $('#myModal').modal('toggle');
+
       }
     });
 }

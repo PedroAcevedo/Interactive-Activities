@@ -164,5 +164,5 @@ function getUrlParameter(name) {
 };
 
 
-
+document.getElementById('return').addEventListener('click', ()=>{ location.href = `https://avas.dcm-system.co/modulos/${module_id}/eje/${theme_id}`; });
 var token = `Bearer ${getUrlParameter('token')}`

@@ -1,4 +1,4 @@
-var intervalID, num_questions, time_to_finish, userID, activity_id, interactive_id, badge, module_id, theme;
+var intervalID, num_questions, time_to_finish, userID, activity_id, interactive_id, badge, module_id, theme_id, theme;
 var questions = [], selected = [], set = {};
 var index = 1;
 var type = 0;
@@ -24,6 +24,7 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
     interactive_id = json['interactive_id'];
     activity_id = json['id'];
     module_id = json['module_id'];
+    theme_id = json['theme_id'];
     type = json['type'];
     num_questions = questions.length;
     time_to_finish = json['time_limit'];
@@ -99,6 +100,7 @@ function loadQuestions() {
 function sendData() {
   document.querySelector(".layout").style.display = "none";
   document.querySelector("#loader").style.display = "block";
+  //document.querySelector("#final-message").style.display = "block";
   postToServer();
 }
 /**
@@ -128,18 +130,26 @@ function postToServer() {
     .catch(error => console.error('Error:', error))
     .then(function (res) {
       console.log('Success:', res);
-      let badge = res['data']['user_badge'] != false? res['data']['user_badge'] : false;
+      let badge = res['data']['user_badge'] != false ? res['data']['user_badge'] : false;
       document.querySelector('.modal-title').innerHTML = "Resultados";
-      document.getElementById('modal-button').innerHTML = "Terminar";      
+      document.getElementById('modal-button').innerHTML = "Terminar";
       document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul> <p>${closeText}</p>`;
+     
+      document.querySelector("#final-message p").innerText = res['data']['correct_answers'] >= 3? '¡Muy buen trabajo! Ha logrado comprender los conceptos propuestos en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para repetir';
+      document.querySelector("#loader").style.display = "none";
+      document.querySelector("#final-message").style.display = "block";
+      
       if (badge != false) {
-        const modals = badges_modal(badge,theme);
-        
+        const modals = badges_modal(badge, theme);
+
         modals.next();
 
         $('#badge_modal').on('hidden.bs.modal', function (e) {
           modals.next();
         });
+      } else {
+        $('#myModal').modal('toggle');
+
       }
     });
 }

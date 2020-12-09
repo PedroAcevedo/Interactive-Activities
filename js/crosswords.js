@@ -1,4 +1,4 @@
-var  activity_id, interactive_id, badge, theme, type, module_id, userID;
+var activity_id, interactive_id, badge, theme, type, module_id, theme_id, userID;
 var focusword = []
 var actual = 0;
 var solved = {};
@@ -33,6 +33,8 @@ fetch(API + `api/getInteractive/${getUrlParameter('id')}`, {
         interactive_id = json['interactive_id'];
         activity_id = json['id'];
         module_id = json['module_id'];
+        theme_id = json['theme_id'];
+
 
         var title_timer = `<h3 class="title mt-5 mb-3" style="color:${json['pivot'][0]};">${title}</h3>`;
 
@@ -313,7 +315,7 @@ function postToServer() {
     let data = {
         "type": type,
         "userID": userID,
-        "time_to_finish": time,   
+        "time_to_finish": time,
         "activity_id": activity_id,
         "interactive_id": interactive_id,
         "module_id": module_id,
@@ -332,18 +334,28 @@ function postToServer() {
         .then(function (res) {
             console.log(res)
             console.log('Success:', res);
-            let badge = res['data']['user_badge'] != false? res['data']['user_badge'] : false;
+            let badge = res['data']['user_badge'] != false ? res['data']['user_badge'] : false;
             document.querySelector('.modal-title').innerHTML = "Resultados";
             document.getElementById('modal-button').innerHTML = "Terminar";
             document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul><p>${closeText}</p>`;
+
+
+            document.querySelector("#final-message p").innerText = res['data']['solved'] >= 5 ? '¡Muy buen trabajo! Ha logrado asociar las palabras con definiciones claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para repetir';
+            document.querySelector("#loader").style.display = "none";
+            document.querySelector("#final-message").style.display = "block";
+
+
             if (badge != false) {
-                const modals = badges_modal(badge,theme);
-        
+                const modals = badges_modal(badge, theme);
+
                 modals.next();
-        
+
                 $('#badge_modal').on('hidden.bs.modal', function (e) {
-                  modals.next();
+                    modals.next();
                 });
+            } else {
+                $('#myModal').modal('toggle');
+
             }
         });
 }
