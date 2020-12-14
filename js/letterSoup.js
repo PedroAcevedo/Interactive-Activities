@@ -353,12 +353,9 @@ function postToServer() {
         }
       });
       nofind += '</ul>';
-      document.querySelector('.modal-title').innerHTML = "Resultados";
-      document.getElementById('modal-button').innerHTML = "Terminar";
-      document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras encontradas: ${res['data']['solved']}/${wordList.length}</li> <li> Palabras sin descubir: ${nofind} </li></ul><p>${closeText}</p>`;
+      document.querySelector('#final-message .results').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras encontradas: ${res['data']['solved']}/${wordList.length}</li> <li> Palabras sin descubir: ${nofind} </li></ul>`;
       
-           
-      document.querySelector("#final-message p").innerText = res['data']['solved'] >= wordList.length/2? '¡Muy buen trabajo! Ha logrado encontrar las palabras claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para repetir';
+      document.querySelector("#final-message p").innerText = res['data']['solved'] >= wordList.length/2? '¡Muy buen trabajo! Ha logrado encontrar las palabras claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para reiniciar la actividad';
       document.querySelector("#loader").style.display = "none";
       document.querySelector("#final-message").style.display = "block";
       
@@ -371,9 +368,6 @@ function postToServer() {
         $('#badge_modal').on('hidden.bs.modal', function (e) {
           modals.next();
         });
-      } else {
-        $('#myModal').modal('toggle');
-
       }
     });
 }

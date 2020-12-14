@@ -98,6 +98,10 @@ hr.new {
     border-color: #993399;
 }
 
+.no-selected{
+    opacity: .5;
+}
+
 .question-img {
     display: block;
     margin-left: auto;

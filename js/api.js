@@ -1,4 +1,4 @@
-var API = 'http://127.0.0.1:8000/';  //'' // https://apiavas.dcm-system.co/public/
+var API = 'https://apiavas.dcm-system.co/public/';  //'' // https://apiavas.dcm-system.co/public/
 
 var badges = {
     '1': {

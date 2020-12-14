@@ -335,12 +335,9 @@ function postToServer() {
             console.log(res)
             console.log('Success:', res);
             let badge = res['data']['user_badge'] != false ? res['data']['user_badge'] : false;
-            document.querySelector('.modal-title').innerHTML = "Resultados";
-            document.getElementById('modal-button').innerHTML = "Terminar";
-            document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul><p>${closeText}</p>`;
+            document.querySelector('#final-message .results').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul>`;
 
-
-            document.querySelector("#final-message p").innerText = res['data']['solved'] >= 5 ? '¡Muy buen trabajo! Ha logrado asociar las palabras con definiciones claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para repetir';
+            document.querySelector("#final-message p").innerText = res['data']['solved'] >= 5 ? '¡Muy buen trabajo! Ha logrado asociar las palabras con definiciones claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para reiniciar la actividad.';
             document.querySelector("#loader").style.display = "none";
             document.querySelector("#final-message").style.display = "block";
 
@@ -353,9 +350,6 @@ function postToServer() {
                 $('#badge_modal').on('hidden.bs.modal', function (e) {
                     modals.next();
                 });
-            } else {
-                $('#myModal').modal('toggle');
-
             }
         });
 }

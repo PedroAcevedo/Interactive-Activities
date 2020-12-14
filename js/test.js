@@ -83,7 +83,10 @@ function loadQuestions() {
   </div>`;
   $('.results .btn').click(function () {
     $(`.results .btn[data-question="${$(this).data('question')}"]`).removeClass('selected');
+    $(`.results .btn[data-question="${$(this).data('question')}"]`).not(this).addClass('no-selected');
+    $(this).removeClass('no-selected');
     $(this).addClass('selected');
+
     set[$(this).data('question')] = $(this).data('value');
     window.location.href = `#q-${$(this).data('question') + 1}`;
     if (Object.keys(set).length == num_questions) {
@@ -133,9 +136,9 @@ function postToServer() {
       let badge = res['data']['user_badge'] != false ? res['data']['user_badge'] : false;
       document.querySelector('.modal-title').innerHTML = "Resultados";
       document.getElementById('modal-button').innerHTML = "Terminar";
-      document.getElementById('score').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul> <p>${closeText}</p>`;
+      document.querySelector('#final-message .results').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul>`;
      
-      document.querySelector("#final-message p").innerText = res['data']['correct_answers'] >= 3? '¡Muy buen trabajo! Ha logrado comprender los conceptos propuestos en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para repetir';
+      document.querySelector("#final-message div p").innerText = res['data']['correct_answers'] >= 3? '¡Muy buen trabajo! Ha logrado comprender los conceptos propuestos en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para reiniciar la actividad';
       document.querySelector("#loader").style.display = "none";
       document.querySelector("#final-message").style.display = "block";
       
@@ -147,9 +150,6 @@ function postToServer() {
         $('#badge_modal').on('hidden.bs.modal', function (e) {
           modals.next();
         });
-      } else {
-        $('#myModal').modal('toggle');
-
       }
     });
 }

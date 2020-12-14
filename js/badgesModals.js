@@ -23,6 +23,4 @@ function* badges_modal(badges_obtained, theme) {
 
   }
 
-  $('#myModal').modal('toggle');
-
 }
