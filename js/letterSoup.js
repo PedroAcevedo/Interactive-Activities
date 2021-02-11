@@ -353,9 +353,9 @@ function postToServer() {
         }
       });
       nofind += '</ul>';
-      document.querySelector('#final-message .results').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras encontradas: ${res['data']['solved']}/${wordList.length}</li> <li> Palabras sin descubir: ${nofind} </li></ul>`;
+      document.querySelector('#final-message .results').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras encontradas: ${res['data']['solved']}/${wordList.length}</li> <li> ${res['data']['solved'] !=  wordList.length?   'Palabras sin descubir:' + nofind : 'Ha encontrado exitosamente todas las palabras.'} </li></ul>`;
       
-      document.querySelector("#final-message p").innerText = res['data']['solved'] >= wordList.length/2? '¡Muy buen trabajo! Ha logrado encontrar las palabras claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para reiniciar la actividad';
+      document.querySelector("#final-message p").innerText = res['data']['solved'] >= wordList.length/2? '¡Muy buen trabajo! Ha logrado encontrar las palabras claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la página para reiniciar la actividad';
       document.querySelector("#loader").style.display = "none";
       document.querySelector("#final-message").style.display = "block";
       

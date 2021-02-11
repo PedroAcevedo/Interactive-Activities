@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="css/main.css" rel="stylesheet">
+  <link href="css/matchMemory-columns.css" rel="stylesheet">
+  <title></title>
+</head>
+<body>
+
+  <audio id="flip">
+    <source src="assets/audio/Card-flip-sound-effect.mp3" type="audio/mpeg">
+  </audio>
+  
+  <div id="loader" class="center"></div>
+  <div id="content" class="ml-auto mr-auto">
+    <header>
+      <nav>
+          <div class="logo"><a href="https://avas.dcm-system.co/modulos"><img src="https://avas.dcm-system.co/static/media/logo.d076182e.svg" alt=""></a>
+          </div>
+          <div class="nav-right-container">
+            <ul class="nav-links">
+              <li><a href="https://avas.dcm-system.co/modulos">MÓDULOS</a></li>
+              <li><a href="https://avas.dcm-system.co/aportes">APORTES</a></li>
+              <li><a href="https://avas.dcm-system.co/progreso">PROGRESO</a></li>
+            </ul>
+            <div class="UserMenu_UserMenu__2oDz8">
+              <div class="dropdown is-right ">
+                <div class="dropdown-trigger UserMenu_Trigger__2Lo0v"><a aria-haspopup="true"
+                    aria-controls="dropdown-menu">
+                    <figure class="image is-64x64"><img class="is-rounded"
+                        src="https://avas.dcm-system.co/static/media/user.37c65c97.png" alt="User profile"></figure>
+                  </a></div>
+              </div>
+            </div>
+          </div>
+          <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+    </nav>
+    </header>
+    <div class="layout">
+      <div class="left-options pt-5">
+        <div class="stick mb-2">Tiempo restante: <h3 id="timer" value="00:00"></h3></div>
+      </div>
+      <section id="board" class="ml-0 mr-0 font-weight-bold" style="display: none;">
+      </section>
+    </div>
+   
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <h4 class="modal-title w-100 text-center"></h4>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div id="score">
+            Partiendo del tema tratado en la actividad, desarrolle el siguiente ejercicio de emparejamiento donde relacione términos con imágenes/definiciones que se correspondan. 
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-button" type="button" class="btn btn-success" data-dismiss="modal">Empezar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="badge_modal" tabindex="-1" aria-hidden="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+      <div class="modal-content">
+        <div class="d-flex w-100 justify-content-end" type="button" data-dismiss="modal"><svg viewBox="0 0 24 24" role="presentation" style="width: 1.5rem; height: 1.5rem;"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" style="fill: currentcolor;"></path></svg></div>
+        <div class="modal-body d-flex flex-column justify-content-center">
+          <div class="row text-center">
+            <p id="head" class="w-100 text-center" style="font-size: 1.2em;font-weight: 600;margin-bottom: 1em;">
+              Insignia actividad de aprendizaje
+            </p>
+          </div>
+          <div id="badge" class="d-flex justify-content-center">
+            <img src="https://blog.teachlr.com/wp-content/uploads/2016/06/medal.png">
+          </div>
+          <div class="row text-center">
+            <p id="foot" style="font-size: 1em;
+            margin-top: 0.5em;
+            text-align: center;">
+              Felicidades, se te ha otorgado esta insignia.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="final-message" class="card mr-auto ml-auto" style=" width: 45%;display: none;">
+    <div class="card-body ">
+      <h3 class="card-title text-center" style="font-weight: bolder;">¡Actividad finalizada!</h3>
+      <div class="results row d-flex justify-content-center mt-4" style="font-size: larger;">
+
+      </div>
+      <div class="row w-100">
+        <p class="card-text mt-3 mb-3 pl-4 pr-4">
+        </p>
+      </div>
+      <button id="return" class="btn btn-back w-100"><span class="icon"><svg viewBox="0 0 24 24" role="presentation"
+            style="width: 1.5rem; height: 1.5rem;">
+            <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" style="fill: currentcolor;">
+            </path>
+          </svg></span>RETORNAR A LOS MÓDULOS</button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+    <script src="js/utils/leader-line.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script>
+      $('#myModal').modal('toggle');
+  </script>
+  <script type="text/javascript" src="js/api.js"></script>
+  <script type="text/javascript" src="js/timer.js"></script>
+  <script type="text/javascript" src="js/badgesModals.js"></script>
+  <script type="text/javascript" src="js/matchMemory-columns.js"></script>
+</body>
+
+</html>

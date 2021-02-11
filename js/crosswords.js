@@ -337,7 +337,7 @@ function postToServer() {
             let badge = res['data']['user_badge'] != false ? res['data']['user_badge'] : false;
             document.querySelector('#final-message .results').innerHTML = `<ul> <li>Tiempo: ${time}</li> <li>Palabras acertadas: ${res['data']['solved']}</li></ul>`;
 
-            document.querySelector("#final-message p").innerText = res['data']['solved'] >= 5 ? '¡Muy buen trabajo! Ha logrado asociar las palabras con definiciones claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para reiniciar la actividad.';
+            document.querySelector("#final-message p").innerText = res['data']['solved'] >= 5 ? '¡Muy buen trabajo! Ha logrado asociar las palabras con definiciones claves propuestas en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la página para reiniciar la actividad.';
             document.querySelector("#loader").style.display = "none";
             document.querySelector("#final-message").style.display = "block";
 

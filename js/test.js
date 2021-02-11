@@ -138,7 +138,7 @@ function postToServer() {
       document.getElementById('modal-button').innerHTML = "Terminar";
       document.querySelector('#final-message .results').innerHTML = `<ul> <li>Tiempo: ${document.getElementById('timer').value}</li> <li>Correctas: ${res['data']['correct_answers']}/${num_questions}</li></ul>`;
      
-      document.querySelector("#final-message div p").innerText = res['data']['correct_answers'] >= 3? '¡Muy buen trabajo! Ha logrado comprender los conceptos propuestos en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la pagina para reiniciar la actividad';
+      document.querySelector("#final-message div p").innerText = res['data']['correct_answers'] >= 3? '¡Muy buen trabajo! Ha logrado comprender los conceptos propuestos en la actividad de aprendizaje. Vamos a explorar otra actividad y/o módulo de aprendizaje.' : '¡Ánimos! Vamos a intentarlo nuevamente, recarga la página para reiniciar la actividad';
       document.querySelector("#loader").style.display = "none";
       document.querySelector("#final-message").style.display = "block";
       
@@ -176,7 +176,7 @@ function getContent(content) {
   return `
     ${index != 1 ? `<div class="ml-0 mr-0 mt-5 pt-5 pr-5 d-flex align-items-start justify-content-end"> </div>` : ''}
     <div class="row pt-3 ml-3 font-weight-bold" style="padding-left:20px">${index} de ${num_questions}</div>
-    ${quest_img != '' ? quest_img.split("src='")[0] + "src='" + `${/^http/.test(quest_img.split("src='")[1]) ? '' : API.substring(0, API.length - 1)}` + quest_img.split("src='")[1] : ""}
+    ${quest_img != '' ? quest_img.split("src='")[0] + "src='" + `${/^http/.test(quest_img.split("src='")[1]) ? '' :  API.substring(0, API.length - 1)}` + quest_img.split("src='")[1] : ""}
     <div class="row text-justify d-flex justify-content-center">
       ${contenido}
     </div>
